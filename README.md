@@ -9,3 +9,7 @@
 
 <p align="center">
 </p>
+
+## Documentation
+
+[Hour Reporting](./docs/hours.md)
