@@ -1,0 +1,11 @@
+---
+services:
+  mongodb:
+    image: mongo:6
+    container_name: datakolo-mongodb
+    environment:
+      MONGO_INITDB_DATABASE: datakolo
+    ports:
+      - 27017:27017
+    volumes:
+      - ./mongodb-data:/data
