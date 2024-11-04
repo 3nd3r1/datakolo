@@ -1,6 +1,7 @@
 import mongoose from "npm:mongoose";
 
 import User from "./src/models/user.ts";
+import { hashPassword } from "./src/utils/hash.ts";
 
 async function seed() {
     const databaseUrl = Deno.env.get("DATABASE_URL");
@@ -14,14 +15,16 @@ async function seed() {
 
     const seedUsers = [
         {
-            name: "John",
-            password: "password",
+            username: "John",
+            password: await hashPassword("password"),
         },
         {
-            name: "Jane",
-            password: "password",
+            username: "Jane",
+            password: await hashPassword("password"),
         },
     ];
+
+    await User.deleteMany({});
 
     console.log("Seeding users");
     await User.insertMany(seedUsers);
