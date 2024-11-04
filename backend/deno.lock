@@ -15,6 +15,7 @@
     "jsr:@std/io@0.224": "0.224.9",
     "jsr:@std/media-types@1": "1.0.3",
     "jsr:@std/path@1": "1.0.7",
+    "npm:@types/node@*": "22.5.4",
     "npm:mongoose@*": "8.8.0",
     "npm:mongoose@^8.8.0": "8.8.0",
     "npm:path-to-regexp@6.2.1": "6.2.1"
@@ -80,6 +81,12 @@
       "integrity": "sha512-tVkljjeEaAhCqTzajSdgbQ6gE6f3oneVwa3iXR6csiEwXXOFsiC6Uh9iAjAhXPtqa/XMDHWjjeNH/77m/Yq2dw==",
       "dependencies": [
         "sparse-bitfield"
+      ]
+    },
+    "@types/node@22.5.4": {
+      "integrity": "sha512-FDuKUJQm/ju9fT/SeX/6+gBzoPzlVCzfzmGkwKvRHQVxi4BntVbyIwf6a4Xn62mrvndLiml6z/UBXIdEVjQLXg==",
+      "dependencies": [
+        "undici-types"
       ]
     },
     "@types/webidl-conversions@7.0.3": {
@@ -165,6 +172,9 @@
       "dependencies": [
         "punycode"
       ]
+    },
+    "undici-types@6.19.8": {
+      "integrity": "sha512-ve2KP6f/JnbPBFyobGHuerC9g1FYGn/F8n1LWTwNxCEzd6IfqTwUQcNXgEtmmQ6DlRrC1hrSrBnCZPokRrDHjw=="
     },
     "webidl-conversions@7.0.0": {
       "integrity": "sha512-VwddBukDzu71offAQR975unBIGqfKZpM+8ZX6ySk8nYhVoo5CYaZyzt3YBvYtRtO+aoGlqxPg/B87NGVZ/fu6g=="
