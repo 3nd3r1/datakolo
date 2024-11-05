@@ -1,13 +1,13 @@
 import {
-    describe,
-    it,
+    afterAll,
     beforeAll,
     beforeEach,
-    afterAll,
+    describe,
+    it,
 } from "jsr:@std/testing/bdd";
 import { superoak } from "https://deno.land/x/superoak/mod.ts";
 
-import { seedDatabase, closeDatabase, connectDatabase } from "./db.ts";
+import { closeDatabase, connectDatabase, seedDatabase } from "./db.ts";
 import app from "../src/app.ts";
 
 const request = await superoak(app);

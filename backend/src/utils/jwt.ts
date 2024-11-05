@@ -3,7 +3,7 @@ import { create, verify } from "https://deno.land/x/djwt/mod.ts";
 const key = await crypto.subtle.generateKey(
     { name: "HMAC", hash: "SHA-512" },
     true,
-    ["sign", "verify"]
+    ["sign", "verify"],
 );
 
 export const generateUserToken = async (userId: string): Promise<string> => {

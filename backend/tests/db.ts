@@ -5,7 +5,7 @@ export const connectDatabase = async () => {
     const dbUrl = Deno.env.get("TEST_DATABASE_URL");
     if (!dbUrl) {
         throw new Error(
-            "TEST_DATABASE_URL is not set in the environment variables"
+            "TEST_DATABASE_URL is not set in the environment variables",
         );
     }
 

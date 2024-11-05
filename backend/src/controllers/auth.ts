@@ -1,8 +1,4 @@
-import {
-    createHttpError,
-    HttpError,
-    type Context,
-} from "https://deno.land/x/oak/mod.ts";
+import { type Context, createHttpError } from "https://deno.land/x/oak/mod.ts";
 import mongoose from "mongoose";
 
 import { toNewUser, toNonSensitiveUser } from "../validators/user.ts";
@@ -46,7 +42,7 @@ export const login = async (ctx: Context) => {
 
     // deno-lint-ignore no-explicit-any
     const passwordValid: boolean = await (user as any).comparePassword(
-        password
+        password,
     );
 
     if (!passwordValid) {
