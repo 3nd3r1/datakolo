@@ -1,24 +1,26 @@
-import type { Context } from "https://deno.land/x/oak/mod.ts";
+import {
+    createHttpError,
+    HttpError,
+    type Context,
+} from "https://deno.land/x/oak/mod.ts";
+import mongoose from "mongoose";
 
 import { toNewUser, toNonSensitiveUser } from "../validators/user.ts";
 import User from "../models/user.ts";
-import { generateToken } from "../utils/jwt.ts";
-import mongoose from "mongoose";
+import { generateUserToken } from "../utils/jwt.ts";
 
 export const register = async (ctx: Context) => {
+    const body = await ctx.request.body.json();
+
+    const newUser = toNewUser(body);
+
+    if (await User.findOne({ username: newUser.username })) {
+        throw createHttpError(400, "Username already exists");
+    }
+
+    const user = new User(newUser);
+
     try {
-        const body = await ctx.request.body.json();
-
-        const newUser = toNewUser(body);
-
-        if (await User.findOne({ username: newUser.username })) {
-            ctx.response.status = 400;
-            ctx.response.body = { error: "Username is already used" };
-            return;
-        }
-
-        const user = new User(newUser);
-
         const savedUser = (await user.save()).toObject();
         ctx.response.body = toNonSensitiveUser({
             id: savedUser._id.toString(),
@@ -26,51 +28,31 @@ export const register = async (ctx: Context) => {
         });
     } catch (error: unknown) {
         if (error instanceof mongoose.Error.ValidationError) {
-            ctx.response.status = 400;
-            ctx.response.body = {
-                error: error.message,
-            };
-            return;
+            throw createHttpError(400, error.message);
         }
-
-        console.error(error);
-        ctx.response.status = 400;
-        ctx.response.body = {
-            error: "An error occurred",
-        };
+        throw error;
     }
 };
 
 export const login = async (ctx: Context) => {
-    try {
-        const body = await ctx.request.body.json();
+    const body = await ctx.request.body.json();
 
-        const { username, password } = body;
+    const { username, password } = body;
 
-        const user = await User.findOne({ username });
-        if (!user) {
-            ctx.response.status = 404;
-            ctx.response.body = { error: "Invalid username" };
-            return;
-        }
-
-        // deno-lint-ignore no-explicit-any
-        const passwordValid: boolean = await (user as any).comparePassword(
-            password,
-        );
-
-        if (!passwordValid) {
-            ctx.response.status = 401;
-            ctx.response.body = { error: "Invalid password" };
-            return;
-        }
-
-        const token = await generateToken(user.id);
-        ctx.response.body = { token };
-    } catch (_error: unknown) {
-        ctx.response.status = 400;
-        ctx.response.body = {
-            error: "An error occurred",
-        };
+    const user = await User.findOne({ username });
+    if (!user) {
+        throw createHttpError(404, "Invalid username");
     }
+
+    // deno-lint-ignore no-explicit-any
+    const passwordValid: boolean = await (user as any).comparePassword(
+        password
+    );
+
+    if (!passwordValid) {
+        throw createHttpError(401, "Invalid password");
+    }
+
+    const token = await generateUserToken(user._id.toString());
+    ctx.response.body = { token };
 };
