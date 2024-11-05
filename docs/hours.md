@@ -11,4 +11,7 @@
 | 04.11.2024 | 2        | Implementing login and register routes                                              |
 | 04.11.2024 | 2        | Refreshing Typescript and validation knowledge and implementing register validation |
 | 04.11.2024 | 2        | Refactoring backend testing and ci pipeline                                         |
-|   Total    | 16       |                                                                                     |
+| 05.11.2024 | 2        | Add authentication and error handling middleware to the backend                     |
+| 05.11.2024 | 1        | Learn about authentication in next js                                               |
+| 05.11.2024 | 2        | Start working on login form and sidebar with shadcn/ui in the frontend              |
+|   Total    | 21       |                                                                                     |
