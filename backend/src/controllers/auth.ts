@@ -57,4 +57,4 @@ export const user = (ctx: Context) => {
     const user = ctx.state.user;
 
     ctx.response.body = toNonSensitiveUser(user);
-}
+};
