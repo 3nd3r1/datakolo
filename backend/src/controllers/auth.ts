@@ -52,3 +52,9 @@ export const login = async (ctx: Context) => {
     const token = await generateUserToken(user._id.toString());
     ctx.response.body = { token };
 };
+
+export const user = (ctx: Context) => {
+    const user = ctx.state.user;
+
+    ctx.response.body = toNonSensitiveUser(user);
+}
