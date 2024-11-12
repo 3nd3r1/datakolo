@@ -1,4 +1,4 @@
-import Home from "../src/app/page";
+import Home from "../src/app/(main)/page";
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
 
