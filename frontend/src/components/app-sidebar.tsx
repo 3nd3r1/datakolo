@@ -2,6 +2,7 @@ import { Home, User } from "lucide-react";
 import {
     Sidebar,
     SidebarContent,
+    SidebarFooter,
     SidebarGroup,
     SidebarGroupContent,
     SidebarGroupLabel,
@@ -13,34 +14,28 @@ import {
 import { getUser } from "@/lib/auth";
 
 const items = {
-    general: {
-        logged: [
-            {
-                title: "Home",
-                url: "/",
-                icon: Home,
-            },
-        ],
-        notLogged: [
-            {
-                title: "Login",
-                url: "/login",
-                icon: User,
-            },
-            {
-                title: "Register",
-                url: "/register",
-                icon: User,
-            },
-        ],
-    },
+    general: [
+        {
+            title: "Home",
+            url: "/",
+            icon: Home,
+        },
+    ],
+    user: [
+        {
+            title: "Logout",
+            url: "/logout",
+            icon: User,
+        },
+    ],
 };
 
-const AppSidebar = () => {
-    const user = getUser();
+const AppSidebar = async () => {
+    const user = await getUser().catch(() => undefined);
 
-    const generalItems =
-        user == null ? items.general.notLogged : items.general.logged;
+    if (!user) {
+        return null;
+    }
 
     return (
         <Sidebar>
@@ -52,7 +47,7 @@ const AppSidebar = () => {
                     <SidebarGroupLabel>General</SidebarGroupLabel>
                     <SidebarGroupContent>
                         <SidebarMenu>
-                            {generalItems.map((item) => (
+                            {items.general.map((item) => (
                                 <SidebarMenuItem key={item.title}>
                                     <SidebarMenuButton asChild>
                                         <a href={item.url}>
@@ -66,6 +61,27 @@ const AppSidebar = () => {
                     </SidebarGroupContent>
                 </SidebarGroup>
             </SidebarContent>
+            <SidebarFooter>
+                <SidebarGroup>
+                    <SidebarGroupLabel>
+                        User ({user.username})
+                    </SidebarGroupLabel>
+                    <SidebarGroupContent>
+                        <SidebarMenu>
+                            {items.user.map((item) => (
+                                <SidebarMenuItem key={item.title}>
+                                    <SidebarMenuButton asChild>
+                                        <a href={item.url}>
+                                            <item.icon />
+                                            <span>{item.title}</span>
+                                        </a>
+                                    </SidebarMenuButton>
+                                </SidebarMenuItem>
+                            ))}
+                        </SidebarMenu>
+                    </SidebarGroupContent>
+                </SidebarGroup>
+            </SidebarFooter>
         </Sidebar>
     );
 };

@@ -5,6 +5,7 @@ import { cache } from "react";
 import axios from "axios";
 
 import { config } from "@/lib/config";
+import { User } from "@/types/user";
 
 export const getAuthHeader = async (): Promise<
     | {
@@ -25,12 +26,12 @@ export const setAuthToken = async (token: string) => {
     (await cookies()).set("token", token, { path: "/" });
 };
 
-export const getUser = cache(async () => {
+export const getUser = cache(async (): Promise<User | undefined> => {
     try {
         const response = await axios.get(config.apiUrl + "/user", {
             headers: await getAuthHeader(),
         });
-        return response.data;
+        return response.data as User;
     } catch (error: unknown) {
         if (!axios.isAxiosError(error) || error.response === undefined) {
             throw error;
@@ -58,4 +59,8 @@ export const login = async (username: string, password: string) => {
             throw new Error(error.response.data.error);
         }
     }
+};
+
+export const logout = async () => {
+    (await cookies()).delete("token");
 };
