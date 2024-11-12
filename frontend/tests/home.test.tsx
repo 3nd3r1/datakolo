@@ -1,6 +1,7 @@
-import Home from "../src/app/(main)/page";
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
+
+import Home from "@/app/(main)/page";
 
 describe("Home Page", () => {
     it("renders the homepage with hello world", () => {
