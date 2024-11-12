@@ -16,4 +16,7 @@
 | 05.11.2024 | 2        | Start working on login form and sidebar with shadcn/ui in the frontend                             |
 | 11.11.2024 | 2        | Studying authentication in Next.js with external backend (Why was it so complicated yet so simple) |
 | 11.11.2024 | 2        | Finish implementing login                                                                          |
-|   Total    | 25       |                                                                                                    |
+| 12.11.2024 | 2        | Refactor login, fix issues and implement logout                                                    |
+| 12.11.2024 | 1        | Implement linting pre-commit hook                                                                  |
+| 12.11.2024 | 3        | Study React testing and create Login tests                                                         |
+|   Total    | 32       |                                                                                                    |
