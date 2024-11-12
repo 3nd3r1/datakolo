@@ -32,7 +32,6 @@ export const getUser = cache(async () => {
         });
         return response.data;
     } catch (error: unknown) {
-        console.error(error);
         if (!axios.isAxiosError(error) || error.response === undefined) {
             throw error;
         }
