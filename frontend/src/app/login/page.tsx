@@ -17,6 +17,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { login } from "@/lib/auth";
+import { redirect } from "next/navigation";
 
 const formSchema = z.object({
     username: z.string().min(3, "Username must be at least 3 characters"),
@@ -50,6 +51,8 @@ const Login = () => {
                         ? error.message
                         : "An error occurred",
             });
+        } finally {
+            redirect("/");
         }
     };
 
