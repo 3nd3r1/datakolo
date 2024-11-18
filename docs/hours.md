@@ -19,4 +19,8 @@
 | 12.11.2024 | 2        | Refactor login, fix issues and implement logout                                                    |
 | 12.11.2024 | 1        | Implement linting pre-commit hook                                                                  |
 | 12.11.2024 | 3        | Study React testing and create Login tests                                                         |
-|   Total    | 32       |                                                                                                    |
+| 18.11.2024 | 1        | Fixing errors in backend                                                                           |
+| 18.11.2024 | 3        | Studying testing Deno and Oak; Adding backend tests                                                |
+| 18.11.2024 | 1        | Implementing registering                                                                           |
+| 18.11.2024 | 1        | Fighting with frame-motion and tabs, but in the end deciding to just forget about animations       |
+|   Total    | 38       |                                                                                                    |
