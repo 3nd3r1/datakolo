@@ -3,7 +3,7 @@
         "dev": "deno run --watch -A --env src/main.ts",
         "format": "deno fmt",
         "lint": "deno lint && deno fmt --check",
-        "test": "deno test",
+        "test": "deno test -A --env",
         "coverage-report": "deno test -A --env --coverage=coverage && deno coverage ./coverage --lcov --include=./src --output=coverage.lcov",
         "seed": "deno run -A --env seed.ts"
     },
