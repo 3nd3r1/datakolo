@@ -23,7 +23,7 @@ export const register = async (ctx: Context) => {
             ...savedUser,
         });
     } catch (error: unknown) {
-        if (error instanceof mongoose.Error.ValidationError) {
+        if (error instanceof mongoose.Error.ValidatorError) {
             throw createHttpError(400, error.message);
         }
         throw error;
