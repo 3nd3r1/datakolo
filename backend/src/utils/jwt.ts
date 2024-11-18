@@ -1,4 +1,4 @@
-import { create, verify } from "https://deno.land/x/djwt/mod.ts";
+import { create, verify } from "djwt";
 
 const key = await crypto.subtle.generateKey(
     { name: "HMAC", hash: "SHA-512" },

@@ -1,9 +1,16 @@
-import { z } from "https://deno.land/x/zod/mod.ts";
-import type { NewUser, NonSensitiveUser } from "../types/user.ts";
+import { z } from "zod";
+
+import type { NewUser, NonSensitiveUser } from "@/types/user.ts";
 
 const newUserSchema = z.object({
-    username: z.string().min(2).max(100),
-    password: z.string().min(6).max(100),
+    username: z
+        .string()
+        .min(2, { message: "Username must be at least 2 characters" })
+        .max(100, { message: "Username must be at most 100 characters" }),
+    password: z
+        .string()
+        .min(6, { message: "Password must be at least 6 characters" })
+        .max(100, { message: "Password must be at most 100 characters" }),
 });
 
 const nonSensitiveUserSchema = z.object({

@@ -1,7 +1,7 @@
-import { Router } from "https://deno.land/x/oak/mod.ts";
+import { Router } from "oak";
 
-import { login, register, user } from "../controllers/auth.ts";
-import { authenticate } from "../middlewares/auth.ts";
+import { login, register, user } from "@/controllers/auth.ts";
+import { authenticate } from "@/middlewares/auth.ts";
 
 const router = new Router();
 

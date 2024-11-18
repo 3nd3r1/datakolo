@@ -1,4 +1,5 @@
-import { model, Schema } from "npm:mongoose";
+import { model, Schema } from "mongoose";
+
 import { hashPassword, verifyPassword } from "../utils/hash.ts";
 
 const userSchema = new Schema({

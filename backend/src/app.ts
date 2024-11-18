@@ -18,8 +18,16 @@ app.use(authRouter.routes());
 app.use(homeRouter.allowedMethods());
 app.use(authRouter.allowedMethods());
 
-app.addEventListener("listen", () => {
-    console.log("Listening on http://localhost:8000");
+app.addEventListener("listen", ({ hostname, port, secure }) => {
+    if (secure) {
+        console.log(
+            `Listening on https://${hostname ?? "localhost"}:${port}`,
+        );
+    } else {
+        console.log(
+            `Listening on http://${hostname ?? "localhost"}:${port}`,
+        );
+    }
 });
 
 export default app;

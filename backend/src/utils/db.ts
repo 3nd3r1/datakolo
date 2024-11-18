@@ -1,5 +1,6 @@
-import mongoose from "npm:mongoose";
-import { config } from "../utils/config.ts";
+import mongoose from "mongoose";
+
+import { config } from "@/utils/config.ts";
 
 const connectDatabase = async () => {
     if (config.environment === "test") return;

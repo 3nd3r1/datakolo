@@ -1,28 +1,35 @@
-import { type Context, createHttpError } from "https://deno.land/x/oak/mod.ts";
+import { type Context, createHttpError } from "oak";
 import mongoose from "mongoose";
+import { z } from "zod";
 
-import { toNewUser, toNonSensitiveUser } from "../validators/user.ts";
-import User from "../models/user.ts";
-import { generateUserToken } from "../utils/jwt.ts";
+import { toNewUser, toNonSensitiveUser } from "@/validators/user.ts";
+import User from "@/models/user.ts";
+import { generateUserToken } from "@/utils/jwt.ts";
 
 export const register = async (ctx: Context) => {
     const body = await ctx.request.body.json();
 
-    const newUser = toNewUser(body);
-
-    if (await User.findOne({ username: newUser.username })) {
-        throw createHttpError(400, "Username already exists");
-    }
-
-    const user = new User(newUser);
-
     try {
+        const newUser = toNewUser(body);
+
+        if (await User.findOne({ username: newUser.username })) {
+            throw createHttpError(400, "Username already exists");
+        }
+
+        const user = new User(newUser);
+
         const savedUser = (await user.save()).toObject();
         ctx.response.body = toNonSensitiveUser({
             id: savedUser._id.toString(),
             ...savedUser,
         });
     } catch (error: unknown) {
+        if (error instanceof z.ZodError) {
+            throw createHttpError(
+                400,
+                error.issues.flatMap((i) => i.message).join(", "),
+            );
+        }
         if (error instanceof mongoose.Error.ValidatorError) {
             throw createHttpError(400, error.message);
         }

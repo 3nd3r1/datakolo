@@ -1,7 +1,7 @@
-import { Context, createHttpError, Next } from "https://deno.land/x/oak/mod.ts";
+import { Context, createHttpError, Next } from "oak";
 
-import { verifyUserToken } from "../utils/jwt.ts";
-import User from "../models/user.ts";
+import { verifyUserToken } from "@/utils/jwt.ts";
+import User from "@/models/user.ts";
 
 export const authenticate = async (ctx: Context, next: Next) => {
     const token = ctx.request.headers.get("Authorization")?.split(" ")[1];

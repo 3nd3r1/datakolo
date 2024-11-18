@@ -1,6 +1,6 @@
-import { Context, Router } from "https://deno.land/x/oak/mod.ts";
+import { Context, Router } from "oak";
 
-import { authenticate } from "../middlewares/auth.ts";
+import { authenticate } from "@/middlewares/auth.ts";
 
 const router = new Router();
 
