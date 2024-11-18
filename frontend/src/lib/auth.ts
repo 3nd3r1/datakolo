@@ -61,6 +61,24 @@ export const login = async (username: string, password: string) => {
     }
 };
 
+export const register = async (username: string, password: string) => {
+    try {
+        const response = await axios.post(config.apiUrl + "/register", {
+            username,
+            password,
+        });
+        await setAuthToken(response.data.token);
+    } catch (error: unknown) {
+        if (!axios.isAxiosError(error) || error.response === undefined) {
+            throw error;
+        }
+
+        if (error.response.data.error) {
+            throw new Error(error.response.data.error);
+        }
+    }
+};
+
 export const logout = async () => {
     (await cookies()).delete("token");
 };

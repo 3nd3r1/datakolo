@@ -17,14 +17,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 import { useToast } from "@/hooks/use-toast";
-import { login } from "@/lib/auth";
+import { register } from "@/lib/auth";
 
 const formSchema = z.object({
     username: z.string().min(3, "Username must be at least 3 characters"),
     password: z.string().min(3, "Password must be at least 3 characters"),
 });
 
-const LoginForm = () => {
+const RegisterForm = () => {
     const { toast } = useToast();
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -37,7 +37,7 @@ const LoginForm = () => {
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
-            await login(values.username, values.password);
+            await register(values.username, values.password);
         } catch (error: unknown) {
             toast({
                 variant: "destructive",
@@ -50,7 +50,7 @@ const LoginForm = () => {
         } finally {
             toast({
                 title: "Success",
-                description: "Logged in successfully",
+                description: "Registered successfully",
             });
             redirect("/");
         }
@@ -91,9 +91,9 @@ const LoginForm = () => {
                         </FormItem>
                     )}
                 />
-                <Button type="submit">Login</Button>
+                <Button type="submit">Register</Button>
             </form>
         </Form>
     );
 };
-export default LoginForm;
+export default RegisterForm;

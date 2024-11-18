@@ -19,10 +19,9 @@ export const register = async (ctx: Context) => {
         const user = new User(newUser);
 
         const savedUser = (await user.save()).toObject();
-        ctx.response.body = toNonSensitiveUser({
-            id: savedUser._id.toString(),
-            ...savedUser,
-        });
+        const token = await generateUserToken(savedUser._id.toString());
+
+        ctx.response.body = { token };
     } catch (error: unknown) {
         if (error instanceof z.ZodError) {
             throw createHttpError(
