@@ -1,5 +1,5 @@
-import mongoose from "npm:mongoose";
-import { hashPassword } from "../src/utils/hash.ts";
+import mongoose from "mongoose";
+import { hashPassword } from "@/utils/hash.ts";
 
 export const connectDatabase = async () => {
     const dbUrl = Deno.env.get("TEST_DATABASE_URL");
