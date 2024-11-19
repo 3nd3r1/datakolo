@@ -2,6 +2,7 @@ import { Context, createHttpError, Next } from "oak";
 
 import { verifyUserToken } from "@/utils/jwt.ts";
 import User from "@/models/user.ts";
+import { toUser } from "@/validators/user.ts";
 
 export const authenticate = async (ctx: Context, next: Next) => {
     const token = ctx.request.headers.get("Authorization")?.split(" ")[1];
@@ -17,6 +18,6 @@ export const authenticate = async (ctx: Context, next: Next) => {
         throw createHttpError(401, "Invalid token");
     }
 
-    ctx.state.user = user;
+    ctx.state.user = toUser({ id: user._id, ...user });
     await next();
 };

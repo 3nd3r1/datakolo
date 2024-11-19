@@ -1,10 +1,15 @@
-import { Application } from "https://deno.land/x/oak@v17.1.2/mod.ts";
+import { Application } from "oak";
 
-import homeRouter from "./routes/home.ts";
-import authRouter from "./routes/auth.ts";
-import { errorHandler } from "./middlewares/error.ts";
+import homeRouter from "@/routes/home.ts";
+import authRouter from "@/routes/auth.ts";
+import { errorHandler } from "@/middlewares/error.ts";
+import { IUser } from "@/validators/user.ts";
 
-const app = new Application();
+interface State {
+    user?: IUser;
+}
+
+const app = new Application<State>();
 
 app.use(async (context, next) => {
     console.log(`${context.request.method} ${context.request.url}`);

@@ -1,8 +1,7 @@
 import { type Context, createHttpError } from "oak";
-import mongoose from "mongoose";
 import { z } from "zod";
 
-import { toNewUser, toNonSensitiveUser } from "@/validators/user.ts";
+import { IUser, toNewUser, toNonSensitiveUser } from "@/validators/user.ts";
 import User from "@/models/user.ts";
 import { generateUserToken } from "@/utils/jwt.ts";
 
@@ -28,9 +27,6 @@ export const register = async (ctx: Context) => {
                 400,
                 error.issues.flatMap((i) => i.message).join(", "),
             );
-        }
-        if (error instanceof mongoose.Error.ValidatorError) {
-            throw createHttpError(400, error.message);
         }
         throw error;
     }
@@ -60,7 +56,7 @@ export const login = async (ctx: Context) => {
 };
 
 export const user = (ctx: Context) => {
-    const user = ctx.state.user;
+    const user: IUser = ctx.state.user;
 
     ctx.response.body = toNonSensitiveUser(user);
 };

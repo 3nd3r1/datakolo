@@ -1,8 +1,9 @@
 import { model, Schema } from "mongoose";
 
-import { hashPassword, verifyPassword } from "../utils/hash.ts";
+import { hashPassword, verifyPassword } from "@/utils/hash.ts";
 
 const userSchema = new Schema({
+    _id: { type: Schema.Types.ObjectId, required: true, auto: true },
     username: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     createdAt: { type: Date, default: Date.now },
