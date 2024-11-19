@@ -6,6 +6,7 @@ import {
     describe,
     it,
 } from "@std/testing/bdd";
+import { assertEquals, assertMatch } from "@std/assert";
 import { superoak } from "superoak";
 
 import { closeDatabase, connectDatabase, seedDatabase } from "./db.ts";

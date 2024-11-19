@@ -36,4 +36,22 @@ export const seedDatabase = async () => {
     ];
 
     await mongoose.connection.collection("users").insertMany(seedUsers);
+
+    const user = await mongoose.connection.collection("users").findOne();
+    if (!user) {
+        throw new Error("Something went wrong");
+    }
+
+    const seedProject = [
+        {
+            name: "Project 1",
+            createdBy: user._id,
+        },
+        {
+            name: "Project 2",
+            createdBy: user._id,
+        },
+    ];
+
+    await mongoose.connection.collection("projects").insertMany(seedProject);
 };

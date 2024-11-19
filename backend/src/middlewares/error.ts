@@ -4,6 +4,7 @@ export const errorHandler = async (ctx: Context, next: Next) => {
     try {
         await next();
     } catch (error: unknown) {
+        console.error(error);
         if (isHttpError(error)) {
             ctx.response.status = error.status;
         } else {
