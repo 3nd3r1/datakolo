@@ -30,24 +30,22 @@ describe("Login Page", () => {
     it("renders form fields and submit button", () => {
         render(<LoginForm />);
 
-        expect(screen.getByLabelText(/username/i)).toBeInTheDocument();
-        expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
-        expect(
-            screen.getByRole("button", { name: /submit/i })
-        ).toBeInTheDocument();
+        expect(screen.getByLabelText("Username")).toBeInTheDocument();
+        expect(screen.getByLabelText("Password")).toBeInTheDocument();
+        expect(screen.getByRole("button")).toBeInTheDocument();
     });
 
     it("validates username and password fields", async () => {
         render(<LoginForm />);
 
-        fireEvent.submit(screen.getByRole("button", { name: /submit/i }));
+        fireEvent.submit(screen.getByRole("button"));
 
         await waitFor(() => {
             expect(
-                screen.getByText(/username must be at least 3 characters/i)
+                screen.getByText("Username must be at least 3 characters")
             ).toBeInTheDocument();
             expect(
-                screen.getByText(/password must be at least 3 characters/i)
+                screen.getByText("Password must be at least 3 characters")
             ).toBeInTheDocument();
         });
     });
@@ -57,13 +55,13 @@ describe("Login Page", () => {
 
         render(<LoginForm />);
 
-        fireEvent.input(screen.getByLabelText(/username/i), {
+        fireEvent.input(screen.getByLabelText("Username"), {
             target: { value: "john" },
         });
-        fireEvent.input(screen.getByLabelText(/password/i), {
+        fireEvent.input(screen.getByLabelText("Password"), {
             target: { value: "password" },
         });
-        fireEvent.submit(screen.getByRole("button", { name: /submit/i }));
+        fireEvent.submit(screen.getByRole("button"));
 
         await waitFor(() => {
             expect(mockLogin).toHaveBeenCalledWith("john", "password");
@@ -80,13 +78,13 @@ describe("Login Page", () => {
 
         render(<LoginForm />);
 
-        fireEvent.input(screen.getByLabelText(/username/i), {
+        fireEvent.input(screen.getByLabelText("Username"), {
             target: { value: "john" },
         });
-        fireEvent.input(screen.getByLabelText(/password/i), {
+        fireEvent.input(screen.getByLabelText("Password"), {
             target: { value: "hups" },
         });
-        fireEvent.submit(screen.getByRole("button", { name: /submit/i }));
+        fireEvent.submit(screen.getByRole("button"));
 
         await waitFor(() => {
             expect(mockLogin).toHaveBeenCalledWith("john", "hups");
