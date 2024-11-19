@@ -1,26 +1,28 @@
 # Hour Reporting
 
-|    Day     | Time (h) | What did I do                                                                                      |
-| :--------: | :------- | :------------------------------------------------------------------------------------------------- |
-| 28.10.2024 | 2        | Initializing the project and learning about Deno                                                   |
-| 29.10.2024 | 2        | Setting up the backend project and still learning about Deno                                       |
-| 29.10.2024 | 1        | Setting up the frontend and the blog-frontend projects                                             |
-| 29.10.2024 | 2        | Setting up Codecov and the CI Pipeline                                                             |
-| 01.11.2024 | 2        | Finding best database solution for backend and deno                                                |
-| 01.11.2024 | 1        | Setting up MongoDB and creating the user model                                                     |
-| 04.11.2024 | 2        | Implementing login and register routes                                                             |
-| 04.11.2024 | 2        | Refreshing Typescript and validation knowledge and implementing register validation                |
-| 04.11.2024 | 2        | Refactoring backend testing and ci pipeline                                                        |
-| 05.11.2024 | 2        | Add authentication and error handling middleware to the backend                                    |
-| 05.11.2024 | 1        | Learn about authentication in next js                                                              |
-| 05.11.2024 | 2        | Start working on login form and sidebar with shadcn/ui in the frontend                             |
-| 11.11.2024 | 2        | Studying authentication in Next.js with external backend (Why was it so complicated yet so simple) |
-| 11.11.2024 | 2        | Finish implementing login                                                                          |
-| 12.11.2024 | 2        | Refactor login, fix issues and implement logout                                                    |
-| 12.11.2024 | 1        | Implement linting pre-commit hook                                                                  |
-| 12.11.2024 | 3        | Study React testing and create Login tests                                                         |
-| 18.11.2024 | 1        | Fixing errors in backend                                                                           |
-| 18.11.2024 | 3        | Studying testing Deno and Oak; Adding backend tests                                                |
-| 18.11.2024 | 1        | Implementing registering                                                                           |
-| 18.11.2024 | 1        | Fighting with frame-motion and tabs, but in the end deciding to just forget about animations       |
-|   Total    | 38       |                                                                                                    |
+|    Day     | Time (h) | What did I do                                                                                               |
+| :--------: | :------- | :---------------------------------------------------------------------------------------------------------- |
+| 28.10.2024 | 2        | Initializing the project and learning about Deno                                                            |
+| 29.10.2024 | 2        | Setting up the backend project and still learning about Deno                                                |
+| 29.10.2024 | 1        | Setting up the frontend and the blog-frontend projects                                                      |
+| 29.10.2024 | 2        | Setting up Codecov and the CI Pipeline                                                                      |
+| 01.11.2024 | 2        | Finding best database solution for backend and deno                                                         |
+| 01.11.2024 | 1        | Setting up MongoDB and creating the user model                                                              |
+| 04.11.2024 | 2        | Implementing login and register routes                                                                      |
+| 04.11.2024 | 2        | Refreshing Typescript and validation knowledge and implementing register validation                         |
+| 04.11.2024 | 2        | Refactoring backend testing and ci pipeline                                                                 |
+| 05.11.2024 | 2        | Add authentication and error handling middleware to the backend                                             |
+| 05.11.2024 | 1        | Learn about authentication in next js                                                                       |
+| 05.11.2024 | 2        | Start working on login form and sidebar with shadcn/ui in the frontend                                      |
+| 11.11.2024 | 2        | Studying authentication in Next.js with external backend (Why was it so complicated yet so simple)          |
+| 11.11.2024 | 2        | Finish implementing login                                                                                   |
+| 12.11.2024 | 2        | Refactor login, fix issues and implement logout                                                             |
+| 12.11.2024 | 1        | Implement linting pre-commit hook                                                                           |
+| 12.11.2024 | 3        | Study React testing and create Login tests                                                                  |
+| 18.11.2024 | 1        | Fixing errors in backend                                                                                    |
+| 18.11.2024 | 3        | Studying testing Deno and Oak; Adding backend tests                                                         |
+| 18.11.2024 | 1        | Implementing registering                                                                                    |
+| 18.11.2024 | 1        | Fighting with frame-motion and tabs, but in the end deciding to just forget about animations                |
+| 19.11.2024 | 2        | Refactoring types and validators in backend; Studying how mongoose, Typescript and zod should work together |
+| 19.11.2024 | 2        | Starting work on projects in backend                                                                        |
+|   Total    | 42       |                                                                                                             |
