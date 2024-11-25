@@ -1,21 +1,21 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getUser } from "@/lib/auth";
 
-const protectedRoutes = ["/"];
-const publicRoutes = ["/login", "/signup"];
+const loggedRoutes = ["/"];
+const notLoggedRoutes = ["/login", "/signup"];
 
 export default async function middleware(req: NextRequest) {
     const path = req.nextUrl.pathname;
-    const isProtectedRoute = protectedRoutes.includes(path);
-    const isPublicRoute = publicRoutes.includes(path);
+    const isLoggedRoute = loggedRoutes.includes(path);
+    const isNotLoggedRoute = notLoggedRoutes.includes(path);
 
-    const user = await getUser().catch(() => null);
+    const user = await getUser().catch((error: unknown) => console.log(error));
 
-    if (isProtectedRoute && !user) {
+    if (isLoggedRoute && !user) {
         return NextResponse.redirect(new URL("/login", req.nextUrl));
     }
 
-    if (isPublicRoute && user) {
+    if (isNotLoggedRoute && user) {
         return NextResponse.redirect(new URL("/", req.nextUrl));
     }
 

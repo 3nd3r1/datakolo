@@ -33,13 +33,11 @@ export const getUser = cache(async (): Promise<User | undefined> => {
         });
         return response.data as User;
     } catch (error: unknown) {
-        if (!axios.isAxiosError(error) || error.response === undefined) {
-            throw error;
-        }
-
-        if (error.response.data.error) {
+        if (axios.isAxiosError(error) && error.response?.data?.error) {
             throw new Error(error.response.data.error);
         }
+
+        throw error;
     }
 });
 
@@ -51,13 +49,11 @@ export const login = async (username: string, password: string) => {
         });
         await setAuthToken(response.data.token);
     } catch (error: unknown) {
-        if (!axios.isAxiosError(error) || error.response === undefined) {
-            throw error;
-        }
-
-        if (error.response.data.error) {
+        if (axios.isAxiosError(error) && error.response?.data?.error) {
             throw new Error(error.response.data.error);
         }
+
+        throw error;
     }
 };
 
@@ -69,13 +65,11 @@ export const register = async (username: string, password: string) => {
         });
         await setAuthToken(response.data.token);
     } catch (error: unknown) {
-        if (!axios.isAxiosError(error) || error.response === undefined) {
-            throw error;
-        }
-
-        if (error.response.data.error) {
+        if (axios.isAxiosError(error) && error.response?.data?.error) {
             throw new Error(error.response.data.error);
         }
+
+        throw error;
     }
 };
 

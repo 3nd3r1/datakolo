@@ -36,8 +36,15 @@ const LoginForm = () => {
     });
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
+        let success = false;
+
         try {
             await login(values.username, values.password);
+            toast({
+                title: "Success",
+                description: "Logged in successfully",
+            });
+            success = true;
         } catch (error: unknown) {
             toast({
                 variant: "destructive",
@@ -48,11 +55,9 @@ const LoginForm = () => {
                         : "An error occurred",
             });
         } finally {
-            toast({
-                title: "Success",
-                description: "Logged in successfully",
-            });
-            redirect("/");
+            if (success) {
+                redirect("/");
+            }
         }
     };
     return (

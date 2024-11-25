@@ -36,8 +36,15 @@ const RegisterForm = () => {
     });
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
+        let success = false;
+
         try {
             await register(values.username, values.password);
+            toast({
+                title: "Success",
+                description: "Registered successfully",
+            });
+            success = true;
         } catch (error: unknown) {
             toast({
                 variant: "destructive",
@@ -48,11 +55,9 @@ const RegisterForm = () => {
                         : "An error occurred",
             });
         } finally {
-            toast({
-                title: "Success",
-                description: "Registered successfully",
-            });
-            redirect("/");
+            if (success) {
+                redirect("/");
+            }
         }
     };
     return (
