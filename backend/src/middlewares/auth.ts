@@ -18,6 +18,6 @@ export const authenticate = async (ctx: Context, next: Next) => {
         throw createHttpError(401, "Invalid token");
     }
 
-    ctx.state.user = toUser({ id: user._id, ...user });
+    ctx.state.user = toUser({ id: user._id.toString(), ...user.toObject() });
     await next();
 };
