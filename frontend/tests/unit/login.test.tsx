@@ -18,7 +18,7 @@ vi.mock("next/navigation", () => ({
     redirect: vi.fn(),
 }));
 
-describe("Login Page", () => {
+describe("LoginForm", () => {
     const mockRedirect = vi.mocked(redirect);
     const mockLogin = vi.mocked(login);
     const mockToast = vi.mocked(useToast().toast);

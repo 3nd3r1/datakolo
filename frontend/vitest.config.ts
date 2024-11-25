@@ -6,10 +6,11 @@ export default defineConfig({
     test: {
         globals: true,
         environment: "jsdom",
-        setupFiles: ["./tests/testSetup.ts"],
+        setupFiles: ["./tests/unit/testSetup.ts"],
         coverage: {
             provider: "v8",
             include: ["src/"],
+            exclude: ["src/app", "src/components/ui"],
         },
     },
     resolve: {
