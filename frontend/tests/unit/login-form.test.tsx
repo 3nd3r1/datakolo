@@ -32,13 +32,15 @@ describe("LoginForm", () => {
 
         expect(screen.getByLabelText("Username")).toBeInTheDocument();
         expect(screen.getByLabelText("Password")).toBeInTheDocument();
-        expect(screen.getByRole("button")).toBeInTheDocument();
+        expect(
+            screen.getByRole("button", { name: "Login" })
+        ).toBeInTheDocument();
     });
 
     it("validates username and password fields", async () => {
         render(<LoginForm />);
 
-        fireEvent.submit(screen.getByRole("button"));
+        fireEvent.submit(screen.getByRole("button", { name: "Login" }));
 
         await waitFor(() => {
             expect(
@@ -61,7 +63,7 @@ describe("LoginForm", () => {
         fireEvent.input(screen.getByLabelText("Password"), {
             target: { value: "password" },
         });
-        fireEvent.submit(screen.getByRole("button"));
+        fireEvent.submit(screen.getByRole("button", { name: "Login" }));
 
         await waitFor(() => {
             expect(mockLogin).toHaveBeenCalledWith("john", "password");
@@ -84,7 +86,7 @@ describe("LoginForm", () => {
         fireEvent.input(screen.getByLabelText("Password"), {
             target: { value: "hups" },
         });
-        fireEvent.submit(screen.getByRole("button"));
+        fireEvent.submit(screen.getByRole("button", { name: "Login" }));
 
         await waitFor(() => {
             expect(mockLogin).toHaveBeenCalledWith("john", "hups");
@@ -93,7 +95,7 @@ describe("LoginForm", () => {
                 title: "Error",
                 description: "Invalid password",
             });
-            expect(mockRedirect).toHaveBeenCalledWith("/");
+            expect(mockRedirect).toHaveBeenCalledTimes(0);
         });
     });
 });

@@ -2,17 +2,17 @@ import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { redirect } from "next/navigation";
 
-import { login } from "@/lib/auth";
+import { register } from "@/lib/auth";
 import { useToast } from "@/hooks/use-toast";
 
-import LoginForm from "@/components/login/login-form";
+import RegisterForm from "@/components/login/register-form";
 
 vi.mock("@/hooks/use-toast", () => ({
     useToast: vi.fn().mockReturnValue({ toast: vi.fn() }),
 }));
 
 vi.mock("@/lib/auth", () => ({
-    login: vi.fn(),
+    register: vi.fn(),
 }));
 vi.mock("next/navigation", () => ({
     redirect: vi.fn(),
@@ -20,7 +20,7 @@ vi.mock("next/navigation", () => ({
 
 describe("RegisterForm", () => {
     const mockRedirect = vi.mocked(redirect);
-    const mockLogin = vi.mocked(login);
+    const mockRegister = vi.mocked(register);
     const mockToast = vi.mocked(useToast().toast);
 
     beforeEach(() => {
@@ -28,15 +28,17 @@ describe("RegisterForm", () => {
     });
 
     it("renders form fields and submit button", () => {
-        render(<LoginForm />);
+        render(<RegisterForm />);
 
         expect(screen.getByLabelText("Username")).toBeInTheDocument();
         expect(screen.getByLabelText("Password")).toBeInTheDocument();
-        expect(screen.getByRole("button")).toBeInTheDocument();
+        expect(
+            screen.getByRole("button", { name: "Register" })
+        ).toBeInTheDocument();
     });
 
     it("validates username and password fields", async () => {
-        render(<LoginForm />);
+        render(<RegisterForm />);
 
         fireEvent.submit(screen.getByRole("button"));
 
@@ -50,48 +52,24 @@ describe("RegisterForm", () => {
         });
     });
 
-    it("shows success toast and redirects on successful login", async () => {
-        mockLogin.mockResolvedValueOnce(undefined);
+    it("shows success toast and redirects on successful register", async () => {
+        mockRegister.mockResolvedValueOnce(undefined);
 
-        render(<LoginForm />);
+        render(<RegisterForm />);
 
         fireEvent.input(screen.getByLabelText("Username"), {
-            target: { value: "john" },
+            target: { value: "mister" },
         });
         fireEvent.input(screen.getByLabelText("Password"), {
-            target: { value: "password" },
+            target: { value: "tuomo" },
         });
-        fireEvent.submit(screen.getByRole("button"));
+        fireEvent.submit(screen.getByRole("button", { name: "Register" }));
 
         await waitFor(() => {
-            expect(mockLogin).toHaveBeenCalledWith("john", "password");
+            expect(mockRegister).toHaveBeenCalledWith("mister", "tuomo");
             expect(mockToast).toHaveBeenCalledWith({
                 title: "Success",
-                description: "Logged in successfully",
-            });
-            expect(mockRedirect).toHaveBeenCalledWith("/");
-        });
-    });
-
-    it("shows error toast on failed login", async () => {
-        mockLogin.mockRejectedValueOnce(new Error("Invalid password"));
-
-        render(<LoginForm />);
-
-        fireEvent.input(screen.getByLabelText("Username"), {
-            target: { value: "john" },
-        });
-        fireEvent.input(screen.getByLabelText("Password"), {
-            target: { value: "hups" },
-        });
-        fireEvent.submit(screen.getByRole("button"));
-
-        await waitFor(() => {
-            expect(mockLogin).toHaveBeenCalledWith("john", "hups");
-            expect(mockToast).toHaveBeenCalledWith({
-                variant: "destructive",
-                title: "Error",
-                description: "Invalid password",
+                description: "Registered successfully",
             });
             expect(mockRedirect).toHaveBeenCalledWith("/");
         });
