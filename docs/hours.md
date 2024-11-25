@@ -25,4 +25,7 @@
 | 18.11.2024 | 1        | Fighting with frame-motion and tabs, but in the end deciding to just forget about animations                |
 | 19.11.2024 | 2        | Refactoring types and validators in backend; Studying how mongoose, Typescript and zod should work together |
 | 19.11.2024 | 2        | Starting work on projects in backend                                                                        |
-|   Total    | 42       |                                                                                                             |
+| 25.11.2024 | 2        | Studying React component testing; Moving tests to correct subfolders and improving coverage                 |
+| 25.11.2024 | 2        | Fixing login tests; Adding register tests                                                                   |
+| 25.11.2024 | 2        | Continue working on projects in the backend                                                                 |
+|   Total    | 48       |                                                                                                             |
