@@ -6,7 +6,7 @@ import {
     describe,
     it,
 } from "@std/testing/bdd";
-import { assertEquals, assertMatch } from "@std/assert";
+import { assertMatch, assertEquals } from "@std/assert";
 import { superoak } from "superoak";
 
 import { closeDatabase, connectDatabase, seedDatabase } from "./db.ts";
@@ -65,5 +65,36 @@ describe("/api/register", () => {
             .send({ username: "John", password: "password" })
             .expect(400)
             .expect({ error: "Username already exists" });
+    });
+});
+
+describe("/api/user", () => {
+    it("should work with valid token", async () => {
+        const response = await (await superoak(app))
+            .post("/api/login")
+            .send({ username: "John", password: "password" });
+        const token = response.body.token;
+
+        await (
+            await superoak(app)
+        )
+            .get("/api/user")
+            .set("Authorization", `Bearer ${token}`)
+            .expect(200)
+            .expect((res) => {
+                const { id, username, createdAt, updatedAt } = res.body;
+
+                assertMatch(id, /.+/);
+                assertEquals(username, "John");
+                assertMatch(createdAt, /.+/);
+                assertMatch(updatedAt, /.+/);
+            });
+    });
+    it("should not work with no token", async () => {
+        const request = await superoak(app);
+        await request
+            .get("/api/user")
+            .expect(401)
+            .expect({ error: "Token is missing" });
     });
 });
