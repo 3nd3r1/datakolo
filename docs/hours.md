@@ -28,4 +28,5 @@
 | 25.11.2024 | 2        | Studying React component testing; Moving tests to correct subfolders and improving coverage                 |
 | 25.11.2024 | 2        | Fixing login tests; Adding register tests                                                                   |
 | 25.11.2024 | 2        | Continue working on projects in the backend                                                                 |
-|   Total    | 48       |                                                                                                             |
+| 26.11.2024 | 5        | Studying again interaction of Mongoose and Zod (Why so complicated); Refactoring backend entirely           |
+|   Total    | 53       |                                                                                                             |
