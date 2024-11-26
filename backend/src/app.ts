@@ -5,10 +5,10 @@ import authRouter from "@/routes/auth.ts";
 import projectRouter from "@/routes/project.ts";
 
 import { errorHandler } from "@/middlewares/error.ts";
-import { IUser } from "@/validators/user.ts";
+import { UserDTO } from "@/validators/user.ts";
 
 interface State {
-    user?: IUser;
+    user?: UserDTO;
 }
 
 const app = new Application<State>();

@@ -1,4 +1,4 @@
-import { compare, hash } from "https://deno.land/x/bcrypt/mod.ts";
+import { compare, hash } from "bcrypt";
 
 export const hashPassword = async (password: string): Promise<string> => {
     return await hash(password);

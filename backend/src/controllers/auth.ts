@@ -1,33 +1,31 @@
 import { type Context, createHttpError } from "oak";
-import { z } from "zod";
 
-import { IUser, toNewUser, toNonSensitiveUser } from "@/validators/user.ts";
-import User from "@/models/user.ts";
+import {
+    toNewUser,
+    toNonSensitiveUser,
+    UserDTO,
+    ValidationError,
+} from "@/validators/user.ts";
 import { generateUserToken } from "@/utils/jwt.ts";
+import userService, { DuplicateUserError } from "@/services/user.ts";
 
 export const register = async (ctx: Context) => {
     const body = await ctx.request.body.json();
 
     try {
         const newUser = toNewUser(body);
-
-        if (await User.findOne({ username: newUser.username })) {
-            throw createHttpError(400, "Username already exists");
-        }
-
-        const user = new User(newUser);
-
-        const savedUser = (await user.save()).toObject();
-        const token = await generateUserToken(savedUser._id.toString());
-
+        const createdUser = await userService.createUser(newUser);
+        const token = await generateUserToken(createdUser.id);
         ctx.response.body = { token };
     } catch (error: unknown) {
-        if (error instanceof z.ZodError) {
-            throw createHttpError(
-                400,
-                error.issues.flatMap((i) => i.message).join(", "),
-            );
+        if (error instanceof ValidationError) {
+            throw createHttpError(400, error.message);
         }
+
+        if (error instanceof DuplicateUserError) {
+            throw createHttpError(400, "Username is already in use");
+        }
+
         throw error;
     }
 };
@@ -37,26 +35,21 @@ export const login = async (ctx: Context) => {
 
     const { username, password } = body;
 
-    const user = await User.findOne({ username });
+    if (!(await userService.verifyUserPassword(username, password))) {
+        throw createHttpError(401, "Invalid credentials");
+    }
+
+    const user = await userService.getUserByUsername(username);
     if (!user) {
-        throw createHttpError(404, "Invalid username");
+        throw createHttpError(401, "Invalid credentials");
     }
 
-    // deno-lint-ignore no-explicit-any
-    const passwordValid: boolean = await (user as any).comparePassword(
-        password,
-    );
-
-    if (!passwordValid) {
-        throw createHttpError(401, "Invalid password");
-    }
-
-    const token = await generateUserToken(user._id.toString());
+    const token = await generateUserToken(user.id);
     ctx.response.body = { token };
 };
 
 export const user = (ctx: Context) => {
-    const user: IUser = ctx.state.user;
+    const user: UserDTO = ctx.state.user;
 
     ctx.response.body = toNonSensitiveUser(user);
 };

@@ -1,6 +1,9 @@
 import { z } from "zod";
+import { IUser } from "@/models/user.ts";
 
-const userSchema = z.object({
+export class ValidationError extends Error {}
+
+const userDTOSchema = z.object({
     id: z.string(),
     username: z
         .string()
@@ -14,25 +17,55 @@ const userSchema = z.object({
     updatedAt: z.date(),
 });
 
-const newUserSchema = userSchema.omit({ id: true }).extend({
-    createdAt: userSchema.shape.createdAt.optional(),
-    updatedAt: userSchema.shape.updatedAt.optional(),
+const newUserSchema = userDTOSchema.omit({ id: true }).extend({
+    createdAt: userDTOSchema.shape.createdAt.optional(),
+    updatedAt: userDTOSchema.shape.updatedAt.optional(),
 });
 
-const nonSensitiveUserSchema = userSchema.omit({ password: true });
+const nonSensitiveUserSchema = userDTOSchema.omit({ password: true });
 
-export type IUser = z.infer<typeof userSchema>;
+export type UserDTO = z.infer<typeof userDTOSchema>;
 export type NewUser = z.infer<typeof newUserSchema>;
 export type NonSensitiveUser = z.infer<typeof nonSensitiveUserSchema>;
 
-export const toUser = (obj: unknown): IUser => {
-    return userSchema.parse(obj);
+export const toUserDTO = (user: IUser): UserDTO => {
+    try {
+        return userDTOSchema.parse({
+            ...user.toObject(),
+            id: user._id.toString(),
+        });
+    } catch (error: unknown) {
+        if (error instanceof z.ZodError) {
+            throw new ValidationError(
+                error.issues.flatMap((e) => e.message).join(", "),
+            );
+        }
+        throw error;
+    }
 };
 
 export const toNewUser = (obj: unknown): NewUser => {
-    return newUserSchema.parse(obj);
+    try {
+        return newUserSchema.parse(obj);
+    } catch (error: unknown) {
+        if (error instanceof z.ZodError) {
+            throw new ValidationError(
+                error.issues.flatMap((e) => e.message).join(", "),
+            );
+        }
+        throw error;
+    }
 };
 
-export const toNonSensitiveUser = (obj: unknown): NonSensitiveUser => {
-    return nonSensitiveUserSchema.parse(obj);
+export const toNonSensitiveUser = (user: UserDTO): NonSensitiveUser => {
+    try {
+        return nonSensitiveUserSchema.parse(user);
+    } catch (error: unknown) {
+        if (error instanceof z.ZodError) {
+            throw new ValidationError(
+                error.issues.flatMap((e) => e.message).join(", "),
+            );
+        }
+        throw error;
+    }
 };

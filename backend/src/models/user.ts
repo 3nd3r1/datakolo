@@ -1,8 +1,24 @@
 import { model, Schema } from "mongoose";
 
 import { hashPassword, verifyPassword } from "@/utils/hash.ts";
+import { Document } from "mongoose";
+import { Model } from "mongoose";
 
-const userSchema = new Schema({
+export interface IUser extends Document {
+    _id: Schema.Types.ObjectId;
+    username: string;
+    password: string;
+    createdAt: Date;
+    updatedAt: Date;
+}
+
+export interface IUserMethods {
+    comparePassword(password: string): Promise<boolean>;
+}
+
+type UserModel = Model<IUser, Record<string, never>, IUserMethods>;
+
+const userSchema = new Schema<IUser, UserModel, IUserMethods>({
     _id: { type: Schema.Types.ObjectId, required: true, auto: true },
     username: { type: String, required: true, unique: true },
     password: { type: String, required: true },
@@ -22,4 +38,4 @@ userSchema.methods.comparePassword = async function (password: string) {
     return await verifyPassword(password, this.password);
 };
 
-export default model("User", userSchema);
+export default model<IUser, UserModel>("User", userSchema);

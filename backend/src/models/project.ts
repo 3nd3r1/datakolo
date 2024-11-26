@@ -1,10 +1,20 @@
+import { Document } from "mongoose";
 import { model, Schema } from "mongoose";
 
-const projectSchema = new Schema({
+export interface IProject extends Document {
+    _id: Schema.Types.ObjectId;
+    name: string;
+    createdBy: Schema.Types.ObjectId;
+    createdAt: Date;
+    updatedAt: Date;
+}
+
+const projectSchema = new Schema<IProject>({
+    _id: { type: Schema.Types.ObjectId, required: true, auto: true },
     name: { type: String, required: true, unique: true },
     createdBy: { type: Schema.Types.ObjectId, ref: "User", required: true },
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now },
 });
 
-export default model("Project", projectSchema);
+export default model<IProject>("Project", projectSchema);

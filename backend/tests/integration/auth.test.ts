@@ -6,7 +6,7 @@ import {
     describe,
     it,
 } from "@std/testing/bdd";
-import { assertMatch, assertEquals } from "@std/assert";
+import { assertEquals, assertMatch } from "@std/assert";
 import { superoak } from "superoak";
 
 import { closeDatabase, connectDatabase, seedDatabase } from "./db.ts";
@@ -30,15 +30,15 @@ describe("/api/login", () => {
             .post("/api/login")
             .send({ username: "John", password: "wrong" })
             .expect(401)
-            .expect({ error: "Invalid password" });
+            .expect({ error: "Invalid credentials" });
     });
     it("should not work with incorrect username", async () => {
         const request = await superoak(app);
         await request
             .post("/api/login")
             .send({ username: "Joh", password: "password" })
-            .expect(404)
-            .expect({ error: "Invalid username" });
+            .expect(401)
+            .expect({ error: "Invalid credentials" });
     });
 });
 
@@ -64,7 +64,7 @@ describe("/api/register", () => {
             .post("/api/register")
             .send({ username: "John", password: "password" })
             .expect(400)
-            .expect({ error: "Username already exists" });
+            .expect({ error: "Username is already in use" });
     });
 });
 

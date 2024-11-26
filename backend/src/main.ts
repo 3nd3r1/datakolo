@@ -1,5 +1,5 @@
-import app from "./app.ts";
-import connectDatabase from "./utils/db.ts";
+import app from "@/app.ts";
+import connectDatabase from "@/utils/db.ts";
 
 await connectDatabase();
 
