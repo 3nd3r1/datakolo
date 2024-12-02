@@ -4,7 +4,7 @@ import Project from "@/models/project.ts";
 export class DuplicateProjectError extends Error {}
 
 const createProject = async (newProject: NewProject): Promise<ProjectDTO> => {
-    if (await Project.find({ name: newProject.name })) {
+    if (await Project.findOne({ name: newProject.name })) {
         throw new DuplicateProjectError();
     }
 

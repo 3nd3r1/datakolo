@@ -1,5 +1,10 @@
 import mongoose from "mongoose";
+
+import User from "@/models/user.ts";
+import Project from "@/models/project.ts";
 import { hashPassword } from "@/utils/hash.ts";
+import { NewUser } from "@/validators/user.ts";
+import { NewProject } from "@/validators/project.ts";
 
 export const connectDatabase = async () => {
     const dbUrl = Deno.env.get("TEST_DATABASE_URL");
@@ -16,15 +21,16 @@ export const closeDatabase = async () => {
     await mongoose.disconnect();
 };
 
-export const seedDatabase = async () => {
+const clearDatabase = async () => {
     const collections = mongoose.connection.collections;
-
     for (const key in collections) {
         const collection = collections[key];
         await collection.deleteMany({});
     }
+};
 
-    const seedUsers = [
+const seedUsers = async () => {
+    const seedUsers: NewUser[] = [
         {
             username: "John",
             password: await hashPassword("password"),
@@ -35,23 +41,35 @@ export const seedDatabase = async () => {
         },
     ];
 
-    await mongoose.connection.collection("users").insertMany(seedUsers);
+    await User.insertMany(seedUsers);
+};
 
-    const user = await mongoose.connection.collection("users").findOne();
-    if (!user) {
-        throw new Error("Something went wrong");
+const seedProjects = async () => {
+    const john = await mongoose.connection
+        .collection("users")
+        .findOne({ username: "John" });
+    if (!john) {
+        throw new Error("John user didn't exist");
     }
 
-    const seedProject = [
+    const johnId = john._id.toString();
+
+    const seedProjects: NewProject[] = [
         {
-            name: "Project 1",
-            createdBy: user._id,
+            name: "Test Project 1",
+            createdBy: johnId,
         },
         {
-            name: "Project 2",
-            createdBy: user._id,
+            name: "Test Project 2",
+            createdBy: johnId,
         },
     ];
 
-    await mongoose.connection.collection("projects").insertMany(seedProject);
+    await Project.insertMany(seedProjects);
+};
+
+export const seedDatabase = async () => {
+    await clearDatabase();
+    await seedUsers();
+    await seedProjects();
 };

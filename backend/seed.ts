@@ -1,4 +1,4 @@
-import mongoose from "npm:mongoose";
+import mongoose from "mongoose";
 
 import User from "@/models/user.ts";
 import Project from "@/models/project.ts";
@@ -17,6 +17,14 @@ const connectDatabase = async () => {
     await mongoose.connect(databaseUrl);
 };
 
+const clearDatabase = async () => {
+    const collections = mongoose.connection.collections;
+    for (const key in collections) {
+        const collection = collections[key];
+        await collection.deleteMany({});
+    }
+};
+
 const seedUsers = async () => {
     const seedUsers: NewUser[] = [
         {
@@ -28,8 +36,6 @@ const seedUsers = async () => {
             password: await hashPassword("password"),
         },
     ];
-
-    await User.deleteMany({});
 
     console.log("Seeding users");
     await User.insertMany(seedUsers);
@@ -53,13 +59,13 @@ const seedProjects = async () => {
         },
     ];
 
-    await Project.deleteMany({});
     console.log("Seeding projects");
     await Project.insertMany(seedProjects);
 };
 
 async function seed() {
     await connectDatabase();
+    await clearDatabase();
     await seedUsers();
     await seedProjects();
 
