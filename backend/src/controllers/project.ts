@@ -1,12 +1,14 @@
-import { Context, createHttpError } from "oak";
+import { createHttpError } from "oak";
 
 import { toNewProject, ValidationError } from "@/validators/project.ts";
-import { UserDTO } from "@/validators/user.ts";
 import projectService, { DuplicateProjectError } from "@/services/project.ts";
+import { AppContext } from "@/utils/oak.ts";
 
-export const createProject = async (ctx: Context) => {
+export const createProject = async (ctx: AppContext) => {
     const body = await ctx.request.body.json();
-    const user: UserDTO = ctx.state.user;
+
+    const user = ctx.state.user;
+    if (!user) return;
 
     try {
         const newProject = toNewProject({ createdBy: user.id, ...body });
@@ -25,9 +27,26 @@ export const createProject = async (ctx: Context) => {
     }
 };
 
-export const getProjects = async (ctx: Context) => {
-    const user: UserDTO = ctx.state.user;
+export const getProjects = async (ctx: AppContext) => {
+    const user = ctx.state.user;
+    if (!user) return;
+
     const projects = await projectService.getProjectsByCreator(user.id);
 
     ctx.response.body = projects;
+};
+
+export const getProject = async (ctx: AppContext<{ id: string }>) => {
+    const user = ctx.state.user;
+    if (!user) return;
+
+    const id = ctx.params.id;
+
+    const project = await projectService.getProjectById(id);
+
+    if (!project || project.createdBy !== user.id) {
+        throw createHttpError(404, "Project not found");
+    }
+
+    ctx.response.body = project;
 };

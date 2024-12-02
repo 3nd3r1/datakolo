@@ -21,3 +21,23 @@ export const getProjects = cache(async (): Promise<Project[]> => {
         throw error;
     }
 });
+
+export const getProject = cache(
+    async (id: string): Promise<Project | undefined> => {
+        try {
+            const response = await axios.get(
+                config.apiUrl + "/projects/" + id,
+                {
+                    headers: await getAuthHeader(),
+                }
+            );
+            return response.data as Project;
+        } catch (error: unknown) {
+            if (axios.isAxiosError(error) && error.response?.data?.error) {
+                throw new Error(error.response.data.error);
+            }
+
+            throw error;
+        }
+    }
+);

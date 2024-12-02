@@ -1,15 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getUser } from "@/lib/auth";
+import { getUser, logout } from "@/lib/auth";
 
-const loggedRoutes = ["/"];
 const notLoggedRoutes = ["/login", "/signup"];
 
 export default async function middleware(req: NextRequest) {
     const path = req.nextUrl.pathname;
-    const isLoggedRoute = loggedRoutes.includes(path);
+    const isLoggedRoute = !notLoggedRoutes.includes(path);
     const isNotLoggedRoute = notLoggedRoutes.includes(path);
 
-    const user = await getUser().catch((error: unknown) => console.log(error));
+    const user = await getUser().catch(async () => {
+        await logout();
+        return undefined;
+    });
 
     if (isLoggedRoute && !user) {
         return NextResponse.redirect(new URL("/login", req.nextUrl));

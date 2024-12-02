@@ -5,13 +5,9 @@ import authRouter from "@/routes/auth.ts";
 import projectRouter from "@/routes/project.ts";
 
 import { errorHandler } from "@/middlewares/error.ts";
-import { UserDTO } from "@/validators/user.ts";
+import { AppState } from "@/utils/oak.ts";
 
-interface State {
-    user?: UserDTO;
-}
-
-const app = new Application<State>();
+const app = new Application<AppState>();
 
 app.use(async (context, next) => {
     console.log(`${context.request.method} ${context.request.url}`);

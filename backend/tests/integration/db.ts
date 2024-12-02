@@ -45,14 +45,7 @@ const seedUsers = async () => {
 };
 
 const seedProjects = async () => {
-    const john = await mongoose.connection
-        .collection("users")
-        .findOne({ username: "John" });
-    if (!john) {
-        throw new Error("John user didn't exist");
-    }
-
-    const johnId = john._id.toString();
+    const johnId = await getUserIdByUsername("John");
 
     const seedProjects: NewProject[] = [
         {
@@ -72,4 +65,20 @@ export const seedDatabase = async () => {
     await clearDatabase();
     await seedUsers();
     await seedProjects();
+};
+
+export const getUserIdByUsername = async (username: string) => {
+    const user = await User.findOne({ username });
+    if (!user) {
+        throw new Error("User not found");
+    }
+    return user._id.toString();
+};
+
+export const getProjectIdByName = async (name: string) => {
+    const project = await Project.findOne({ name });
+    if (!project) {
+        throw new Error("Project not found");
+    }
+    return project._id.toString();
 };

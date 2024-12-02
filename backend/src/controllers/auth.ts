@@ -1,15 +1,15 @@
-import { type Context, createHttpError } from "oak";
+import { createHttpError } from "oak";
 
 import {
     toNewUser,
     toNonSensitiveUser,
-    UserDTO,
     ValidationError,
 } from "@/validators/user.ts";
 import { generateUserToken } from "@/utils/jwt.ts";
 import userService, { DuplicateUserError } from "@/services/user.ts";
+import { AppContext } from "@/utils/oak.ts";
 
-export const register = async (ctx: Context) => {
+export const register = async (ctx: AppContext) => {
     const body = await ctx.request.body.json();
 
     try {
@@ -30,7 +30,7 @@ export const register = async (ctx: Context) => {
     }
 };
 
-export const login = async (ctx: Context) => {
+export const login = async (ctx: AppContext) => {
     const body = await ctx.request.body.json();
 
     const { username, password } = body;
@@ -48,8 +48,9 @@ export const login = async (ctx: Context) => {
     ctx.response.body = { token };
 };
 
-export const user = (ctx: Context) => {
-    const user: UserDTO = ctx.state.user;
+export const user = (ctx: AppContext) => {
+    const user = ctx.state.user;
+    if (!user) return;
 
     ctx.response.body = toNonSensitiveUser(user);
 };

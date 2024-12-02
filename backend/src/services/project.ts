@@ -21,9 +21,18 @@ const getProjectsByCreator = async (
     return projects.map((project) => toProjectDTO(project));
 };
 
+const getProjectById = async (id: string): Promise<ProjectDTO | undefined> => {
+    const project = await Project.findById(id);
+    if (!project) {
+        return undefined;
+    }
+    return toProjectDTO(project);
+};
+
 const projectService = {
     createProject,
     getProjectsByCreator,
+    getProjectById,
 };
 
 export default projectService;
