@@ -11,7 +11,7 @@ const Layout = ({
             <AppSidebar />
             <main className="w-full">
                 <SidebarTrigger />
-                {children}
+                <div className="max-w-xl mx-auto p-2">{children}</div>
             </main>
         </SidebarProvider>
     );
