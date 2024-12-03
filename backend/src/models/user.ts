@@ -18,13 +18,14 @@ export interface IUserMethods {
 
 type UserModel = Model<IUser, Record<string, never>, IUserMethods>;
 
-const userSchema = new Schema<IUser, UserModel, IUserMethods>({
-    _id: { type: Schema.Types.ObjectId, required: true, auto: true },
-    username: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
-    createdAt: { type: Date, default: Date.now },
-    updatedAt: { type: Date, default: Date.now },
-});
+const userSchema = new Schema<IUser, UserModel, IUserMethods>(
+    {
+        _id: { type: Schema.Types.ObjectId, required: true, auto: true },
+        username: { type: String, required: true, unique: true },
+        password: { type: String, required: true },
+    },
+    { timestamps: true },
+);
 
 userSchema.pre("save", async function (next) {
     if (!this.isModified("password")) return next();

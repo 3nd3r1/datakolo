@@ -13,8 +13,6 @@ const projectSchema = new Schema<IProject>({
     _id: { type: Schema.Types.ObjectId, required: true, auto: true },
     name: { type: String, required: true, unique: true },
     createdBy: { type: Schema.Types.ObjectId, ref: "User", required: true },
-    createdAt: { type: Date, default: Date.now },
-    updatedAt: { type: Date, default: Date.now },
-});
+}, { timestamps: true });
 
 export default model<IProject>("Project", projectSchema);
