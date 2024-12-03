@@ -5,7 +5,7 @@ import axios from "axios";
 
 import { config } from "@/lib/config";
 import { getAuthHeader } from "@/lib/auth";
-import { Project } from "@/types/project";
+import { NewProject, Project } from "@/types/project";
 
 export const getProjects = cache(async (): Promise<Project[]> => {
     try {
@@ -41,3 +41,24 @@ export const getProject = cache(
         }
     }
 );
+
+export const createProject = async (
+    newProject: NewProject
+): Promise<Project> => {
+    try {
+        const response = await axios.post(
+            config.apiUrl + "/projects",
+            newProject,
+            {
+                headers: await getAuthHeader(),
+            }
+        );
+        return response.data as Project;
+    } catch (error: unknown) {
+        if (axios.isAxiosError(error) && error.response?.data?.error) {
+            throw new Error(error.response.data.error);
+        }
+
+        throw error;
+    }
+};
