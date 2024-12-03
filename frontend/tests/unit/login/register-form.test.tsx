@@ -44,10 +44,10 @@ describe("RegisterForm", () => {
 
         await waitFor(() => {
             expect(
-                screen.getByText("Username must be at least 3 characters")
+                screen.getByText("Username must be at least 2 characters")
             ).toBeInTheDocument();
             expect(
-                screen.getByText("Password must be at least 3 characters")
+                screen.getByText("Password must be at least 6 characters")
             ).toBeInTheDocument();
         });
     });
@@ -61,12 +61,15 @@ describe("RegisterForm", () => {
             target: { value: "mister" },
         });
         fireEvent.input(screen.getByLabelText("Password"), {
-            target: { value: "tuomo" },
+            target: { value: "tuomo123" },
         });
         fireEvent.submit(screen.getByRole("button", { name: "Register" }));
 
         await waitFor(() => {
-            expect(mockRegister).toHaveBeenCalledWith("mister", "tuomo");
+            expect(mockRegister).toHaveBeenCalledWith({
+                username: "mister",
+                password: "tuomo123",
+            });
             expect(mockToast).toHaveBeenCalledWith({
                 title: "Success",
                 description: "Registered successfully",

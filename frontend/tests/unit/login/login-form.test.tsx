@@ -40,14 +40,14 @@ describe("LoginForm", () => {
     it("validates username and password fields", async () => {
         render(<LoginForm />);
 
-        fireEvent.submit(screen.getByRole("button", { name: "Login" }));
+        fireEvent.click(screen.getByRole("button", { name: "Login" }));
 
         await waitFor(() => {
             expect(
-                screen.getByText("Username must be at least 3 characters")
+                screen.getByText("Username must be at least 2 characters")
             ).toBeInTheDocument();
             expect(
-                screen.getByText("Password must be at least 3 characters")
+                screen.getByText("Password must be at least 6 characters")
             ).toBeInTheDocument();
         });
     });
@@ -84,12 +84,12 @@ describe("LoginForm", () => {
             target: { value: "john" },
         });
         fireEvent.input(screen.getByLabelText("Password"), {
-            target: { value: "hups" },
+            target: { value: "wrong123" },
         });
         fireEvent.submit(screen.getByRole("button", { name: "Login" }));
 
         await waitFor(() => {
-            expect(mockLogin).toHaveBeenCalledWith("john", "hups");
+            expect(mockLogin).toHaveBeenCalledWith("john", "wrong123");
             expect(mockToast).toHaveBeenCalledWith({
                 variant: "destructive",
                 title: "Error",

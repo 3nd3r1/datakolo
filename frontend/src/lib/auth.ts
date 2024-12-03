@@ -5,7 +5,7 @@ import { cache } from "react";
 import axios from "axios";
 
 import { config } from "@/lib/config";
-import { User } from "@/types/user";
+import { NewUser, User } from "@/validators/user";
 
 export const getAuthHeader = async (): Promise<
     | {
@@ -57,12 +57,9 @@ export const login = async (username: string, password: string) => {
     }
 };
 
-export const register = async (username: string, password: string) => {
+export const register = async (newUser: NewUser) => {
     try {
-        const response = await axios.post(config.apiUrl + "/register", {
-            username,
-            password,
-        });
+        const response = await axios.post(config.apiUrl + "/register", newUser);
         await setAuthToken(response.data.token);
     } catch (error: unknown) {
         if (axios.isAxiosError(error) && error.response?.data?.error) {

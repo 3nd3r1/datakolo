@@ -4,6 +4,7 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { redirect } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { ClipLoader } from "react-spinners";
 
 import {
     Form,
@@ -18,14 +19,14 @@ import { Input } from "@/components/ui/input";
 
 import { useToast } from "@/hooks/use-toast";
 import { login } from "@/lib/auth";
+import { useState } from "react";
+import { loginSchema } from "@/validators/user";
 
-const formSchema = z.object({
-    username: z.string().min(3, "Username must be at least 3 characters"),
-    password: z.string().min(3, "Password must be at least 3 characters"),
-});
+const formSchema = loginSchema;
 
 const LoginForm = () => {
     const { toast } = useToast();
+    const [loading, setLoading] = useState(false);
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -37,6 +38,7 @@ const LoginForm = () => {
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         let success = false;
+        setLoading(true);
 
         try {
             await login(values.username, values.password);
@@ -58,8 +60,18 @@ const LoginForm = () => {
             if (success) {
                 redirect("/");
             }
+            setLoading(false);
         }
     };
+
+    if (loading) {
+        return (
+            <div className="w-full flex flex-row justify-center">
+                <ClipLoader color="white" />
+            </div>
+        );
+    }
+
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
