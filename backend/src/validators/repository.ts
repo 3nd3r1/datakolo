@@ -3,7 +3,7 @@ import { IRepository } from "@/models/repository.ts";
 
 export class ValidationError extends Error {}
 
-const contentSchemaValidator = z.record(
+export const contentSchemaSchema = z.record(
     z.string(),
     z.union([
         z.object({
@@ -27,14 +27,22 @@ const repositoryDTOSchema = z.object({
         .string()
         .min(2, { message: "Name must be at least 2 characters" })
         .max(100, { message: "Name must be at most 100 characters" }),
-    contentSchema: contentSchemaValidator,
+    contentSchema: contentSchemaSchema,
     project: z.string(),
     createdBy: z.string(),
     createdAt: z.date(),
     updatedAt: z.date(),
 });
 
+const newRepositorySchema = repositoryDTOSchema.omit({ id: true }).extend({
+    createdAt: repositoryDTOSchema.shape.createdAt.optional(),
+    updatedAt: repositoryDTOSchema.shape.updatedAt.optional(),
+});
+
+export type ContentSchema = z.infer<typeof contentSchemaSchema>;
+
 export type RepositoryDTO = z.infer<typeof repositoryDTOSchema>;
+export type NewRepository = z.infer<typeof newRepositorySchema>;
 
 export const toRepositoryDTO = (repository: IRepository): RepositoryDTO => {
     try {
@@ -44,6 +52,19 @@ export const toRepositoryDTO = (repository: IRepository): RepositoryDTO => {
             project: repository.project.toString(),
             createdBy: repository.createdBy.toString(),
         });
+    } catch (error: unknown) {
+        if (error instanceof z.ZodError) {
+            throw new ValidationError(
+                error.issues.flatMap((e) => e.message).join(", "),
+            );
+        }
+        throw error;
+    }
+};
+
+export const toNewRepository = (obj: NewRepository): NewRepository => {
+    try {
+        return newRepositorySchema.parse(obj);
     } catch (error: unknown) {
         if (error instanceof z.ZodError) {
             throw new ValidationError(
