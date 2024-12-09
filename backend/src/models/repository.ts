@@ -26,4 +26,6 @@ const repositorySchema = new Schema<IRepository>(
     { timestamps: true },
 );
 
+repositorySchema.index({ project: 1, name: 1 }, { unique: true });
+
 export default model<IRepository>("Repository", repositorySchema);

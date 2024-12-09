@@ -9,10 +9,13 @@ export interface IProject extends Document {
     updatedAt: Date;
 }
 
-const projectSchema = new Schema<IProject>({
-    _id: { type: Schema.Types.ObjectId, required: true, auto: true },
-    name: { type: String, required: true, unique: true },
-    createdBy: { type: Schema.Types.ObjectId, ref: "User", required: true },
-}, { timestamps: true });
+const projectSchema = new Schema<IProject>(
+    {
+        _id: { type: Schema.Types.ObjectId, required: true, auto: true },
+        name: { type: String, required: true, unique: true },
+        createdBy: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    },
+    { timestamps: true },
+);
 
 export default model<IProject>("Project", projectSchema);
