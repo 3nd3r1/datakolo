@@ -39,7 +39,7 @@ export const toProjectDTO = (project: IProject): ProjectDTO => {
     }
 };
 
-export const toNewProject = (obj: unknown): NewProject => {
+export const toNewProject = (obj: NewProject): NewProject => {
     try {
         return newProjectSchema.parse(obj);
     } catch (error: unknown) {

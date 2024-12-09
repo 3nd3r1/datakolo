@@ -44,7 +44,7 @@ export const toUserDTO = (user: IUser): UserDTO => {
     }
 };
 
-export const toNewUser = (obj: unknown): NewUser => {
+export const toNewUser = (obj: NewUser): NewUser => {
     try {
         return newUserSchema.parse(obj);
     } catch (error: unknown) {
