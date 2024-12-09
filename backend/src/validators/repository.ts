@@ -28,6 +28,7 @@ const repositoryDTOSchema = z.object({
         .min(2, { message: "Name must be at least 2 characters" })
         .max(100, { message: "Name must be at most 100 characters" }),
     contentSchema: contentSchemaValidator,
+    project: z.string(),
     createdBy: z.string(),
     createdAt: z.date(),
     updatedAt: z.date(),
@@ -40,6 +41,7 @@ export const toRepositoryDTO = (repository: IRepository): RepositoryDTO => {
         return repositoryDTOSchema.parse({
             ...repository.toObject(),
             id: repository._id.toString(),
+            project: repository.project.toString(),
             createdBy: repository.createdBy.toString(),
         });
     } catch (error: unknown) {

@@ -1,24 +1,22 @@
 import { Document } from "mongoose";
 import { model, Schema } from "mongoose";
 
-export interface IRepository extends Document {
+export interface IContent extends Document {
     _id: Schema.Types.ObjectId;
-    name: string;
-    contentSchema: Record<string, unknown>;
-    project: Schema.Types.ObjectId;
+    data: Record<string, unknown>;
+    repository: Schema.Types.ObjectId;
     createdBy: Schema.Types.ObjectId;
     createdAt: Date;
     updatedAt: Date;
 }
 
-const repositorySchema = new Schema<IRepository>(
+const contentSchema = new Schema<IContent>(
     {
         _id: { type: Schema.Types.ObjectId, required: true, auto: true },
-        name: { type: String, required: true },
-        contentSchema: { type: Schema.Types.Mixed, required: true },
-        project: {
+        data: { type: Schema.Types.Mixed, required: true },
+        repository: {
             type: Schema.Types.ObjectId,
-            ref: "Project",
+            ref: "Repository",
             required: true,
         },
         createdBy: { type: Schema.Types.ObjectId, ref: "User", required: true },
@@ -26,4 +24,4 @@ const repositorySchema = new Schema<IRepository>(
     { timestamps: true },
 );
 
-export default model<IRepository>("Repository", repositorySchema);
+export default model<IContent>("Content", contentSchema);
