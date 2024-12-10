@@ -39,4 +39,6 @@
 | 03.12.2024 | 2        | Look into how CMS are implement and how to store schema in a database; Start creating models and validators for repositories               |
 | 09.12.2024 | 2        | Studying furiously how to implement a CMS with dynamic schema; I didn't find any good material so my bad implementations will have to do.. |
 | 09.12.2024 | 2        | Start implementing content and repositories in backend                                                                                     |
-|   Total    | 69       |                                                                                                                                            |
+| 10.12.2024 | 2        | Add tests for repositories                                                                                                                 |
+| 10.12.2024 | 1        | Add tests for content                                                                                                                      |
+|   Total    | 72       |                                                                                                                                            |
