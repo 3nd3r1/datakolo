@@ -19,6 +19,7 @@ export const contentSchemaSchema = z.record(
             required: z.boolean().optional(),
         }),
     ]),
+    { message: "Content schema is required" },
 );
 
 const repositoryDTOSchema = z.object({
