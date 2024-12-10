@@ -2,9 +2,13 @@ import mongoose from "mongoose";
 
 import User from "@/models/user.ts";
 import Project from "@/models/project.ts";
-import { hashPassword } from "@/utils/hash.ts";
+import Repository from "@/models/repository.ts";
+
 import { NewUser } from "@/validators/user.ts";
 import { NewProject } from "@/validators/project.ts";
+import { NewRepository } from "@/validators/repository.ts";
+
+import { hashPassword } from "@/utils/hash.ts";
 
 export const connectDatabase = async () => {
     const dbUrl = Deno.env.get("TEST_DATABASE_URL");
@@ -61,10 +65,40 @@ const seedProjects = async () => {
     await Project.insertMany(seedProjects);
 };
 
+const seedRepositories = async () => {
+    const johnId = await getUserIdByUsername("John");
+    const projectId = await getProjectIdByName("Test Project 1");
+
+    const seedRepositories: NewRepository[] = [
+        {
+            name: "Test Repository 1",
+            contentSchema: {
+                title: { type: "string", required: true },
+                content: { type: "string", required: true },
+            },
+            project: projectId,
+            createdBy: johnId,
+        },
+        {
+            name: "Test Repository 2",
+            contentSchema: {
+                name: { type: "string", required: true },
+                price: { type: "number", required: true },
+                isAvailable: { type: "boolean" },
+            },
+            project: projectId,
+            createdBy: johnId,
+        },
+    ];
+
+    await Repository.insertMany(seedRepositories);
+};
+
 export const seedDatabase = async () => {
     await clearDatabase();
     await seedUsers();
     await seedProjects();
+    await seedRepositories();
 };
 
 export const getUserIdByUsername = async (username: string) => {
@@ -81,4 +115,15 @@ export const getProjectIdByName = async (name: string) => {
         throw new Error("Project not found");
     }
     return project._id.toString();
+};
+
+export const getRepositoryIdByNameAndProject = async (
+    name: string,
+    projectId: string,
+) => {
+    const repository = await Repository.findOne({ name, project: projectId });
+    if (!repository) {
+        throw new Error("Repository not found");
+    }
+    return repository._id.toString();
 };

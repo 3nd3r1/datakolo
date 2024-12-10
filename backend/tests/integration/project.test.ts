@@ -6,6 +6,7 @@ import {
     describe,
     it,
 } from "@std/testing/bdd";
+import { assertEquals, assertMatch } from "@std/assert";
 import { superoak } from "superoak";
 
 import {
@@ -16,8 +17,6 @@ import {
     seedDatabase,
 } from "./db.ts";
 import app from "@/app.ts";
-import { assertEquals } from "https://deno.land/std@0.213.0/assert/assert_equals.ts";
-import { assertMatch } from "https://deno.land/std@0.213.0/assert/assert_match.ts";
 
 let token: string = "";
 
