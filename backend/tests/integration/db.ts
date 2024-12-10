@@ -3,10 +3,12 @@ import mongoose from "mongoose";
 import User from "@/models/user.ts";
 import Project from "@/models/project.ts";
 import Repository from "@/models/repository.ts";
+import Content from "@/models/content.ts";
 
 import { NewUser } from "@/validators/user.ts";
 import { NewProject } from "@/validators/project.ts";
 import { NewRepository } from "@/validators/repository.ts";
+import { NewContent } from "@/validators/content.ts";
 
 import { hashPassword } from "@/utils/hash.ts";
 
@@ -94,11 +96,42 @@ const seedRepositories = async () => {
     await Repository.insertMany(seedRepositories);
 };
 
+const seedContent = async () => {
+    const johnId = await getUserIdByUsername("John");
+    const projectId = await getProjectIdByName("Test Project 1");
+    const repositoryId = await getRepositoryIdByNameAndProject(
+        "Test Repository 1",
+        projectId,
+    );
+
+    const seedContent: NewContent[] = [
+        {
+            data: {
+                title: "Title 1",
+                content: "Content 1",
+            },
+            repository: repositoryId,
+            createdBy: johnId,
+        },
+        {
+            data: {
+                title: "Title 2",
+                content: "Content 2",
+            },
+            repository: repositoryId,
+            createdBy: johnId,
+        },
+    ];
+
+    await Content.insertMany(seedContent);
+};
+
 export const seedDatabase = async () => {
     await clearDatabase();
     await seedUsers();
     await seedProjects();
     await seedRepositories();
+    await seedContent();
 };
 
 export const getUserIdByUsername = async (username: string) => {
@@ -126,4 +159,18 @@ export const getRepositoryIdByNameAndProject = async (
         throw new Error("Repository not found");
     }
     return repository._id.toString();
+};
+
+export const getContentIdByTitleAndRepository = async (
+    title: string,
+    repositoryId: string,
+) => {
+    const content = await Content.findOne({
+        "data.title": title,
+        repository: repositoryId,
+    });
+    if (!content) {
+        throw new Error("Content not found");
+    }
+    return content._id.toString();
 };

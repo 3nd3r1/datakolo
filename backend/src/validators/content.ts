@@ -68,7 +68,9 @@ export const validateContentData = (
         const value = data[key];
 
         if (schemaDef.required && (value === undefined || value === null)) {
-            throw new ValidationError(`Field "${key}" is required`);
+            throw new ValidationError(
+                `Invalid data: Field "${key}" is required`,
+            );
         }
 
         if (value !== undefined && value !== null) {
@@ -76,7 +78,7 @@ export const validateContentData = (
 
             if (typeOfValue !== schemaDef.type) {
                 throw new ValidationError(
-                    `Field "${key}" must be of type "${schemaDef.type}"`,
+                    `Invalid data: Field "${key}" must be of type "${schemaDef.type}"`,
                 );
             }
         }
