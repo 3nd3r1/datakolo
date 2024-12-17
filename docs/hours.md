@@ -41,4 +41,5 @@
 | 09.12.2024 | 2        | Start implementing content and repositories in backend                                                                                     |
 | 10.12.2024 | 2        | Add tests for repositories                                                                                                                 |
 | 10.12.2024 | 1        | Add tests for content                                                                                                                      |
-|   Total    | 72       |                                                                                                                                            |
+| 17.12.2024 | 1        | Start implementing repositories and content in frontend                                                                                    |
+|   Total    | 73       |                                                                                                                                            |
