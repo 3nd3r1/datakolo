@@ -42,4 +42,7 @@
 | 10.12.2024 | 2        | Add tests for repositories                                                                                                                 |
 | 10.12.2024 | 1        | Add tests for content                                                                                                                      |
 | 17.12.2024 | 1        | Start implementing repositories and content in frontend                                                                                    |
-|   Total    | 73       |                                                                                                                                            |
+| 06.01.2025 | 2        | Finnish implementing service methods for repositories and content in frontend                                                            |
+| 06.01.2025 | 2        | Figure out a good way to display repositories in frontend; Look into best shadcn components; Look into parallel routes;                    |
+| 06.01.2025 | 3        | Change current sidebar into a navbar; Add a sidebar to the projects page with repositories; Refactor seed.ts;                              |
+|   Total    | 80       |                                                                                                                                            |
