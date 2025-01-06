@@ -7,7 +7,7 @@ const Projects = async () => {
     const projects = await getProjects();
 
     return (
-        <div>
+        <div className="max-w-xl mx-auto mt-8">
             <div className="flex flex-row justify-between items-center">
                 <div>
                     <h2 className="text-lg font-bold">Projects</h2>
