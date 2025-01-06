@@ -16,6 +16,7 @@ const contentSchema = z.object({
 
 export const newContentSchema = contentSchema.omit({
     id: true,
+    repository: true,
     createdBy: true,
     createdAt: true,
     updatedAt: true,

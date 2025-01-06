@@ -31,6 +31,7 @@ export const repositorySchema = z.object({
 
 export const newRepositorySchema = repositorySchema.omit({
     id: true,
+    project: true,
     createdBy: true,
     createdAt: true,
     updatedAt: true,
