@@ -42,7 +42,11 @@
 | 10.12.2024 | 2        | Add tests for repositories                                                                                                                 |
 | 10.12.2024 | 1        | Add tests for content                                                                                                                      |
 | 17.12.2024 | 1        | Start implementing repositories and content in frontend                                                                                    |
-| 06.01.2025 | 2        | Finnish implementing service methods for repositories and content in frontend                                                            |
+| 06.01.2025 | 2        | Finnish implementing service methods for repositories and content in frontend                                                              |
 | 06.01.2025 | 2        | Figure out a good way to display repositories in frontend; Look into best shadcn components; Look into parallel routes;                    |
 | 06.01.2025 | 3        | Change current sidebar into a navbar; Add a sidebar to the projects page with repositories; Refactor seed.ts;                              |
-|   Total    | 80       |                                                                                                                                            |
+| 23.01.2025 | 2        | Looking at other headless CMS to see how they do the UI; Study how to create two sidebars                                                  |
+| 23.01.2025 | 2        | Remove the navbar and go with two sidebars; Create page for each repository                                                                |
+| 23.01.2025 | 2        | Implement schema-view to see all fields of a repository.                                                                                   |
+| 23.01.2025 | 2        | Start implementing the field-create-dialog for creating new fields.                                                                        |
+|   Total    | 88       |                                                                                                                                            |
