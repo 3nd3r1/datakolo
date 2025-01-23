@@ -2,10 +2,14 @@ import { notFound } from "next/navigation";
 
 import { getProject } from "@/lib/project";
 
-const Project = async ({ params }: { params: Promise<{ id: string }> }) => {
-    const { id } = await params;
+const Project = async ({
+    params,
+}: {
+    params: Promise<{ projectId: string }>;
+}) => {
+    const { projectId } = await params;
 
-    const project = await getProject(id).catch(() => undefined);
+    const project = await getProject(projectId).catch(() => undefined);
 
     if (!project) {
         return notFound();

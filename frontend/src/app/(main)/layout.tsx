@@ -1,4 +1,4 @@
-import AppHeader from "@/components/app-header";
+import MainSidebar from "@/components/main-sidebar";
 
 const Layout = ({
     children,
@@ -6,10 +6,10 @@ const Layout = ({
     children: React.ReactNode;
 }>) => {
     return (
-        <>
-            <AppHeader />
+        <div className="flex flex-row min-h-screen">
+            <MainSidebar />
             <main className="w-full h-full">{children}</main>
-        </>
+        </div>
     );
 };
 

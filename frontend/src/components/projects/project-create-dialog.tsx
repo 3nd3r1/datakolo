@@ -19,7 +19,6 @@ import {
 } from "@/components/ui/form";
 import {
     Dialog,
-    DialogBody,
     DialogClose,
     DialogContent,
     DialogDescription,
@@ -123,14 +122,12 @@ const ProjectCreateDialog = () => {
                                 Create a new project to start creating content
                             </DialogDescription>
                         </DialogHeader>
-                        <DialogBody>
-                            <ProjectCreateField
-                                control={form.control}
-                                name="name"
-                                label="Name"
-                                placeholder="Project name"
-                            />
-                        </DialogBody>
+                        <ProjectCreateField
+                            control={form.control}
+                            name="name"
+                            label="Name"
+                            placeholder="Project name"
+                        />
                         <DialogFooter>
                             <DialogClose asChild>
                                 <Button variant="secondary">Cancel</Button>

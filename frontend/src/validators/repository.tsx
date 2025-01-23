@@ -1,21 +1,19 @@
 import { z } from "zod";
 
+export const contentSchemaFieldTypeSchema = z.union([
+    z.literal("string"),
+    z.literal("number"),
+    z.literal("boolean"),
+]);
+
+export const contentSchemaFieldSchema = z.object({
+    type: contentSchemaFieldTypeSchema,
+    required: z.boolean().optional().default(false),
+});
+
 export const contentSchemaSchema = z.record(
     z.string(),
-    z.union([
-        z.object({
-            type: z.literal("string"),
-            required: z.boolean().optional(),
-        }),
-        z.object({
-            type: z.literal("number"),
-            required: z.boolean().optional(),
-        }),
-        z.object({
-            type: z.literal("boolean"),
-            required: z.boolean().optional(),
-        }),
-    ]),
+    contentSchemaFieldSchema,
     { message: "Content schema is required" }
 );
 
