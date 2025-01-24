@@ -6,7 +6,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import CreateFieldDialog from "@/components/projects/repositories/field-create-dialog";
+import FieldCreateDialog from "@/components/projects/repositories/field-create-dialog";
 
 import { getRepository } from "@/lib/repository";
 
@@ -49,7 +49,7 @@ const SchemaView = async ({
                     )}
                     <TableRow>
                         <TableCell colSpan={3} className="p-0">
-                            <CreateFieldDialog />
+                            <FieldCreateDialog />
                         </TableCell>
                     </TableRow>
                 </TableBody>

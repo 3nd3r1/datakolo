@@ -7,6 +7,10 @@ import { ClipLoader } from "react-spinners";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
+import { useToast } from "@/hooks/use-toast";
+import { createProject } from "@/lib/project";
+import { newProjectSchema, Project } from "@/validators/project";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -27,9 +31,6 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
-import { useToast } from "@/hooks/use-toast";
-import { createProject } from "@/lib/project";
-import { newProjectSchema, Project } from "@/validators/project";
 
 const formSchema = newProjectSchema;
 

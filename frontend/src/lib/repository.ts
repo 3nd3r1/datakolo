@@ -68,3 +68,26 @@ export const createRepository = async (
         throw error;
     }
 };
+
+export const updateRepository = async (
+    projectId: string,
+    id: string,
+    repositoryUpdate: Partial<Repository>
+): Promise<Repository> => {
+    try {
+        const response = await axios.put(
+            `${config.apiUrl}/projects/${projectId}/repositories/${id}`,
+            repositoryUpdate,
+            {
+                headers: await getAuthHeader(),
+            }
+        );
+        return response.data as Repository;
+    } catch (error: unknown) {
+        if (axios.isAxiosError(error) && error.response?.data?.error) {
+            throw new Error(error.response.data.error);
+        }
+
+        throw error;
+    }
+};
