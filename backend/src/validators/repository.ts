@@ -75,3 +75,18 @@ export const toNewRepository = (obj: NewRepository): NewRepository => {
         throw error;
     }
 };
+
+export const toRepositoryUpdate = (
+    obj: Partial<NewRepository>,
+): Partial<NewRepository> => {
+    try {
+        return newRepositorySchema.partial().parse(obj);
+    } catch (error: unknown) {
+        if (error instanceof z.ZodError) {
+            throw new ValidationError(
+                error.issues.flatMap((e) => e.message).join(", "),
+            );
+        }
+        throw error;
+    }
+};

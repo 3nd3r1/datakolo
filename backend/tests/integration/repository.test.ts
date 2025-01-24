@@ -20,8 +20,9 @@ import {
 import app from "@/app.ts";
 
 let token: string = "";
-let projectId: string = "";
+let project1Id: string = "";
 let johnId: string = "";
+let repository1Id: string = "";
 
 beforeAll(async () => await connectDatabase());
 beforeEach(async () => {
@@ -33,8 +34,12 @@ beforeEach(async () => {
             .send({ username: "John", password: "password" })
     ).body.token;
 
-    projectId = await getProjectIdByName("Test Project 1");
+    project1Id = await getProjectIdByName("Test Project 1");
     johnId = await getUserIdByUsername("John");
+    repository1Id = await getRepositoryIdByNameAndProject(
+        "Test Repository 1",
+        project1Id,
+    );
 });
 afterAll(async () => await closeDatabase());
 
@@ -43,7 +48,7 @@ describe("/api/projects/:id/repositories", () => {
         await (
             await superoak(app)
         )
-            .get(`/api/projects/${projectId}/repositories`)
+            .get(`/api/projects/${project1Id}/repositories`)
             .set("Authorization", `Bearer ${token}`)
             .expect(200)
             .expect((res) => {
@@ -52,23 +57,18 @@ describe("/api/projects/:id/repositories", () => {
             });
     });
     it("should return repository by id if it exists", async () => {
-        const repositoryId = await getRepositoryIdByNameAndProject(
-            "Test Repository 1",
-            projectId,
-        );
-
         await (
             await superoak(app)
         )
-            .get(`/api/projects/${projectId}/repositories/${repositoryId}`)
+            .get(`/api/projects/${project1Id}/repositories/${repository1Id}`)
             .set("Authorization", `Bearer ${token}`)
             .expect(200)
             .expect((res) => {
                 const { id, name, project, createdBy, createdAt, updatedAt } =
                     res.body;
-                assertEquals(id, repositoryId);
+                assertEquals(id, repository1Id);
                 assertEquals(name, "Test Repository 1");
-                assertEquals(project, projectId);
+                assertEquals(project, project1Id);
                 assertEquals(createdBy, johnId);
                 assertMatch(createdAt, /.+/);
                 assertMatch(updatedAt, /.+/);
@@ -83,7 +83,7 @@ describe("/api/projects/:id/repositories", () => {
         await (
             await superoak(app)
         )
-            .post(`/api/projects/${projectId}/repositories`)
+            .post(`/api/projects/${project1Id}/repositories`)
             .set("Authorization", `Bearer ${token}`)
             .send({ name: "New Repository", contentSchema })
             .expect(200)
@@ -92,7 +92,7 @@ describe("/api/projects/:id/repositories", () => {
                     res.body;
                 assertMatch(id, /.+/);
                 assertEquals(name, "New Repository");
-                assertEquals(project, projectId);
+                assertEquals(project, project1Id);
                 assertEquals(createdBy, johnId);
                 assertMatch(createdAt, /.+/);
                 assertMatch(updatedAt, /.+/);
@@ -105,7 +105,7 @@ describe("/api/projects/:id/repositories", () => {
         };
 
         await (await superoak(app))
-            .post(`/api/projects/${projectId}/repositories`)
+            .post(`/api/projects/${project1Id}/repositories`)
             .set("Authorization", `Bearer ${token}`)
             .send({ name: "A", contentSchema })
             .expect(400)
@@ -117,8 +117,10 @@ describe("/api/projects/:id/repositories", () => {
             content: { type: "string", required: true },
         };
 
-        await (await superoak(app))
-            .post(`/api/projects/${projectId}/repositories`)
+        await (
+            await superoak(app)
+        )
+            .post(`/api/projects/${project1Id}/repositories`)
             .set("Authorization", `Bearer ${token}`)
             .send({
                 name: "New repository",
@@ -134,10 +136,43 @@ describe("/api/projects/:id/repositories", () => {
         };
 
         await (await superoak(app))
-            .post(`/api/projects/${projectId}/repositories`)
+            .post(`/api/projects/${project1Id}/repositories`)
             .set("Authorization", `Bearer ${token}`)
             .send({ name: "Test Repository 1", contentSchema })
             .expect(400)
             .expect({ error: "Name already in use" });
+    });
+    it("should update repository with valid update", async () => {
+        const newContentSchema = {
+            title: { type: "string", required: true },
+            content: { type: "string", required: true },
+            likes: { type: "number", required: true },
+        };
+
+        await (
+            await superoak(app)
+        )
+            .put(`/api/projects/${project1Id}/repositories/${repository1Id}`)
+            .set("Authorization", `Bearer ${token}`)
+            .send({ contentSchema: newContentSchema })
+            .expect(200)
+            .expect((res) => {
+                const {
+                    id,
+                    name,
+                    project,
+                    createdBy,
+                    contentSchema,
+                    createdAt,
+                    updatedAt,
+                } = res.body;
+                assertEquals(id, repository1Id);
+                assertEquals(name, "Test Repository 1");
+                assertEquals(project, project1Id);
+                assertEquals(createdBy, johnId);
+                assertMatch(createdAt, /.+/);
+                assertMatch(updatedAt, /.+/);
+                assertEquals(contentSchema, newContentSchema);
+            });
     });
 });

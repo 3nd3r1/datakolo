@@ -1,7 +1,11 @@
 import { createHttpError } from "oak";
 
 import { AppContext } from "@/utils/oak.ts";
-import { toNewRepository, ValidationError } from "@/validators/repository.ts";
+import {
+    toNewRepository,
+    toRepositoryUpdate,
+    ValidationError,
+} from "@/validators/repository.ts";
 import repositoryService, {
     DuplicateRepositoryError,
 } from "@/services/repository.ts";
@@ -9,11 +13,10 @@ import repositoryService, {
 export const createRepository = async (
     ctx: AppContext<{ projectId: string }>,
 ) => {
-    const body = await ctx.request.body.json();
-
     const user = ctx.state.user;
     if (!user) return;
 
+    const body = await ctx.request.body.json();
     const projectId = ctx.params.projectId;
 
     try {
@@ -69,4 +72,30 @@ export const getRepository = async (
     }
 
     ctx.response.body = repository;
+};
+
+export const updateRepository = async (
+    ctx: AppContext<{ projectId: string; id: string }>,
+) => {
+    const user = ctx.state.user;
+    if (!user) return;
+
+    const id = ctx.params.id;
+    const body = await ctx.request.body.json();
+
+    try {
+        const repositoryUpdate = toRepositoryUpdate(body);
+        const updatedRepository = await repositoryService.updateRepository(
+            id,
+            repositoryUpdate,
+        );
+
+        ctx.response.body = updatedRepository;
+    } catch (error: unknown) {
+        if (error instanceof ValidationError) {
+            throw createHttpError(400, error.message);
+        }
+
+        throw error;
+    }
 };

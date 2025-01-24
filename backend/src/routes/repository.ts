@@ -5,6 +5,7 @@ import {
     createRepository,
     getRepositories,
     getRepository,
+    updateRepository,
 } from "@/controllers/repository.ts";
 
 const router = new Router();
@@ -23,6 +24,12 @@ router.get(
     "/api/projects/:projectId/repositories/:id",
     authenticate,
     getRepository,
+);
+
+router.put(
+    "/api/projects/:projectId/repositories/:id",
+    authenticate,
+    updateRepository,
 );
 
 export default router;

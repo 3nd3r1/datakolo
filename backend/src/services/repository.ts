@@ -42,10 +42,28 @@ const getRepositoryById = async (
     return toRepositoryDTO(repository);
 };
 
+const updateRepository = async (
+    id: string,
+    repositoryUpdate: Partial<NewRepository>,
+): Promise<RepositoryDTO> => {
+    const repository = await Repository.findByIdAndUpdate(
+        id,
+        repositoryUpdate,
+        { new: true },
+    );
+
+    if (!repository) {
+        throw new Error("Repository not found");
+    }
+
+    return toRepositoryDTO(repository);
+};
+
 const repositoryService = {
     createRepository,
     getRepositoriesByProject,
     getRepositoryById,
+    updateRepository,
 };
 
 export default repositoryService;
