@@ -49,4 +49,7 @@
 | 23.01.2025 | 2        | Remove the navbar and go with two sidebars; Create page for each repository                                                                |
 | 23.01.2025 | 2        | Implement schema-view to see all fields of a repository.                                                                                   |
 | 23.01.2025 | 2        | Start implementing the field-create-dialog for creating new fields.                                                                        |
-|   Total    | 88       |                                                                                                                                            |
+| 24.01.2025 | 2        | Make the frontend look better; Looking at other beautiful frontends                                                                        |
+| 24.01.2025 | 2        | Implement updateRepository in backend                                                                                                      |
+| 24.01.2025 | 2        | Add updateRepository service method to frontend; Continue implementing field-create-dialog                                                 |
+|   Total    | 94       |                                                                                                                                            |
