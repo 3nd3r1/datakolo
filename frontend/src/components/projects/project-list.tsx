@@ -1,15 +1,19 @@
 import Link from "next/link";
-import { Book } from "lucide-react";
+import { Book, ArrowRight } from "lucide-react";
 
-import { Project } from "@/types/project";
-import { Card, CardTitle } from "@/components/ui/card";
+import { type Project } from "@/types/project";
 
 const ProjectItem = ({ project }: { project: Project }) => (
     <Link href={`/projects/${project.id}`}>
-        <Card className="p-2 flex flex-row items-center hover:bg-stone-900">
-            <Book className="mr-4" size={50} />
-            <CardTitle className="text-lg">{project.name}</CardTitle>
-        </Card>
+        <div className="border rounded-md p-2 flex items-center justify-between hover:bg-accent">
+            <div className="flex items-center">
+                <Book className="mr-4" size={50} />
+                <h3 className="text-lg font-bold">{project.name}</h3>
+            </div>
+            <div className="mr-4">
+                <ArrowRight size={20} />
+            </div>
+        </div>
     </Link>
 );
 

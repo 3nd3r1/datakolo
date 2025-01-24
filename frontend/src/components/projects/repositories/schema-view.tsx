@@ -27,7 +27,7 @@ const SchemaView = async ({
 
     return (
         <div className="flex flex-col gap-1 py-4">
-            <Table className="border">
+            <Table className="border rounded-md">
                 <TableHeader>
                     <TableRow>
                         <TableHead>Name</TableHead>

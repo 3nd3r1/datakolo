@@ -11,6 +11,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 
 const items = {
@@ -40,11 +41,12 @@ const MainSidebar = async () => {
     }
 
     return (
-        <div className="flex flex-col px-2 bg-sidebar border-r">
-            <div className="p-4">
-                <h1 className="mx-auto text-lg font-bold">Datakolo</h1>
+        <div className="flex flex-col border-r">
+            <div className="p-2 flex items-center justify-center">
+                <h1 className="text-lg font-bold">Datakolo</h1>
             </div>
-            <nav className="grow">
+            <Separator />
+            <nav className="grow p-2">
                 {items.general.map((item) => (
                     <Link href={item.url} key={item.title}>
                         <Button
@@ -56,7 +58,8 @@ const MainSidebar = async () => {
                     </Link>
                 ))}
             </nav>
-            <div className="pb-2">
+            <Separator />
+            <div className="p-2">
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button
