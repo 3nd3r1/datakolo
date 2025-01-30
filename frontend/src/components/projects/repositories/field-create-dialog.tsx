@@ -4,11 +4,21 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 
-import { contentSchemaFieldSchema } from "@/validators/repository";
+import {
+    contentSchemaFieldNameSchema,
+    contentSchemaFieldSchema,
+} from "@/validators/repository";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Form } from "@/components/ui/form";
+import {
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "@/components/ui/form";
 import {
     Dialog,
     DialogClose,
@@ -20,22 +30,24 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
     Select,
-    SelectGroup,
     SelectContent,
     SelectItem,
-    SelectLabel,
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
 
-const formSchema = contentSchemaFieldSchema;
+const formSchema = contentSchemaFieldSchema.extend({
+    name: contentSchemaFieldNameSchema,
+});
 
 const FieldCreateDialog = () => {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
+        defaultValues: {
+            name: "",
+        },
     });
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
@@ -56,64 +68,99 @@ const FieldCreateDialog = () => {
                         Add a new field to the schema
                     </DialogDescription>
                 </DialogHeader>
-                <div>
-                    <Form {...form}>
-                        <form onSubmit={form.handleSubmit(onSubmit)}>
-                            <div className="flex flex-col gap-4">
-                                <div>
-                                    <Label>
-                                        <span>Name</span>
-                                    </Label>
-                                    <Input
-                                        type="text"
-                                        className="input"
-                                        placeholder="Field name"
-                                    />
-                                </div>
-                                <div>
-                                    <Label htmlFor="type">
-                                        <span>Type</span>
-                                    </Label>
-                                    <Select>
-                                        <SelectTrigger>
-                                            <SelectValue placeholder="Choose a Type" />
-                                        </SelectTrigger>
-                                        <SelectContent id="type">
-                                            <SelectGroup>
-                                                <SelectLabel>Type</SelectLabel>
-                                                <SelectItem value="string">
-                                                    Text
-                                                </SelectItem>
-                                                <SelectItem value="number">
-                                                    Number
-                                                </SelectItem>
-                                                <SelectItem value="boolean">
-                                                    Boolean
-                                                </SelectItem>
-                                            </SelectGroup>
-                                        </SelectContent>
-                                    </Select>
-                                </div>
-                                <div>
-                                    <h3 className="mb-4 font-bold">Settings</h3>
-                                    <div className="flex items-center gap-2">
-                                        <Checkbox id="required" />
-                                        <Label htmlFor="required">
-                                            <span>Is Required?</span>
-                                        </Label>
-                                    </div>
-                                </div>
+                <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmit)}>
+                        <div className="flex flex-col gap-4">
+                            <FormField
+                                control={form.control}
+                                name="name"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Name</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                placeholder="Field name"
+                                                {...field}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="type"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Type</FormLabel>
+                                        <Select
+                                            onValueChange={field.onChange}
+                                            defaultValue={field.value}
+                                        >
+                                            <FormControl>
+                                                <SelectTrigger>
+                                                    <SelectValue placeholder="Choose a Type" />
+                                                </SelectTrigger>
+                                            </FormControl>
+                                            <SelectContent>
+                                                {formSchema.shape.type._def.options.map(
+                                                    (option) => (
+                                                        <SelectItem
+                                                            value={option.value}
+                                                            key={option.value}
+                                                        >
+                                                            {option.value
+                                                                .charAt(0)
+                                                                .toUpperCase() +
+                                                                option.value.slice(
+                                                                    1
+                                                                )}
+                                                        </SelectItem>
+                                                    )
+                                                )}
+                                            </SelectContent>
+                                        </Select>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <div>
+                                <h3 className="mb-4 font-bold">Settings</h3>
+                                <FormField
+                                    control={form.control}
+                                    name="required"
+                                    render={({ field }) => (
+                                        <FormItem className="flex items-center space-x-3 space-y-0">
+                                            <FormControl>
+                                                <Checkbox
+                                                    checked={field.value}
+                                                    onCheckedChange={
+                                                        field.onChange
+                                                    }
+                                                />
+                                            </FormControl>
+                                            <FormLabel>Required</FormLabel>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
                             </div>
-                        </form>
-                    </Form>
-                </div>
+                        </div>
+                    </form>
+                </Form>
                 <DialogFooter>
                     <DialogClose asChild>
                         <Button variant="secondary" className="w-1/2">
                             Cancel
                         </Button>
                     </DialogClose>
-                    <Button variant="default" className="w-1/2">
+                    <Button
+                        variant="default"
+                        className="w-1/2"
+                        onClick={async () => {
+                            await form.handleSubmit(onSubmit)();
+                        }}
+                    >
                         Add Field
                     </Button>
                 </DialogFooter>

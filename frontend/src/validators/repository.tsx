@@ -1,7 +1,11 @@
 import { z } from "zod";
 
+export const contentSchemaFieldNameSchema = z
+    .string()
+    .min(2, "Field name must be at least 2 characters");
+
 export const contentSchemaFieldTypeSchema = z.union([
-    z.literal("string"),
+    z.literal("string", { message: "Field type is invalid" }),
     z.literal("number"),
     z.literal("boolean"),
 ]);
@@ -12,7 +16,7 @@ export const contentSchemaFieldSchema = z.object({
 });
 
 export const contentSchemaSchema = z.record(
-    z.string(),
+    contentSchemaFieldNameSchema,
     contentSchemaFieldSchema,
     { message: "Content schema is required" }
 );
