@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { User } from "lucide-react";
+import { Book, HomeIcon, User } from "lucide-react";
 
 import { getUser } from "@/lib/auth";
 
@@ -13,15 +13,23 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const items = {
     general: [
         {
             title: "Home",
+            icon: HomeIcon,
             url: "/",
         },
         {
             title: "Projects",
+            icon: Book,
             url: "/projects",
         },
     ],
@@ -41,33 +49,41 @@ const MainSidebar = async () => {
     }
 
     return (
-        <div className="flex flex-col border-r">
+        <div className="flex flex-col border-r bg-sidebar/50">
             <div className="p-2 flex items-center justify-center">
-                <h1 className="text-lg font-bold">Datakolo</h1>
+                <h1 className="text-lg font-bold">D</h1>
             </div>
             <Separator />
-            <nav className="grow p-2">
+            <nav className="flex flex-col items-center justify-start grow">
                 {items.general.map((item) => (
-                    <Link href={item.url} key={item.title}>
-                        <Button
-                            variant="ghost"
-                            className="text-sm w-full justify-start"
-                        >
-                            {item.title}
-                        </Button>
-                    </Link>
+                    <TooltipProvider key={item.title}>
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <Link href={item.url}>
+                                    <Button
+                                        variant="ghost"
+                                        className="text-sm justify-start px-2"
+                                    >
+                                        <item.icon className="!w-5 !h-5" />
+                                    </Button>
+                                </Link>
+                            </TooltipTrigger>
+                            <TooltipContent side="right">
+                                <p>{item.title}</p>
+                            </TooltipContent>
+                        </Tooltip>
+                    </TooltipProvider>
                 ))}
             </nav>
             <Separator />
-            <div className="p-2">
+            <div>
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button
                             variant="ghost"
-                            className="w-full flex justify-start items-center"
+                            className="w-full flex items-center rounded-none"
                         >
-                            <User className="!w-6 !h-6" size={64} />
-                            <p>{user.username}</p>
+                            <User className="!w-5 !h-5" />
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent
@@ -85,7 +101,10 @@ const MainSidebar = async () => {
                         <DropdownMenuSeparator />
                         {items.user.map((item) => (
                             <DropdownMenuItem key={item.title} asChild>
-                                <Link href={item.url} className="w-full h-full">
+                                <Link
+                                    href={item.url}
+                                    className="cursor-pointer text-red-900"
+                                >
                                     <span>{item.title}</span>
                                 </Link>
                             </DropdownMenuItem>

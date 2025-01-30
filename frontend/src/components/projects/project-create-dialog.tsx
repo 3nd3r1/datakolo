@@ -112,31 +112,31 @@ const ProjectCreateDialog = () => {
                 <Button variant="outline">Create Project</Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
+                <DialogHeader>
+                    <DialogTitle>New Project</DialogTitle>
+                    <DialogDescription>
+                        Create a new project to start creating content
+                    </DialogDescription>
+                </DialogHeader>
                 <Form {...form}>
                     <form
                         onSubmit={form.handleSubmit(onSubmit)}
                         className="space-y-8"
                     >
-                        <DialogHeader>
-                            <DialogTitle>New Project</DialogTitle>
-                            <DialogDescription>
-                                Create a new project to start creating content
-                            </DialogDescription>
-                        </DialogHeader>
                         <ProjectCreateField
                             control={form.control}
                             name="name"
                             label="Name"
                             placeholder="Project name"
                         />
-                        <DialogFooter>
-                            <DialogClose asChild>
-                                <Button variant="secondary">Cancel</Button>
-                            </DialogClose>
-                            <Button type="submit">Add Project</Button>
-                        </DialogFooter>
                     </form>
                 </Form>
+                <DialogFooter>
+                    <DialogClose asChild>
+                        <Button variant="secondary">Cancel</Button>
+                    </DialogClose>
+                    <Button type="submit">Add Project</Button>
+                </DialogFooter>
             </DialogContent>
         </Dialog>
     );
