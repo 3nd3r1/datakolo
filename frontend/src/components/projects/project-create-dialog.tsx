@@ -135,7 +135,13 @@ const ProjectCreateDialog = () => {
                     <DialogClose asChild>
                         <Button variant="secondary">Cancel</Button>
                     </DialogClose>
-                    <Button type="submit">Add Project</Button>
+                    <Button
+                        onClick={async () => {
+                            await form.handleSubmit(onSubmit)();
+                        }}
+                    >
+                        Add Project
+                    </Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>
