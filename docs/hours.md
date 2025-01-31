@@ -54,4 +54,5 @@
 | 24.01.2025 | 2        | Add updateRepository service method to frontend; Continue implementing field-create-dialog                                                 |
 | 30.01.2025 | 1        | Small refactoring and making the frontend prettier                                                                                         |
 | 30.01.2025 | 1        | Continue implementing field-create-dialog                                                                                                  |
-|   Total    | 95       |                                                                                                                                            |
+| 31.01.2025 | 2        | Finished implementing field-create-dialog                                                                                                  |
+|   Total    | 97       |                                                                                                                                            |
