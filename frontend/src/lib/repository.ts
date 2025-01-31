@@ -7,6 +7,8 @@ import { config } from "@/lib/config";
 import { getAuthHeader } from "@/lib/auth";
 import { NewRepository, Repository } from "@/validators/repository";
 
+//TODO: Revalidate tags and leave axios
+
 export const getRepositories = cache(
     async (projectId: string): Promise<Repository[]> => {
         try {
@@ -72,7 +74,7 @@ export const createRepository = async (
 export const updateRepository = async (
     projectId: string,
     id: string,
-    repositoryUpdate: Partial<Repository>
+    repositoryUpdate: Partial<NewRepository>
 ): Promise<Repository> => {
     try {
         const response = await axios.put(

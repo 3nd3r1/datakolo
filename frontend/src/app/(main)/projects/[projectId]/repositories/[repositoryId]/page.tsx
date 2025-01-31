@@ -25,7 +25,7 @@ const Repository = async ({
         <div>
             <h3 className="text-xl">{repository.name}</h3>
             <div>
-                <SchemaView projectId={projectId} repositoryId={repositoryId} />
+                <SchemaView repository={repository} />
             </div>
         </div>
     );

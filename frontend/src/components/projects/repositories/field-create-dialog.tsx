@@ -1,13 +1,17 @@
 "use client";
 
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useForm } from "react-hook-form";
 
 import {
     contentSchemaFieldNameSchema,
     contentSchemaFieldSchema,
+    newRepositorySchema,
+    Repository,
 } from "@/validators/repository";
+import { updateRepository } from "@/lib/repository";
+import { useToast } from "@/hooks/use-toast";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -42,7 +46,9 @@ const formSchema = contentSchemaFieldSchema.extend({
     name: contentSchemaFieldNameSchema,
 });
 
-const FieldCreateDialog = () => {
+const FieldCreateDialog = ({ repository }: { repository: Repository }) => {
+    const { toast } = useToast();
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -51,7 +57,33 @@ const FieldCreateDialog = () => {
     });
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
-        console.log(values);
+        try {
+            const repositoryUpdate = newRepositorySchema.partial().parse({
+                contentSchema: {
+                    ...repository.contentSchema,
+                    [values.name]: contentSchemaFieldSchema.parse(values),
+                },
+            });
+
+            await updateRepository(
+                repository.project,
+                repository.id,
+                repositoryUpdate
+            );
+            toast({
+                title: "Success",
+                description: "Field added successfully",
+            });
+        } catch (error: unknown) {
+            toast({
+                variant: "destructive",
+                title: "Error",
+                description:
+                    error instanceof Error
+                        ? error.message
+                        : "An error occurred",
+            });
+        }
     };
 
     return (

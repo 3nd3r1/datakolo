@@ -8,23 +8,9 @@ import {
 } from "@/components/ui/table";
 import FieldCreateDialog from "@/components/projects/repositories/field-create-dialog";
 
-import { getRepository } from "@/lib/repository";
+import { Repository } from "@/validators/repository";
 
-const SchemaView = async ({
-    projectId,
-    repositoryId,
-}: {
-    projectId: string;
-    repositoryId: string;
-}) => {
-    const repository = await getRepository(projectId, repositoryId).catch(
-        () => undefined
-    );
-
-    if (!repository) {
-        return null;
-    }
-
+const SchemaView = ({ repository }: { repository: Repository }) => {
     return (
         <div className="flex flex-col gap-1 py-4">
             <Table className="border rounded-md">
@@ -49,7 +35,7 @@ const SchemaView = async ({
                     )}
                     <TableRow>
                         <TableCell colSpan={3} className="p-0">
-                            <FieldCreateDialog />
+                            <FieldCreateDialog repository={repository} />
                         </TableCell>
                     </TableRow>
                 </TableBody>
