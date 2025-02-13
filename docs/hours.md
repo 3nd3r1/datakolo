@@ -55,4 +55,5 @@
 | 30.01.2025 | 1        | Small refactoring and making the frontend prettier                                                                                         |
 | 30.01.2025 | 1        | Continue implementing field-create-dialog                                                                                                  |
 | 31.01.2025 | 2        | Finished implementing field-create-dialog                                                                                                  |
-|   Total    | 97       |                                                                                                                                            |
+| 13.02.2025 | 2        | Starting refactoring the project page navigation and sidebar                                                                               |
+|   Total    | 99       |                                                                                                                                            |
