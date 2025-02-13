@@ -1,4 +1,4 @@
-import MainSidebar from "@/components/main-sidebar";
+import MainNavbar from "@/components/main-navbar";
 
 const Layout = ({
     children,
@@ -6,8 +6,8 @@ const Layout = ({
     children: React.ReactNode;
 }>) => {
     return (
-        <div className="flex flex-row min-h-screen">
-            <MainSidebar />
+        <div>
+            <MainNavbar />
             <main className="w-full h-full">{children}</main>
         </div>
     );
