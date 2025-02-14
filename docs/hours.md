@@ -56,4 +56,6 @@
 | 30.01.2025 | 1        | Continue implementing field-create-dialog                                                                                                  |
 | 31.01.2025 | 2        | Finished implementing field-create-dialog                                                                                                  |
 | 13.02.2025 | 2        | Starting refactoring the project page navigation and sidebar                                                                               |
-|   Total    | 99       |                                                                                                                                            |
+| 14.02.2025 | 2        | Finish refactoring the project page navigation and sidebar                                                                                 |
+| 14.02.2025 | 2        | Start implementing the contentView component (WHAT A MESS)                                                                                 |
+|   Total    | 103      |                                                                                                                                            |
