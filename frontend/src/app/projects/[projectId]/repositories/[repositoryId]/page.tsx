@@ -4,6 +4,8 @@ import { getProject } from "@/lib/project";
 import { getRepository } from "@/lib/repository";
 
 import SchemaView from "@/components/projects/repositories/schema-view";
+import ContentView from "@/components/projects/repositories/content-view";
+import { getContents } from "@/lib/content";
 
 const Repository = async ({
     params,
@@ -21,11 +23,14 @@ const Repository = async ({
         return notFound();
     }
 
+    const contents = await getContents(projectId, repositoryId).catch(() => []);
+
     return (
         <div>
             <h3 className="text-xl">{repository.name}</h3>
             <div>
                 <SchemaView repository={repository} />
+                <ContentView contents={contents} />
             </div>
         </div>
     );

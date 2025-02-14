@@ -22,5 +22,6 @@ export const newContentSchema = contentSchema.omit({
     updatedAt: true,
 });
 
+export type ContentData = z.infer<typeof contentDataSchema>;
 export type Content = z.infer<typeof contentSchema>;
 export type NewContent = z.infer<typeof newContentSchema>;
