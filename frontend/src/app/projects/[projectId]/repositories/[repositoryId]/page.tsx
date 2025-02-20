@@ -30,7 +30,7 @@ const Repository = async ({
             <h3 className="text-xl">{repository.name}</h3>
             <div>
                 <SchemaView repository={repository} />
-                <ContentView contents={contents} />
+                <ContentView repository={repository} contents={contents} />
             </div>
         </div>
     );

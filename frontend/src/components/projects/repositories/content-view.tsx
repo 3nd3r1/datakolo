@@ -1,73 +1,69 @@
+import { useMemo } from "react";
 import { ColumnDef } from "@tanstack/react-table";
 
 import { Content } from "@/validators/content";
-import { useMemo } from "react";
 import { DataTable } from "@/components/ui/data-table";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { Repository } from "@/validators/repository";
 
-type FlattenedContent = {
-    id: string;
-    repository: string;
-    createdBy: string;
-    createdAt: Date;
-    updatedAt: Date;
-    [key: string]: string | number | boolean | Date;
-};
+type FlattenedContent = Pick<Content, "id"> & Content["data"];
 
-const ContentView = ({ contents }: { contents: Content[] }) => {
-    const flattenedContent = useMemo(() => {
-        return contents.map((content) => ({
-            id: content.id,
-            repository: content.repository,
-            createdBy: content.createdBy,
-            createdAt: content.createdAt,
-            updatedAt: content.updatedAt,
-            ...content.data,
-        })) as FlattenedContent[];
-    }, [contents]);
+const ContentView = ({
+    repository,
+    contents,
+}: {
+    repository: Repository;
+    contents: Content[];
+}) => {
+    const flattenedContent = useMemo(
+        () =>
+            contents.map((content) => ({
+                id: content.id,
+                ...content.data,
+            })),
+        [contents]
+    );
 
-    const columns = useMemo(() => {
-        const baseColumns: ColumnDef<FlattenedContent>[] = [
-            {
-                accessorKey: "id",
-                header: "ID",
-            },
-            {
-                accessorKey: "repository",
-                header: "Repository",
-            },
-            {
-                accessorKey: "createdBy",
-                header: "Created By",
-            },
-            {
-                accessorKey: "createdAt",
-                header: "Created At",
-            },
-            {
-                accessorKey: "updatedAt",
-                header: "Updated At",
-            },
-        ];
+    const columns = useMemo<ColumnDef<FlattenedContent>[]>(() => {
+        if (!contents.length) return [];
 
-        if (contents.length === 0) return baseColumns;
-
-        const dataColumns: ColumnDef<FlattenedContent>[] = Object.keys(
-            contents[0].data
-        ).map((key) => ({
-            accessorKey: key,
-            header: key,
-        }));
+        const dataColumns = Object.entries(repository.contentSchema)
+            .filter(([_, field]) => field.required)
+            .map(([key, _]) => ({
+                accessorKey: key,
+                header: key.charAt(0).toUpperCase() + key.slice(1),
+            }));
 
         return [
-            ...baseColumns,
+            {
+                accessorKey: "id",
+                header: "Id",
+            },
             ...dataColumns,
-        ] as ColumnDef<FlattenedContent>[];
-    }, [contents]);
+        ];
+    }, [contents, repository.contentSchema]);
 
     return (
         <div className="flex flex-col gap-1 py-4">
-            <h3 className="text-lg font-bold">Content</h3>
-            <DataTable columns={columns} data={flattenedContent} />
+            <div className="flex flex-row justify-between items-center py-2">
+                <div>
+                    <h2 className="text-lg font-bold">Contents</h2>
+                    <p className="text-sm text-stone-400">
+                        Here are the contents of this repository
+                    </p>
+                </div>
+                <Button variant="default" asChild>
+                    <Link
+                        href={`/projects/${repository.project}/repositories/${repository.id}/contents/create`}
+                    >
+                        Add Content
+                    </Link>
+                </Button>
+            </div>
+            <div className="border">
+                <DataTable columns={columns} data={flattenedContent} />
+            </div>
         </div>
     );
 };

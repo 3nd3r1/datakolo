@@ -13,7 +13,12 @@ import { Repository } from "@/validators/repository";
 const SchemaView = ({ repository }: { repository: Repository }) => {
     return (
         <div className="flex flex-col gap-1 py-4">
-            <h3 className="text-lg font-bold">Schema</h3>
+            <div className="py-2">
+                <h2 className="text-lg font-bold">Schema</h2>
+                <p className="text-sm text-stone-400">
+                    Here is the schema of this repository
+                </p>
+            </div>
             <Table className="border rounded-md">
                 <TableHeader>
                     <TableRow>
