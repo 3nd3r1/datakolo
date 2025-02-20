@@ -58,4 +58,6 @@
 | 13.02.2025 | 2        | Starting refactoring the project page navigation and sidebar                                                                               |
 | 14.02.2025 | 2        | Finish refactoring the project page navigation and sidebar                                                                                 |
 | 14.02.2025 | 2        | Start implementing the contentView component (WHAT A MESS)                                                                                 |
-|   Total    | 103      |                                                                                                                                            |
+| 20.02.2025 | 1        | Study how to link repositorySchema and contentData...                                                                                      |
+| 20.02.2025 | 2        | Finnish contentView (not a mess anymore)                                                                                                   |
+|   Total    | 106      |                                                                                                                                            |
