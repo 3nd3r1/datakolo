@@ -60,4 +60,5 @@
 | 14.02.2025 | 2        | Start implementing the contentView component (WHAT A MESS)                                                                                 |
 | 20.02.2025 | 1        | Study how to link repositorySchema and contentData...                                                                                      |
 | 20.02.2025 | 2        | Finnish contentView (not a mess anymore)                                                                                                   |
-|   Total    | 106      |                                                                                                                                            |
+| 21.02.2025 | 2        | Start implementing content creation (TypeScript won today, I'll be back next week)                                                         |
+|   Total    | 108      |                                                                                                                                            |
