@@ -1,4 +1,37 @@
 import { z } from "zod";
+import { RepositoryContentSchema } from "./repository";
+
+export const createContentDataSchema = (schema: RepositoryContentSchema) => {
+    // TODO: Improve the type safety of this function
+    const schemaFields: Record<string, z.ZodType> = {};
+
+    Object.entries(schema).forEach(([fieldName, fieldSchema]) => {
+        let zodField: z.ZodType;
+
+        switch (fieldSchema.type) {
+            case "string":
+                zodField = z.string();
+                if (fieldSchema.required) {
+                    zodField = z.string().min(1, "Field is required");
+                }
+                break;
+            case "number":
+                zodField = z.number();
+                break;
+            case "boolean":
+                zodField = z.boolean();
+                break;
+            default:
+                throw new Error(`Unsupported field type: ${fieldSchema.type}`);
+        }
+
+        schemaFields[fieldName] = fieldSchema.required
+            ? zodField
+            : zodField.optional();
+    });
+
+    return z.object(schemaFields);
+};
 
 const contentDataSchema = z.record(
     z.string(),

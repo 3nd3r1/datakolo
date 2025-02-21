@@ -1,6 +1,5 @@
 import { notFound } from "next/navigation";
 
-import { getProject } from "@/lib/project";
 import { getRepository } from "@/lib/repository";
 
 import SchemaView from "@/components/projects/repositories/schema-view";
@@ -14,12 +13,11 @@ const Repository = async ({
 }) => {
     const { projectId, repositoryId } = await params;
 
-    const project = await getProject(projectId).catch(() => undefined);
     const repository = await getRepository(projectId, repositoryId).catch(
         () => undefined
     );
 
-    if (!project || !repository) {
+    if (!repository) {
         return notFound();
     }
 

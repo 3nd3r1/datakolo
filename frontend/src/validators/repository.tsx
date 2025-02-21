@@ -39,5 +39,6 @@ export const newRepositorySchema = repositorySchema.omit({
     updatedAt: true,
 });
 
+export type RepositoryContentSchema = z.infer<typeof contentSchemaSchema>;
 export type Repository = z.infer<typeof repositorySchema>;
 export type NewRepository = z.infer<typeof newRepositorySchema>;
