@@ -61,4 +61,6 @@
 | 20.02.2025 | 1        | Study how to link repositorySchema and contentData...                                                                                      |
 | 20.02.2025 | 2        | Finnish contentView (not a mess anymore)                                                                                                   |
 | 21.02.2025 | 2        | Start implementing content creation (TypeScript won today, I'll be back next week)                                                         |
-|   Total    | 108      |                                                                                                                                            |
+| 27.02.2025 | 1        | Finished implementing content creation                                                                                                     |
+| 27.02.2025 | 3        | Refactoring frontend completely                                                                                                            |
+|   Total    | 112      |                                                                                                                                            |
