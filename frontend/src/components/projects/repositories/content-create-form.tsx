@@ -3,7 +3,10 @@
 import { Control, useForm } from "react-hook-form";
 
 import { contentSchemaFieldSchema, Repository } from "@/validators/repository";
-import { createContentDataSchema } from "@/validators/content";
+import {
+    createContentDataSchema,
+    newContentSchema,
+} from "@/validators/content";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import {
@@ -17,6 +20,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
+import { createContent } from "@/lib/content";
+import { useToast } from "@/hooks/use-toast";
 
 interface ContentCreateFormFieldProps {
     fieldName: string;
@@ -104,6 +109,8 @@ const ContentCreateFormField = ({
 };
 
 const ContentCreateForm = ({ repository }: { repository: Repository }) => {
+    const { toast } = useToast();
+
     const formSchema = createContentDataSchema(repository.contentSchema);
     const defaultValues = Object.entries(repository.contentSchema).reduce(
         (acc, [fieldName, fieldSchema]) => {
@@ -130,8 +137,27 @@ const ContentCreateForm = ({ repository }: { repository: Repository }) => {
         defaultValues: defaultValues,
     });
 
-    const onSubmit = (values: z.infer<typeof formSchema>) => {
-        console.log(values);
+    const onSubmit = async (values: z.infer<typeof formSchema>) => {
+        try {
+            // Remove undefined values
+            // TODO: This should be done in a more type-safe way
+            Object.keys(values).forEach((key) =>
+                values[key] === undefined ? delete values[key] : {}
+            );
+
+            const newContent = newContentSchema.parse({ data: values });
+            await createContent(repository.project, repository.id, newContent);
+            toast({ title: "Success", description: "Content created" });
+        } catch (error: unknown) {
+            toast({
+                variant: "destructive",
+                title: "Error",
+                description:
+                    error instanceof Error
+                        ? error.message
+                        : "An error occurred",
+            });
+        }
     };
 
     return (
