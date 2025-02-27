@@ -1,51 +1,42 @@
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table";
-import FieldCreateDialog from "@/components/projects/repositories/field-create-dialog";
-
 import { Repository } from "@/validators/repository";
+import FieldCreateDialog from "./field-create-dialog";
 
 const SchemaView = ({ repository }: { repository: Repository }) => {
     return (
-        <div className="flex flex-col gap-1 py-4">
-            <div className="py-2">
-                <h2 className="text-lg font-bold">Schema</h2>
-                <p className="text-sm text-stone-400">
-                    Here is the schema of this repository
-                </p>
+        <div className="flex flex-col gap-1 p-4 border rounded-lg">
+            <div className="flex flex-col gap-y-2">
+                {Object.entries(repository.contentSchema).map(
+                    ([key, value]) => (
+                        <div
+                            key={key}
+                            className="flex flex-row justify-between border p-2 rounded-lg"
+                        >
+                            <div className="flex flex-row items-center gap-x-2">
+                                <div className="flex h-8 w-8 items-center justify-center bg-primary/10 rounded-lg p-1">
+                                    <span className="text-sm font-medium">
+                                        {value.type.charAt(0).toUpperCase() +
+                                            value.type.charAt(1).toUpperCase()}
+                                    </span>
+                                </div>
+                                <div>
+                                    <div className="font-medium text-md">
+                                        {key}
+                                    </div>
+                                    <div className="text-xs text-muted-foreground">
+                                        <span>{value.type}</span>
+                                        <span> · </span>
+                                        {value.required && (
+                                            <span>Required</span>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                            <div></div>
+                        </div>
+                    )
+                )}
             </div>
-            <Table className="border rounded-md">
-                <TableHeader>
-                    <TableRow>
-                        <TableHead>Name</TableHead>
-                        <TableHead>Type</TableHead>
-                        <TableHead>Required</TableHead>
-                    </TableRow>
-                </TableHeader>
-                <TableBody>
-                    {Object.entries(repository.contentSchema).map(
-                        ([key, value]) => (
-                            <TableRow key={key}>
-                                <TableCell>{key}</TableCell>
-                                <TableCell>{value.type}</TableCell>
-                                <TableCell>
-                                    {value.required ? "Yes" : "No"}
-                                </TableCell>
-                            </TableRow>
-                        )
-                    )}
-                    <TableRow>
-                        <TableCell colSpan={3} className="p-0">
-                            <FieldCreateDialog repository={repository} />
-                        </TableCell>
-                    </TableRow>
-                </TableBody>
-            </Table>
+            <FieldCreateDialog repository={repository} />
         </div>
     );
 };

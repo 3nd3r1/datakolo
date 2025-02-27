@@ -8,22 +8,24 @@ interface RepositoriesSidebarProps
     extends React.HTMLAttributes<HTMLDivElement> {
     projectId: string;
     repositories: Repository[];
+    variant: "schema" | "content";
 }
 
 const RepositoriesSidebar = async ({
     projectId,
     repositories,
+    variant,
 }: RepositoriesSidebarProps) => {
     return (
         <div className="flex flex-col border-r">
-            <div className="p-2 flex items-center justify-center">
+            <div className="p-2 flex items-center justify-center h-14">
                 <h2 className="text-lg font-bold">Repositories</h2>
             </div>
             <Separator />
             <div className="flex flex-col p-2">
                 {repositories.map((repository) => (
                     <Link
-                        href={`/projects/${projectId}/repositories/${repository.id}`}
+                        href={`/projects/${projectId}/${variant}/${repository.id}`}
                         key={repository.id}
                     >
                         <Button

@@ -1,4 +1,6 @@
-import { User } from "lucide-react";
+"use client";
+
+import { UserIcon } from "lucide-react";
 
 import {
     DropdownMenu,
@@ -11,17 +13,22 @@ import {
 import { Button } from "@/components/ui/button";
 import { getUser } from "@/lib/auth";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { User } from "@/validators/user";
 
 const items: { title: string; href: string }[] = [
     { title: "Logout", href: "/logout" },
 ];
 
-const UserNav = async () => {
-    const user = await getUser();
+const UserNav = () => {
+    const [user, setUser] = useState<User | undefined>(undefined);
 
-    if (!user) {
-        return null;
-    }
+    useEffect(() => {
+        const fetchUser = async () => {
+            setUser(await getUser().catch(() => undefined));
+        };
+        fetchUser();
+    }, []);
 
     return (
         <DropdownMenu>
@@ -30,15 +37,17 @@ const UserNav = async () => {
                     variant="ghost"
                     className="h-full flex items-center rounded-none"
                 >
-                    <User className="!w-5 !h-5" />
+                    <UserIcon className="!w-5 !h-5" />
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56" align="end" forceMount>
                 <DropdownMenuLabel className="font-normal">
                     <div className="flex flex-col space-y-1">
-                        <p className="text-sm font-medium leading-none">
-                            {user.username}
-                        </p>
+                        {user && (
+                            <p className="text-sm font-medium leading-none">
+                                {user.username}
+                            </p>
+                        )}
                     </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />

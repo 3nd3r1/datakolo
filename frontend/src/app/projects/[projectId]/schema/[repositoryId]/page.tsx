@@ -3,8 +3,6 @@ import { notFound } from "next/navigation";
 import { getRepository } from "@/lib/repository";
 
 import SchemaView from "@/components/projects/repositories/schema-view";
-import ContentView from "@/components/projects/repositories/content-view";
-import { getContents } from "@/lib/content";
 
 const Repository = async ({
     params,
@@ -21,15 +19,17 @@ const Repository = async ({
         return notFound();
     }
 
-    const contents = await getContents(projectId, repositoryId).catch(() => []);
-
     return (
-        <div>
-            <h3 className="text-xl">{repository.name}</h3>
-            <div>
-                <SchemaView repository={repository} />
-                <ContentView repository={repository} contents={contents} />
+        <div className="flex flex-col gap-1">
+            <div className="flex flex-row justify-between items-center py-2 mb-4">
+                <div>
+                    <h2 className="text-lg font-bold">Schema</h2>
+                    <p className="text-sm text-stone-400">
+                        Here is the schema of this repository
+                    </p>
+                </div>
             </div>
+            <SchemaView repository={repository} />
         </div>
     );
 };

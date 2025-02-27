@@ -11,10 +11,14 @@ export default async function Layout({
     const projectId = (await params).projectId;
     const project = await getProject(projectId).catch(() => undefined);
 
+    if (!project) {
+        return { children };
+    }
+
     return (
         <div className="flex flex-row h-screen">
-            {project && <ProjectSidebar project={project} />}
-            <main className="grow">{children}</main>
+            <ProjectSidebar project={project} />
+            <main className="flex-1">{children}</main>
         </div>
     );
 }

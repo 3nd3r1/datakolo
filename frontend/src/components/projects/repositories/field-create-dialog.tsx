@@ -41,6 +41,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
+import { Plus } from "lucide-react";
 
 const formSchema = contentSchemaFieldSchema.extend({
     name: contentSchemaFieldNameSchema,
@@ -88,9 +89,10 @@ const FieldCreateDialog = ({ repository }: { repository: Repository }) => {
 
     return (
         <Dialog>
-            <DialogTrigger className="w-full" asChild>
-                <Button variant="secondary" className="w-full rounded-none">
-                    Add Field
+            <DialogTrigger className="w-full mt-4" asChild>
+                <Button variant="default" className="w-full font-bold">
+                    <Plus />
+                    <span>Add Field</span>
                 </Button>
             </DialogTrigger>
             <DialogContent>
