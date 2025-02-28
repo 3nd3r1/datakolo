@@ -1,15 +1,31 @@
-import Link from "next/link";
+"use client";
 
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Library, LucideIcon } from "lucide-react";
 
 import { Separator } from "@/components/ui/separator";
 import UserNav from "@/components/user-nav";
-
-const items: { title: string; href: string; icon: LucideIcon }[] = [
-    { title: "Projects", href: "/projects", icon: Library },
-];
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 const MainNavbar = () => {
+    const pathname = usePathname();
+
+    const items: {
+        title: string;
+        href: string;
+        icon: LucideIcon;
+        isActive: boolean;
+    }[] = [
+        {
+            title: "Projects",
+            href: "/projects",
+            icon: Library,
+            isActive: pathname === "/projects",
+        },
+    ];
+
     return (
         <header className="w-full border-b">
             <div className="flex flex-row justify-between">
@@ -20,12 +36,17 @@ const MainNavbar = () => {
                     <Separator orientation="vertical" />
                     <nav className="py-2 px-4 grow">
                         {items.map((item) => (
-                            <Link href={item.href} key={item.title}>
-                                <div className="flex items-center gap-x-2 hover:bg-accent text-sm rounded p-2 transition-colors">
+                            <Button
+                                key={item.title}
+                                variant="ghost"
+                                className={cn(item.isActive && "bg-primary/10")}
+                                asChild
+                            >
+                                <Link href={item.href} key={item.title}>
                                     <item.icon size={16} />
                                     <span>{item.title}</span>
-                                </div>
-                            </Link>
+                                </Link>
+                            </Button>
                         ))}
                     </nav>
                 </div>

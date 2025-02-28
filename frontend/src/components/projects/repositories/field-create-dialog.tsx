@@ -90,7 +90,7 @@ const FieldCreateDialog = ({ repository }: { repository: Repository }) => {
     return (
         <Dialog>
             <DialogTrigger className="w-full mt-4" asChild>
-                <Button variant="default" className="w-full font-bold">
+                <Button variant="default" className="w-full font-medium">
                     <Plus />
                     <span>Add Field</span>
                 </Button>

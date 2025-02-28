@@ -31,6 +31,7 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
+import { Plus } from "lucide-react";
 
 const formSchema = newProjectSchema;
 
@@ -109,7 +110,10 @@ const ProjectCreateDialog = () => {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant="outline">Create Project</Button>
+                <Button variant="default" className="font-medium">
+                    <Plus />
+                    <span>Create Project</span>
+                </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>

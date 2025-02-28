@@ -1,8 +1,12 @@
+"use client";
+
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Repository } from "@/validators/repository";
+import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 interface RepositoriesSidebarProps
     extends React.HTMLAttributes<HTMLDivElement> {
@@ -11,30 +15,38 @@ interface RepositoriesSidebarProps
     variant: "schema" | "content";
 }
 
-const RepositoriesSidebar = async ({
+const RepositoriesSidebar = ({
     projectId,
     repositories,
     variant,
 }: RepositoriesSidebarProps) => {
+    const pathname = usePathname();
+
     return (
         <div className="flex flex-col border-r">
             <div className="p-2 flex items-center justify-center h-14">
                 <h2 className="text-lg font-bold">Repositories</h2>
             </div>
             <Separator />
-            <div className="flex flex-col p-2">
+            <div className="flex flex-col p-2 gap-y-1">
                 {repositories.map((repository) => (
-                    <Link
-                        href={`/projects/${projectId}/${variant}/${repository.id}`}
+                    <Button
+                        variant="ghost"
+                        className={cn(
+                            "justify-start text-sm",
+                            pathname.startsWith(
+                                `/projects/${projectId}/${variant}/${repository.id}`
+                            ) && "bg-primary/10"
+                        )}
                         key={repository.id}
+                        asChild
                     >
-                        <Button
-                            variant="ghost"
-                            className="justify-start text-sm"
+                        <Link
+                            href={`/projects/${projectId}/${variant}/${repository.id}`}
                         >
                             {repository.name}
-                        </Button>
-                    </Link>
+                        </Link>
+                    </Button>
                 ))}
             </div>
         </div>
