@@ -1,12 +1,10 @@
 import { notFound } from "next/navigation";
-import Link from "next/link";
-import { Plus } from "lucide-react";
 
 import { getRepository } from "@/lib/repository";
 import { getContents } from "@/lib/content";
 
 import ContentView from "@/components/projects/repositories/content-view";
-import { Button } from "@/components/ui/button";
+import ContentCreateDialog from "@/components/projects/repositories/content-create-dialog";
 
 const RepositoryContent = async ({
     params,
@@ -34,15 +32,7 @@ const RepositoryContent = async ({
                         Here are the contents of this repository
                     </p>
                 </div>
-                <Button variant="default" asChild>
-                    <Link
-                        href={`/projects/${repository.project}/repositories/${repository.id}/contents/create`}
-                        className="font-bold"
-                    >
-                        <Plus />
-                        <span>Add Content</span>
-                    </Link>
-                </Button>
+                <ContentCreateDialog repository={repository} />
             </div>
             <ContentView repository={repository} contents={contents} />
         </div>

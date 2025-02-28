@@ -1,14 +1,17 @@
 "use client";
 
+import { z } from "zod";
 import { Control, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Plus } from "lucide-react";
 
 import { contentSchemaFieldSchema, Repository } from "@/validators/repository";
 import {
     createContentDataSchema,
     newContentSchema,
 } from "@/validators/content";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+import { createContent } from "@/lib/content";
+import { useToast } from "@/hooks/use-toast";
 import {
     Form,
     FormControl,
@@ -17,11 +20,19 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form";
+import {
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
-import { createContent } from "@/lib/content";
-import { useToast } from "@/hooks/use-toast";
+import { Switch } from "@/components/ui/switch";
 
 interface ContentCreateFormFieldProps {
     fieldName: string;
@@ -30,7 +41,7 @@ interface ContentCreateFormFieldProps {
     control: Control<any>; // eslint-disable-line @typescript-eslint/no-explicit-any
 }
 
-const ContentCreateFormField = ({
+const ContentCreateDialogField = ({
     fieldName,
     fieldSchema,
     control,
@@ -44,8 +55,10 @@ const ContentCreateFormField = ({
                     render={({ field }) => (
                         <FormItem>
                             <FormLabel className="capitalize">
-                                {fieldName}
-                                {fieldSchema.required && " *"}
+                                <span>{fieldName}</span>
+                                {fieldSchema.required && (
+                                    <span className="text-destructive"> *</span>
+                                )}
                             </FormLabel>
                             <FormControl>
                                 <Input {...field} />
@@ -64,8 +77,10 @@ const ContentCreateFormField = ({
                     render={({ field }) => (
                         <FormItem>
                             <FormLabel className="capitalize">
-                                {fieldName}
-                                {fieldSchema.required && " *"}
+                                <span>{fieldName}</span>
+                                {fieldSchema.required && (
+                                    <span className="text-destructive"> *</span>
+                                )}
                             </FormLabel>
                             <FormControl>
                                 <Input
@@ -89,17 +104,19 @@ const ContentCreateFormField = ({
                     control={control}
                     name={fieldName}
                     render={({ field }) => (
-                        <FormItem className="flex items-start space-x-3 space-y-0">
+                        <FormItem className="flex items-center justify-between space-x-3 space-y-0 py-2">
+                            <FormLabel className="capitalize">
+                                <span>{fieldName}</span>
+                                {fieldSchema.required && (
+                                    <span className="text-destructive">*</span>
+                                )}
+                            </FormLabel>
                             <FormControl>
-                                <Checkbox
+                                <Switch
                                     checked={field.value}
-                                    onCheckedChange={field.onChange}
+                                    onChange={field.onChange}
                                 />
                             </FormControl>
-                            <FormLabel className="capitalize">
-                                {fieldName}
-                                {fieldSchema.required && " *"}
-                            </FormLabel>
                             <FormMessage />
                         </FormItem>
                     )}
@@ -108,7 +125,7 @@ const ContentCreateFormField = ({
     }
 };
 
-const ContentCreateForm = ({ repository }: { repository: Repository }) => {
+const ContentCreateDialog = ({ repository }: { repository: Repository }) => {
     const { toast } = useToast();
 
     const formSchema = createContentDataSchema(repository.contentSchema);
@@ -161,29 +178,50 @@ const ContentCreateForm = ({ repository }: { repository: Repository }) => {
     };
 
     return (
-        <div className="p-4 border">
-            <Form {...form}>
-                <form
-                    onSubmit={form.handleSubmit(onSubmit)}
-                    className="space-y-4"
-                >
-                    {Object.entries(repository.contentSchema).map(
-                        ([fieldName, fieldSchema]) => (
-                            <ContentCreateFormField
-                                key={fieldName}
-                                fieldName={fieldName}
-                                fieldSchema={fieldSchema}
-                                control={form.control}
-                            />
-                        )
-                    )}
-                    <Button type="submit" className="w-full">
-                        Create Content
+        <Dialog>
+            <DialogTrigger asChild>
+                <Button variant="default" className="font-medium">
+                    <Plus />
+                    <span>Create Content</span>
+                </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-lg lg:max-w-4xl">
+                <DialogHeader>
+                    <DialogTitle>New Content</DialogTitle>
+                    <DialogDescription>Create new content</DialogDescription>
+                </DialogHeader>
+                <Form {...form}>
+                    <form
+                        onSubmit={form.handleSubmit(onSubmit)}
+                        className="space-y-4"
+                    >
+                        {Object.entries(repository.contentSchema).map(
+                            ([fieldName, fieldSchema]) => (
+                                <ContentCreateDialogField
+                                    key={fieldName}
+                                    fieldName={fieldName}
+                                    fieldSchema={fieldSchema}
+                                    control={form.control}
+                                />
+                            )
+                        )}
+                    </form>
+                </Form>
+                <DialogFooter>
+                    <DialogClose asChild>
+                        <Button variant="secondary">Cancel</Button>
+                    </DialogClose>
+                    <Button
+                        onClick={async () => {
+                            await form.handleSubmit(onSubmit)();
+                        }}
+                    >
+                        Add Content
                     </Button>
-                </form>
-            </Form>
-        </div>
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
     );
 };
 
-export default ContentCreateForm;
+export default ContentCreateDialog;
