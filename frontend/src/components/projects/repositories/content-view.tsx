@@ -1,9 +1,21 @@
+"use client";
+
 import { useMemo } from "react";
 import { ColumnDef } from "@tanstack/react-table";
 
 import { Content } from "@/validators/content";
 import { Repository } from "@/validators/repository";
 import { DataTable } from "@/components/ui/data-table";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { MoreHorizontal } from "lucide-react";
+import Link from "next/link";
 
 type FlattenedContent = Pick<Content, "id"> & Content["data"];
 
@@ -39,8 +51,36 @@ const ContentView = ({
                 header: "Id",
             },
             ...dataColumns,
+            {
+                id: "actions",
+                cell: ({ row }) => {
+                    const content = row.original;
+                    return (
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <Button variant="ghost" className="h-8 w-8 p-0">
+                                    <span className="sr-only">Open menu</span>
+                                    <MoreHorizontal className="h-4 w-4" />
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                                <DropdownMenuLabel className="font-bold">
+                                    Actions
+                                </DropdownMenuLabel>
+                                <DropdownMenuItem>
+                                    <Link
+                                        href={`/projects/${repository.project}/content/${repository.id}/${content.id}`}
+                                    >
+                                        Edit content
+                                    </Link>
+                                </DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                    );
+                },
+            },
         ];
-    }, [contents, repository.contentSchema]);
+    }, [contents, repository]);
 
     return (
         <div className="border rounded-lg">
