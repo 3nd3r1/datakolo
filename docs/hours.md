@@ -63,4 +63,6 @@
 | 21.02.2025 | 2        | Start implementing content creation (TypeScript won today, I'll be back next week)                                                         |
 | 27.02.2025 | 1        | Finished implementing content creation                                                                                                     |
 | 27.02.2025 | 3        | Refactoring frontend completely                                                                                                            |
-|   Total    | 112      |                                                                                                                                            |
+| 28.02.2025 | 2        | Various improvements to frontend UI                                                                                                        |
+| 28.02.2025 | 2        | Start implementing content edit form                                                                                                       |
+|   Total    | 116      |                                                                                                                                            |
