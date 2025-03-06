@@ -6,8 +6,10 @@ import {
     validateContentData,
 } from "@/validators/content.ts";
 import repositoryService from "@/services/repository.ts";
+import { ContentData } from "@/validators/content.ts";
 
 export class RepositoryNotFound extends Error {}
+export class ContentNotFound extends Error {}
 
 const createContent = async (newContent: NewContent): Promise<ContentDTO> => {
     const repository = await repositoryService.getRepositoryById(
@@ -40,10 +42,37 @@ const getContentById = async (id: string): Promise<ContentDTO | undefined> => {
     return toContentDTO(content);
 };
 
+const updateContentData = async (
+    id: string,
+    data: ContentData,
+): Promise<ContentDTO> => {
+    const content = await getContentById(id);
+    if (!content) {
+        throw new ContentNotFound();
+    }
+
+    const repository = await repositoryService.getRepositoryById(
+        content.repository,
+    );
+    if (!repository) {
+        throw new RepositoryNotFound();
+    }
+
+    validateContentData(data, repository.contentSchema);
+
+    const updatedContent = await Content.findByIdAndUpdate(id, { data });
+    if (!updatedContent) {
+        throw new ContentNotFound();
+    }
+
+    return toContentDTO(updatedContent);
+};
+
 const contentService = {
     createContent,
     getContentsByRepository,
     getContentById,
+    updateContentData,
 };
 
 export default contentService;

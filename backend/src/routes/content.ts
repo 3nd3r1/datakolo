@@ -5,6 +5,7 @@ import {
     createContent,
     getContent,
     getContents,
+    updateContent,
 } from "@/controllers/content.ts";
 
 const router = new Router();
@@ -23,6 +24,11 @@ router.get(
     "/api/projects/:projectId/repositories/:repositoryId/contents/:id",
     authenticate,
     getContent,
+);
+router.post(
+    "/api/projects/:projectId/repositories/:repositoryId/contents/:id",
+    authenticate,
+    updateContent,
 );
 
 export default router;

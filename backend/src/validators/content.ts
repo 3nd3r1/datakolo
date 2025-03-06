@@ -60,6 +60,19 @@ export const toNewContent = (obj: NewContent): NewContent => {
     }
 };
 
+export const toContentData = (data: ContentData): ContentData => {
+    try {
+        return contentDataSchema.parse(data);
+    } catch (error: unknown) {
+        if (error instanceof z.ZodError) {
+            throw new ValidationError(
+                error.issues.flatMap((e) => e.message).join(", "),
+            );
+        }
+        throw error;
+    }
+};
+
 export const validateContentData = (
     data: ContentData,
     schema: ContentSchema,

@@ -1,8 +1,15 @@
 import { createHttpError } from "oak";
 
 import { AppContext } from "@/utils/oak.ts";
-import { toNewContent, ValidationError } from "@/validators/content.ts";
-import contentService from "@/services/content.ts";
+import {
+    toContentData,
+    toNewContent,
+    ValidationError,
+} from "@/validators/content.ts";
+import contentService, {
+    ContentNotFound,
+    RepositoryNotFound,
+} from "@/services/content.ts";
 
 export const createContent = async (
     ctx: AppContext<{ projectId: string; repositoryId: string }>,
@@ -26,6 +33,9 @@ export const createContent = async (
     } catch (error: unknown) {
         if (error instanceof ValidationError) {
             throw createHttpError(400, error.message);
+        }
+        if (error instanceof RepositoryNotFound) {
+            throw createHttpError(404, error.message);
         }
 
         throw error;
@@ -60,4 +70,34 @@ export const getContent = async (
     }
 
     ctx.response.body = content;
+};
+
+export const updateContent = async (
+    ctx: AppContext<{ projectId: string; repositoryId: string; id: string }>,
+) => {
+    const user = ctx.state.user;
+    if (!user) return;
+
+    const body = await ctx.request.body.json();
+    const id = ctx.params.id;
+
+    try {
+        const newContentData = toContentData(body.data);
+        const updatedContent = await contentService.updateContentData(
+            id,
+            newContentData,
+        );
+
+        ctx.response.body = updatedContent;
+    } catch (error: unknown) {
+        if (error instanceof ValidationError) {
+            throw createHttpError(400, error.message);
+        }
+        if (error instanceof RepositoryNotFound) {
+            throw createHttpError(404, error.message);
+        }
+        if (error instanceof ContentNotFound) {
+            throw createHttpError(404, error.message);
+        }
+    }
 };
