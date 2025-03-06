@@ -46,10 +46,6 @@ const ContentView = ({
             }));
 
         return [
-            {
-                accessorKey: "id",
-                header: "Id",
-            },
             ...dataColumns,
             {
                 id: "actions",

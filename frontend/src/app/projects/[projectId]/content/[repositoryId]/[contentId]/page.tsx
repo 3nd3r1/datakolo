@@ -7,6 +7,7 @@ import { getRepository } from "@/lib/repository";
 
 import ContentEditForm from "@/components/projects/repositories/content-edit-form";
 import { Button } from "@/components/ui/button";
+import ContentDisplayName from "@/components/projects/repositories/content-display-name";
 
 const Content = async ({
     params,
@@ -31,15 +32,17 @@ const Content = async ({
     return (
         <div className="flex flex-col gap-1">
             <div className="flex flex-row items-center py-2 mb-4">
-                <div>
-                    <Button variant="ghost" asChild>
+                <div className="flex flex-row items-center gap-x-2">
+                    <Button variant="ghost" asChild className="px-3">
                         <Link
                             href={`/projects/${projectId}/content/${repositoryId}`}
                         >
                             <ArrowLeft size={16} />
-                            <span>Back</span>
                         </Link>
                     </Button>
+                    <h3 className="text-lg font-bold">
+                        <ContentDisplayName content={content} />
+                    </h3>
                 </div>
             </div>
             <ContentEditForm repository={repository} content={content} />

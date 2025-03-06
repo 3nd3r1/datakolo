@@ -19,7 +19,6 @@ import { cn } from "@/lib/utils";
 
 const ProjectSidebar = ({ project }: { project: Project }) => {
     const pathname = usePathname();
-    console.log(pathname);
     const items: {
         title: string;
         icon: LucideIcon;

@@ -25,7 +25,11 @@ const RepositoriesSidebar = ({
     return (
         <div className="flex flex-col border-r">
             <div className="p-2 flex items-center justify-center h-14">
-                <h2 className="text-lg font-bold">Repositories</h2>
+                <h2 className="text-lg font-bold">
+                    {variant == "schema"
+                        ? "Schema Manager"
+                        : " Content Manager"}
+                </h2>
             </div>
             <Separator />
             <div className="flex flex-col p-2 gap-y-1">
