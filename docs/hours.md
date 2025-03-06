@@ -65,4 +65,7 @@
 | 27.02.2025 | 3        | Refactoring frontend completely                                                                                                            |
 | 28.02.2025 | 2        | Various improvements to frontend UI                                                                                                        |
 | 28.02.2025 | 2        | Start implementing content edit form                                                                                                       |
-|   Total    | 116      |                                                                                                                                            |
+| 06.03.2025 | 1        | Small improvements to frontend                                                                                                             |
+| 06.03.2025 | 2        | Implement content update path to backend                                                                                                   |
+| 06.03.2025 | 2        | Find a solution so Nvim Conform uses deno formatter for the backend                                                                        |
+|   Total    | 121      |                                                                                                                                            |
