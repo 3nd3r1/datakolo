@@ -11,7 +11,7 @@
 
 <p align="center">
 <strong>Datakolo</strong> is a headless CMS that helps you create, manage, and share content easily. 
-Unlike a traditional CMS, it separates content from design, letting you use it anywhere—like websites, apps, or other platforms—while keeping everything secure and organized.
+Unlike a traditional CMS, it separates content from design, letting you use it anywhere, like websites, apps, or other platforms, while keeping everything secure and organized.
 </p>
 
 <p align="center">
