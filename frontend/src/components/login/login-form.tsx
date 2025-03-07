@@ -25,6 +25,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
+import { TextField } from "@/components/common/forms/form-fields";
+
 const formSchema = loginSchema;
 
 const LoginForm = () => {
@@ -78,21 +80,12 @@ const LoginForm = () => {
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                <FormField
-                    control={form.control}
+                <TextField
                     name="username"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Username</FormLabel>
-                            <FormControl>
-                                <Input
-                                    placeholder="dragonslayer99"
-                                    {...field}
-                                />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
+                    label="Username"
+                    placeholder="dragonslayer99"
+                    control={form.control}
+                    required={true}
                 />
                 <FormField
                     control={form.control}

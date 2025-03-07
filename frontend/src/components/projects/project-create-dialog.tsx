@@ -5,7 +5,7 @@ import { useState } from "react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Plus } from "lucide-react";
-import { Control, FieldPath, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { ClipLoader } from "react-spinners";
 import { z } from "zod";
 
@@ -26,55 +26,24 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
-import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import { Form } from "@/components/ui/form";
+
+import { TextField } from "@/components/common/forms/form-fields";
 
 const formSchema = newProjectSchema;
 
-const ProjectCreateField = ({
-    control,
-    label,
-    name,
-    placeholder,
-}: {
-    control: Control<z.infer<typeof formSchema>>;
-    label: string;
-    name: FieldPath<z.infer<typeof formSchema>>;
-    placeholder: string;
-}) => (
-    <FormField
-        control={control}
-        name={name}
-        render={({ field }) => (
-            <FormItem>
-                <FormLabel>{label}</FormLabel>
-                <FormControl>
-                    <Input placeholder={placeholder} {...field} />
-                </FormControl>
-                <FormMessage />
-            </FormItem>
-        )}
-    />
-);
 const ProjectCreateDialog = () => {
     const { toast } = useToast();
     const [loading, setLoading] = useState(false);
 
-    const form = useForm<z.infer<typeof formSchema>>({
+    const form = useForm<z.infer>({
         resolver: zodResolver(formSchema),
         defaultValues: {
             name: "",
         },
     });
 
-    const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    const onSubmit = async (values: z.infer) => {
         let success = false;
         let createdProject: Project | undefined = undefined;
         setLoading(true);
@@ -130,11 +99,12 @@ const ProjectCreateDialog = () => {
                         onSubmit={form.handleSubmit(onSubmit)}
                         className="space-y-8"
                     >
-                        <ProjectCreateField
-                            control={form.control}
+                        <TextField
                             name="name"
                             label="Name"
                             placeholder="Project name"
+                            control={form.control}
+                            required={true}
                         />
                     </form>
                 </Form>

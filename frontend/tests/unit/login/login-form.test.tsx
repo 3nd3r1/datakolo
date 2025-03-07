@@ -32,7 +32,7 @@ describe("LoginForm", () => {
     it("renders form fields and submit button", () => {
         render(<LoginForm />);
 
-        expect(screen.getByLabelText("Username")).toBeInTheDocument();
+        expect(screen.getByLabelText("Username *")).toBeInTheDocument();
         expect(screen.getByLabelText("Password")).toBeInTheDocument();
         expect(
             screen.getByRole("button", { name: "Login" })
@@ -59,7 +59,7 @@ describe("LoginForm", () => {
 
         render(<LoginForm />);
 
-        fireEvent.input(screen.getByLabelText("Username"), {
+        fireEvent.input(screen.getByLabelText("Username *"), {
             target: { value: "john" },
         });
         fireEvent.input(screen.getByLabelText("Password"), {
@@ -82,7 +82,7 @@ describe("LoginForm", () => {
 
         render(<LoginForm />);
 
-        fireEvent.input(screen.getByLabelText("Username"), {
+        fireEvent.input(screen.getByLabelText("Username *"), {
             target: { value: "john" },
         });
         fireEvent.input(screen.getByLabelText("Password"), {

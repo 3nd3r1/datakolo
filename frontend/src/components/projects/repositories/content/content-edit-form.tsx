@@ -2,115 +2,16 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Save } from "lucide-react";
-import { Control, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { Content, createContentDataSchema } from "@/validators/content";
-import { Repository, contentSchemaFieldSchema } from "@/validators/repository";
+import { Repository } from "@/validators/repository";
 
 import { Button } from "@/components/ui/button";
-import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Switch } from "@/components/ui/switch";
+import { Form } from "@/components/ui/form";
 
-// TODO: Share components with content-create-dialog.tsx
-
-interface ContentEditFormFieldProps {
-    fieldName: string;
-    fieldSchema: z.infer<typeof contentSchemaFieldSchema>;
-    control: Control<any>; // eslint-disable-line @typescript-eslint/no-explicit-any
-}
-
-const ContentEditFormField = ({
-    fieldName,
-    fieldSchema,
-    control,
-}: ContentEditFormFieldProps) => {
-    switch (fieldSchema.type) {
-        case "string":
-            return (
-                <FormField
-                    control={control}
-                    name={fieldName}
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel className="capitalize">
-                                <span>{fieldName}</span>
-                                {fieldSchema.required && (
-                                    <span className="text-destructive"> *</span>
-                                )}
-                            </FormLabel>
-                            <FormControl>
-                                <Input {...field} />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-            );
-
-        case "number":
-            return (
-                <FormField
-                    control={control}
-                    name={fieldName}
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel className="capitalize">
-                                <span>{fieldName}</span>
-                                {fieldSchema.required && (
-                                    <span className="text-destructive"> *</span>
-                                )}
-                            </FormLabel>
-                            <FormControl>
-                                <Input
-                                    type="number"
-                                    {...field}
-                                    onChange={(e) =>
-                                        field.onChange(Number(e.target.value))
-                                    }
-                                    value={field.value ?? ""}
-                                />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-            );
-
-        case "boolean":
-            return (
-                <FormField
-                    control={control}
-                    name={fieldName}
-                    render={({ field }) => (
-                        <FormItem className="flex items-center justify-between space-x-3 space-y-0 py-2">
-                            <FormLabel className="capitalize">
-                                <span>{fieldName}</span>
-                                {fieldSchema.required && (
-                                    <span className="text-destructive">*</span>
-                                )}
-                            </FormLabel>
-                            <FormControl>
-                                <Switch
-                                    checked={field.value}
-                                    onChange={field.onChange}
-                                />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-            );
-    }
-};
+import ContentDataField from "./content-data-field";
 
 const ContentEditForm = ({
     repository,
@@ -142,15 +43,15 @@ const ContentEditForm = ({
             }
             return acc;
         },
-        {} as z.infer<typeof formSchema>
+        {} as z.infer
     );
 
-    const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    const onSubmit = async (values: z.infer) => {
         // TODO: Implement this
         console.log(values);
     };
 
-    const form = useForm<z.infer<typeof formSchema>>({
+    const form = useForm<z.infer>({
         resolver: zodResolver(formSchema),
         defaultValues: defaultValues,
     });
@@ -163,7 +64,7 @@ const ContentEditForm = ({
                 >
                     {Object.entries(repository.contentSchema).map(
                         ([fieldName, fieldSchema]) => (
-                            <ContentEditFormField
+                            <ContentDataField
                                 key={fieldName}
                                 fieldName={fieldName}
                                 fieldSchema={fieldSchema}

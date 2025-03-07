@@ -10,8 +10,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 
-interface RepositoriesSidebarProps
-    extends React.HTMLAttributes<HTMLDivElement> {
+interface RepositoriesSidebarProps extends React.HTMLAttributes {
     projectId: string;
     repositories: Repository[];
     variant: "schema" | "content";

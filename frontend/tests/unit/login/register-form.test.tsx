@@ -32,7 +32,7 @@ describe("RegisterForm", () => {
     it("renders form fields and submit button", () => {
         render(<RegisterForm />);
 
-        expect(screen.getByLabelText("Username")).toBeInTheDocument();
+        expect(screen.getByLabelText("Username *")).toBeInTheDocument();
         expect(screen.getByLabelText("Password")).toBeInTheDocument();
         expect(
             screen.getByRole("button", { name: "Register" })
@@ -59,7 +59,7 @@ describe("RegisterForm", () => {
 
         render(<RegisterForm />);
 
-        fireEvent.input(screen.getByLabelText("Username"), {
+        fireEvent.input(screen.getByLabelText("Username *"), {
             target: { value: "mister" },
         });
         fireEvent.input(screen.getByLabelText("Password"), {

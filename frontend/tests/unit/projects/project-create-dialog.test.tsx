@@ -34,7 +34,7 @@ describe("ProjectCreateDialog", () => {
 
         fireEvent.click(screen.getByRole("button", { name: "Create Project" }));
 
-        expect(screen.getByLabelText("Name")).toBeInTheDocument();
+        expect(screen.getByLabelText("Name *")).toBeInTheDocument();
     });
 
     it("validates all fields", async () => {
@@ -66,7 +66,7 @@ describe("ProjectCreateDialog", () => {
 
         fireEvent.click(screen.getByRole("button", { name: "Create Project" }));
 
-        fireEvent.input(screen.getByLabelText("Name"), {
+        fireEvent.input(screen.getByLabelText("Name *"), {
             target: { value: "Test Project" },
         });
         fireEvent.click(screen.getByRole("button", { name: "Add Project" }));

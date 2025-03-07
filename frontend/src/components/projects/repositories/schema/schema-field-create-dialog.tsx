@@ -17,7 +17,6 @@ import { updateRepository } from "@/lib/repository";
 import { useToast } from "@/hooks/use-toast";
 
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import {
     Dialog,
     DialogClose,
@@ -36,7 +35,6 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import {
     Select,
     SelectContent,
@@ -44,6 +42,8 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
+
+import { BooleanField, TextField } from "@/components/common/forms/form-fields";
 
 const formSchema = contentSchemaFieldSchema.extend({
     name: contentSchemaFieldNameSchema,
@@ -56,14 +56,14 @@ const SchemaFieldCreateDialog = ({
 }) => {
     const { toast } = useToast();
 
-    const form = useForm<z.infer<typeof formSchema>>({
+    const form = useForm<z.infer>({
         resolver: zodResolver(formSchema),
         defaultValues: {
             name: "",
         },
     });
 
-    const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    const onSubmit = async (values: z.infer) => {
         try {
             const repositoryUpdate = newRepositorySchema.partial().parse({
                 contentSchema: {
@@ -93,6 +93,7 @@ const SchemaFieldCreateDialog = ({
         }
     };
 
+    // TODO: Make select fields reusable
     return (
         <Dialog>
             <DialogTrigger className="w-full mt-4" asChild>
@@ -111,21 +112,12 @@ const SchemaFieldCreateDialog = ({
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)}>
                         <div className="flex flex-col gap-4">
-                            <FormField
-                                control={form.control}
+                            <TextField
                                 name="name"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Name</FormLabel>
-                                        <FormControl>
-                                            <Input
-                                                placeholder="Field name"
-                                                {...field}
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
+                                label="Name"
+                                placeholder="Field name"
+                                control={form.control}
+                                required={true}
                             />
                             <FormField
                                 control={form.control}
@@ -166,23 +158,10 @@ const SchemaFieldCreateDialog = ({
                             />
                             <div>
                                 <h3 className="mb-4 font-bold">Settings</h3>
-                                <FormField
-                                    control={form.control}
+                                <BooleanField
                                     name="required"
-                                    render={({ field }) => (
-                                        <FormItem className="flex items-center space-x-3 space-y-0">
-                                            <FormControl>
-                                                <Checkbox
-                                                    checked={field.value}
-                                                    onCheckedChange={
-                                                        field.onChange
-                                                    }
-                                                />
-                                            </FormControl>
-                                            <FormLabel>Required</FormLabel>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
+                                    label="Required"
+                                    control={form.control}
                                 />
                             </div>
                         </div>

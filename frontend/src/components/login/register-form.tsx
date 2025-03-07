@@ -25,13 +25,15 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
+import { TextField } from "@/components/common/forms/form-fields";
+
 const formSchema = newUserSchema;
 
 const RegisterForm = () => {
     const { toast } = useToast();
     const [loading, setLoading] = useState(false);
 
-    const form = useForm<z.infer<typeof formSchema>>({
+    const form = useForm<z.infer>({
         resolver: zodResolver(formSchema),
         defaultValues: {
             username: "",
@@ -39,7 +41,7 @@ const RegisterForm = () => {
         },
     });
 
-    const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    const onSubmit = async (values: z.infer) => {
         let success = false;
         setLoading(true);
 
@@ -78,21 +80,12 @@ const RegisterForm = () => {
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                <FormField
+                <TextField
                     control={form.control}
                     name="username"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Username</FormLabel>
-                            <FormControl>
-                                <Input
-                                    placeholder="dragonslayer99"
-                                    {...field}
-                                />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
+                    label="Username"
+                    placeholder="dragonslayer99"
+                    required={true}
                 />
                 <FormField
                     control={form.control}
