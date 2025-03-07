@@ -1,6 +1,19 @@
 {
+    "importOrder": [
+        "^./(.*).css$",
+        "(^next/(.*)$)|(^next$)|(^react/(.*)$)|(^react$)",
+        "^(?!@\/)(.*)$",
+        "^@/validators/(.*)$",
+        "^@/lib/(.*)$",
+        "^@/hooks/(.*)$",
+        "^@/components/ui(.*)$",
+        "^@/components/(.*)$"
+    ],
+    "importOrderSeparation": true,
+    "importOrderSortSpecifiers": true,
     "trailingComma": "es5",
     "tabWidth": 4,
     "semi": true,
-    "singleQuote": false
+    "singleQuote": false,
+    "plugins": ["@trivago/prettier-plugin-sort-imports"]
 }

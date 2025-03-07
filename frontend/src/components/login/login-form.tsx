@@ -1,11 +1,20 @@
 "use client";
 
-import { z } from "zod";
-import { useForm } from "react-hook-form";
 import { redirect } from "next/navigation";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { ClipLoader } from "react-spinners";
+import { useState } from "react";
 
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { ClipLoader } from "react-spinners";
+import { z } from "zod";
+
+import { loginSchema } from "@/validators/user";
+
+import { login } from "@/lib/auth";
+
+import { useToast } from "@/hooks/use-toast";
+
+import { Button } from "@/components/ui/button";
 import {
     Form,
     FormControl,
@@ -14,13 +23,7 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-
-import { useToast } from "@/hooks/use-toast";
-import { login } from "@/lib/auth";
-import { useState } from "react";
-import { loginSchema } from "@/validators/user";
 
 const formSchema = loginSchema;
 

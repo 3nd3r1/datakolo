@@ -1,6 +1,7 @@
-import { Content } from "@/validators/content";
-import { clsx, type ClassValue } from "clsx";
+import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+
+import { Content } from "@/validators/content";
 
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));

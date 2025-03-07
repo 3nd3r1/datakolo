@@ -1,7 +1,8 @@
 import { useMemo } from "react";
 
-import { getContentDisplayValue } from "@/lib/utils";
 import { Content } from "@/validators/content";
+
+import { getContentDisplayValue } from "@/lib/utils";
 
 const ContentDisplayName = ({ content }: { content: Content }) => {
     const displayName = useMemo(

@@ -1,10 +1,10 @@
 import { notFound } from "next/navigation";
 
-import { getRepository } from "@/lib/repository";
 import { getContents } from "@/lib/content";
+import { getRepository } from "@/lib/repository";
 
-import ContentView from "@/components/projects/repositories/content-view";
 import ContentCreateDialog from "@/components/projects/repositories/content-create-dialog";
+import ContentView from "@/components/projects/repositories/content-view";
 
 const RepositoryContent = async ({
     params,

@@ -1,8 +1,9 @@
+import { Project } from "@/types/project";
+
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
 import ProjectList from "@/components/projects/project-list";
-import { Project } from "@/types/project";
 
 const dummyProjects: Project[] = [
     {

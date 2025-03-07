@@ -1,5 +1,7 @@
 import Link from "next/link";
-import { Book, ArrowRight } from "lucide-react";
+
+import { ArrowRight, Book } from "lucide-react";
+
 import { Project } from "@/validators/project";
 
 const ProjectItem = ({ project }: { project: Project }) => (

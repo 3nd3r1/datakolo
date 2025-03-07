@@ -2,12 +2,15 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+
 import { Library, LucideIcon } from "lucide-react";
 
-import { Separator } from "@/components/ui/separator";
-import UserNav from "@/components/user-nav";
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+
+import UserNav from "@/components/user-nav";
 
 const MainNavbar = () => {
     const pathname = usePathname();

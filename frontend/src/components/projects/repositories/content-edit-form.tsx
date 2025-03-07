@@ -1,12 +1,14 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Save } from "lucide-react";
 import { Control, useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { Content, createContentDataSchema } from "@/validators/content";
-import { contentSchemaFieldSchema, Repository } from "@/validators/repository";
+import { Repository, contentSchemaFieldSchema } from "@/validators/repository";
 
+import { Button } from "@/components/ui/button";
 import {
     Form,
     FormControl,
@@ -17,8 +19,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
-import { Button } from "@/components/ui/button";
-import { Save } from "lucide-react";
 
 // TODO: Share components with content-create-dialog.tsx
 

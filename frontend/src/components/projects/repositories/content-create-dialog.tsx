@@ -1,25 +1,21 @@
 "use client";
 
-import { z } from "zod";
-import { Control, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Plus } from "lucide-react";
+import { Control, useForm } from "react-hook-form";
+import { z } from "zod";
 
-import { contentSchemaFieldSchema, Repository } from "@/validators/repository";
 import {
     createContentDataSchema,
     newContentSchema,
 } from "@/validators/content";
+import { Repository, contentSchemaFieldSchema } from "@/validators/repository";
+
 import { createContent } from "@/lib/content";
+
 import { useToast } from "@/hooks/use-toast";
-import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from "@/components/ui/form";
+
+import { Button } from "@/components/ui/button";
 import {
     Dialog,
     DialogClose,
@@ -30,8 +26,15 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 
 interface ContentCreateFormFieldProps {

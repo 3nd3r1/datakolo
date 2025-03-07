@@ -1,28 +1,23 @@
 "use client";
 
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Plus } from "lucide-react";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import {
+    Repository,
     contentSchemaFieldNameSchema,
     contentSchemaFieldSchema,
     newRepositorySchema,
-    Repository,
 } from "@/validators/repository";
+
 import { updateRepository } from "@/lib/repository";
+
 import { useToast } from "@/hooks/use-toast";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from "@/components/ui/form";
 import {
     Dialog,
     DialogClose,
@@ -33,6 +28,14 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import {
     Select,
@@ -41,7 +44,6 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
-import { Plus } from "lucide-react";
 
 const formSchema = contentSchemaFieldSchema.extend({
     name: contentSchemaFieldNameSchema,

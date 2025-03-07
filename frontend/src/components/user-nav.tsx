@@ -1,7 +1,15 @@
 "use client";
 
+import Link from "next/link";
+import { useEffect, useState } from "react";
+
 import { UserIcon } from "lucide-react";
 
+import { User } from "@/validators/user";
+
+import { getUser } from "@/lib/auth";
+
+import { Button } from "@/components/ui/button";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -10,11 +18,6 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-import { getUser } from "@/lib/auth";
-import Link from "next/link";
-import { useEffect, useState } from "react";
-import { User } from "@/validators/user";
 
 const items: { title: string; href: string }[] = [
     { title: "Logout", href: "/logout" },

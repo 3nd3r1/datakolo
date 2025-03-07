@@ -2,25 +2,20 @@
 
 import { redirect } from "next/navigation";
 import { useState } from "react";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Plus } from "lucide-react";
 import { Control, FieldPath, useForm } from "react-hook-form";
 import { ClipLoader } from "react-spinners";
 import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
+
+import { Project, newProjectSchema } from "@/validators/project";
+
+import { createProject } from "@/lib/project";
 
 import { useToast } from "@/hooks/use-toast";
-import { createProject } from "@/lib/project";
-import { newProjectSchema, Project } from "@/validators/project";
 
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from "@/components/ui/form";
 import {
     Dialog,
     DialogClose,
@@ -31,7 +26,15 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
-import { Plus } from "lucide-react";
+import {
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 
 const formSchema = newProjectSchema;
 

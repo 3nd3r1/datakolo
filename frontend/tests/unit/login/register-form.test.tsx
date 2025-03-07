@@ -1,8 +1,10 @@
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import { beforeEach, describe, expect, it, vi } from "vitest";
 import { redirect } from "next/navigation";
 
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+
 import { register } from "@/lib/auth";
+
 import { useToast } from "@/hooks/use-toast";
 
 import RegisterForm from "@/components/login/register-form";

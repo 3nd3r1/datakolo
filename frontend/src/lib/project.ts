@@ -1,11 +1,13 @@
 "use server";
 
 import { cache } from "react";
+
 import axios from "axios";
 
-import { config } from "@/lib/config";
-import { getAuthHeader } from "@/lib/auth";
 import { NewProject, Project } from "@/validators/project";
+
+import { getAuthHeader } from "@/lib/auth";
+import { config } from "@/lib/config";
 
 export const getProjects = cache(async (): Promise<Project[]> => {
     try {

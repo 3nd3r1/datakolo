@@ -1,7 +1,7 @@
+import { getProjects } from "@/lib/project";
+
 import ProjectCreateDialog from "@/components/projects/project-create-dialog";
 import ProjectList from "@/components/projects/project-list";
-
-import { getProjects } from "@/lib/project";
 
 const Projects = async () => {
     const projects = await getProjects();

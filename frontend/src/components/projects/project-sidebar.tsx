@@ -1,21 +1,24 @@
 "use client";
 
 import Link from "next/link";
-import { Database, FileText, HomeIcon, LucideIcon } from "lucide-react";
 import { usePathname } from "next/navigation";
+
+import { Database, FileText, HomeIcon, LucideIcon } from "lucide-react";
 
 import { Project } from "@/validators/project";
 
-import { Separator } from "@/components/ui/separator";
+import { cn } from "@/lib/utils";
+
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import {
     Tooltip,
     TooltipContent,
     TooltipProvider,
     TooltipTrigger,
 } from "@/components/ui/tooltip";
+
 import UserNav from "@/components/user-nav";
-import { cn } from "@/lib/utils";
 
 const ProjectSidebar = ({ project }: { project: Project }) => {
     const pathname = usePathname();

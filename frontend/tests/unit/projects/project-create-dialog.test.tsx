@@ -1,10 +1,13 @@
+import { redirect } from "next/navigation";
+
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import ProjectCreateDialog from "@/components/projects/project-create-dialog";
-import { redirect } from "next/navigation";
-import { useToast } from "@/hooks/use-toast";
 import { createProject } from "@/lib/project";
+
+import { useToast } from "@/hooks/use-toast";
+
+import ProjectCreateDialog from "@/components/projects/project-create-dialog";
 
 vi.mock("@/hooks/use-toast", () => ({
     useToast: vi.fn().mockReturnValue({ toast: vi.fn() }),

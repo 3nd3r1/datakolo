@@ -1,5 +1,6 @@
-import ProjectSidebar from "@/components/projects/project-sidebar";
 import { getProject } from "@/lib/project";
+
+import ProjectSidebar from "@/components/projects/project-sidebar";
 
 export default async function Layout({
     children,

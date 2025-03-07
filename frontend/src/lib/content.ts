@@ -1,11 +1,13 @@
 "use server";
 
 import { cache } from "react";
+
 import axios from "axios";
 
-import { config } from "@/lib/config";
+import { Content, NewContent } from "@/validators/content";
+
 import { getAuthHeader } from "@/lib/auth";
-import { NewContent, Content } from "@/validators/content";
+import { config } from "@/lib/config";
 
 export const getContents = cache(
     async (projectId: string, repositoryId: string): Promise<Content[]> => {

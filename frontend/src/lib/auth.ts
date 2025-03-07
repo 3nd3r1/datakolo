@@ -2,10 +2,12 @@
 
 import { cookies } from "next/headers";
 import { cache } from "react";
+
 import axios from "axios";
 
-import { config } from "@/lib/config";
 import { NewUser, User } from "@/validators/user";
+
+import { config } from "@/lib/config";
 
 export const getAuthHeader = async (): Promise<
     | {

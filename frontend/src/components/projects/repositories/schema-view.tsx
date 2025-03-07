@@ -1,5 +1,6 @@
-import { Repository } from "@/validators/repository";
 import FieldCreateDialog from "./field-create-dialog";
+
+import { Repository } from "@/validators/repository";
 
 const SchemaView = ({ repository }: { repository: Repository }) => {
     return (

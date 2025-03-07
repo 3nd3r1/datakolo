@@ -1,10 +1,15 @@
 "use client";
 
+import Link from "next/link";
 import { useMemo } from "react";
+
 import { ColumnDef } from "@tanstack/react-table";
+import { MoreHorizontal } from "lucide-react";
 
 import { Content } from "@/validators/content";
 import { Repository } from "@/validators/repository";
+
+import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
 import {
     DropdownMenu,
@@ -13,9 +18,6 @@ import {
     DropdownMenuLabel,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-import { MoreHorizontal } from "lucide-react";
-import Link from "next/link";
 
 type FlattenedContent = Pick<Content, "id"> & Content["data"];
 

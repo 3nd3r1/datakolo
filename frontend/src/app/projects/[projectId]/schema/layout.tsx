@@ -1,9 +1,12 @@
-import RepositoriesSidebar from "@/components/projects/repositories/repositories-sidebar";
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
+import { Menu } from "lucide-react";
+
 import { getProject } from "@/lib/project";
 import { getRepositories } from "@/lib/repository";
-import { Menu } from "lucide-react";
+
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+
+import RepositoriesSidebar from "@/components/projects/repositories/repositories-sidebar";
 
 export default async function Layout({
     children,

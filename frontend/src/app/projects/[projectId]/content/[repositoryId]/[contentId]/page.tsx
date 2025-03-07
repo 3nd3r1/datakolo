@@ -1,13 +1,15 @@
-import { notFound } from "next/navigation";
 import Link from "next/link";
+import { notFound } from "next/navigation";
+
 import { ArrowLeft } from "lucide-react";
 
 import { getContent } from "@/lib/content";
 import { getRepository } from "@/lib/repository";
 
-import ContentEditForm from "@/components/projects/repositories/content-edit-form";
 import { Button } from "@/components/ui/button";
+
 import ContentDisplayName from "@/components/projects/repositories/content-display-name";
+import ContentEditForm from "@/components/projects/repositories/content-edit-form";
 
 const Content = async ({
     params,
