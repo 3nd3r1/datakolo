@@ -1,13 +1,14 @@
 {
     "importOrder": [
-        "^./(.*).css$",
         "(^next/(.*)$)|(^next$)|(^react/(.*)$)|(^react$)",
-        "^(?!@\/)(.*)$",
+        "^(?!(@\/|\\.))(.*)$",
         "^@/validators/(.*)$",
         "^@/lib/(.*)$",
         "^@/hooks/(.*)$",
         "^@/components/ui(.*)$",
-        "^@/components/(.*)$"
+        "^@/components/(.*)$",
+        "^./(.*).css$",
+        "^./(.*)$"
     ],
     "importOrderSeparation": true,
     "importOrderSortSpecifiers": true,
