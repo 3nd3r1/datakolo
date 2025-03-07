@@ -18,7 +18,7 @@ import {
     TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-import UserNav from "@/components/user-nav";
+import UserNav from "@/components/common/layouts/user-nav";
 
 const ProjectSidebar = ({ project }: { project: Project }) => {
     const pathname = usePathname();

@@ -49,7 +49,11 @@ const formSchema = contentSchemaFieldSchema.extend({
     name: contentSchemaFieldNameSchema,
 });
 
-const FieldCreateDialog = ({ repository }: { repository: Repository }) => {
+const SchemaFieldCreateDialog = ({
+    repository,
+}: {
+    repository: Repository;
+}) => {
     const { toast } = useToast();
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -205,4 +209,4 @@ const FieldCreateDialog = ({ repository }: { repository: Repository }) => {
     );
 };
 
-export default FieldCreateDialog;
+export default SchemaFieldCreateDialog;

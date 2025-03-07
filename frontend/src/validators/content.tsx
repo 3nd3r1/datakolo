@@ -1,5 +1,6 @@
-import { RepositoryContentSchema } from "./repository";
 import { z } from "zod";
+
+import { RepositoryContentSchema } from "@/validators/repository";
 
 export const createContentDataSchema = (schema: RepositoryContentSchema) => {
     // TODO: Improve the type safety of this function

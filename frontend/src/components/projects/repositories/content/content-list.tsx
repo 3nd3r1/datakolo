@@ -21,7 +21,7 @@ import {
 
 type FlattenedContent = Pick<Content, "id"> & Content["data"];
 
-const ContentView = ({
+const ContentList = ({
     repository,
     contents,
 }: {
@@ -87,4 +87,4 @@ const ContentView = ({
     );
 };
 
-export default ContentView;
+export default ContentList;

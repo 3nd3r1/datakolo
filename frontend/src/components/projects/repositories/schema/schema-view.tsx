@@ -1,6 +1,6 @@
 import { Repository } from "@/validators/repository";
 
-import SchemaFieldCreateDialog from "@/components/projects/repositories/schema/schema-field-create-dialog";
+import SchemaFieldCreateDialog from "./schema-field-create-dialog";
 
 const SchemaView = ({ repository }: { repository: Repository }) => {
     return (

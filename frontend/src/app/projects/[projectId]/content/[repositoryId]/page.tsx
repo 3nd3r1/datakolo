@@ -3,8 +3,8 @@ import { notFound } from "next/navigation";
 import { getContents } from "@/lib/content";
 import { getRepository } from "@/lib/repository";
 
-import ContentCreateDialog from "@/components/projects/repositories/content-create-dialog";
-import ContentView from "@/components/projects/repositories/content-view";
+import ContentCreateDialog from "@/components/projects/repositories/content/content-create-dialog";
+import ContentView from "@/components/projects/repositories/content/content-list";
 
 const RepositoryContent = async ({
     params,

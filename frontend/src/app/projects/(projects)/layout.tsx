@@ -1,4 +1,4 @@
-import MainNavbar from "@/components/main-navbar";
+import MainNavbar from "@/components/common/layouts/main-navbar";
 
 const Layout = ({
     children,

@@ -1,7 +1,7 @@
-import { Project } from "@/types/project";
-
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
+
+import { Project } from "@/validators/project";
 
 import ProjectList from "@/components/projects/project-list";
 
