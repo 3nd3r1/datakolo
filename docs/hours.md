@@ -68,4 +68,7 @@
 | 06.03.2025 | 1        | Small improvements to frontend                                                                                                             |
 | 06.03.2025 | 2        | Implement content update path to backend                                                                                                   |
 | 06.03.2025 | 2        | Find a solution so Nvim Conform uses deno formatter for the backend                                                                        |
-|   Total    | 121      |                                                                                                                                            |
+| 07.03.2025 | 1        | Find best way to input project context into LLM; Add Makefile and implement code2prompt                                                    |
+| 07.03.2025 | 1        | Add sorting for imports to frontend formatting                                                                                             |
+| 07.03.2025 | 2        | Restructuring / refactoring frontend components                                                                                            |
+|   Total    | 125      |                                                                                                                                            |
