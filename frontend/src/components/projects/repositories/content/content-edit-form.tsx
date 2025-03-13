@@ -8,6 +8,10 @@ import { z } from "zod";
 import { Content, createContentDataSchema } from "@/validators/content";
 import { Repository } from "@/validators/repository";
 
+import { updateContent } from "@/lib/content";
+
+import { useToast } from "@/hooks/use-toast";
+
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 
@@ -20,6 +24,8 @@ const ContentEditForm = ({
     repository: Repository;
     content: Content;
 }) => {
+    const { toast } = useToast();
+
     const formSchema = createContentDataSchema(repository.contentSchema);
     const defaultValues = Object.entries(repository.contentSchema).reduce(
         (acc, [fieldName, fieldSchema]) => {
@@ -43,15 +49,34 @@ const ContentEditForm = ({
             }
             return acc;
         },
-        {} as z.infer
+        {} as z.infer<typeof formSchema>
     );
 
-    const onSubmit = async (values: z.infer) => {
-        // TODO: Implement this
-        console.log(values);
+    const onSubmit = async (values: z.infer<typeof formSchema>) => {
+        try {
+            await updateContent(
+                repository.project,
+                content.repository,
+                content.id,
+                { data: values }
+            );
+            toast({
+                title: "Success",
+                description: `Content has been updated`,
+            });
+        } catch (error: unknown) {
+            toast({
+                variant: "destructive",
+                title: "Error",
+                description:
+                    error instanceof Error
+                        ? error.message
+                        : "An error occurred",
+            });
+        }
     };
 
-    const form = useForm<z.infer>({
+    const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: defaultValues,
     });

@@ -42,7 +42,7 @@ const Content = async ({
                             <ArrowLeft size={16} />
                         </Link>
                     </Button>
-                    <h3 className="text-lg font-bold">
+                    <h3 className="text-xl font-bold">
                         <ContentDisplayName content={content} />
                     </h3>
                 </div>

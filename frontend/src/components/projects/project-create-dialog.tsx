@@ -9,7 +9,7 @@ import { useForm } from "react-hook-form";
 import { ClipLoader } from "react-spinners";
 import { z } from "zod";
 
-import { Project, newProjectSchema } from "@/validators/project";
+import { Project, newProjectSchema, projectSchema } from "@/validators/project";
 
 import { createProject } from "@/lib/project";
 
@@ -36,14 +36,14 @@ const ProjectCreateDialog = () => {
     const { toast } = useToast();
     const [loading, setLoading] = useState(false);
 
-    const form = useForm<z.infer>({
+    const form = useForm<z.infer<typeof projectSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
             name: "",
         },
     });
 
-    const onSubmit = async (values: z.infer) => {
+    const onSubmit = async (values: z.infer<typeof projectSchema>) => {
         let success = false;
         let createdProject: Project | undefined = undefined;
         setLoading(true);

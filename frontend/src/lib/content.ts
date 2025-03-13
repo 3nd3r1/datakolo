@@ -75,3 +75,34 @@ export const createContent = async (
         throw error;
     }
 };
+
+export const updateContent = async (
+    projectId: string,
+    repositoryId: string,
+    id: string,
+    contentUpdate: Partial<NewContent>
+): Promise<Content> => {
+    try {
+        const response = await fetch(
+            `${config.apiUrl}/projects/${projectId}/repositories/${repositoryId}/contents/${id}`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    ...(await getAuthHeader()),
+                },
+                body: JSON.stringify(contentUpdate),
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error(
+                (await response.json()).error || "An error occurred"
+            );
+        }
+
+        return (await response.json()) as Content;
+    } catch (error: unknown) {
+        throw error;
+    }
+};

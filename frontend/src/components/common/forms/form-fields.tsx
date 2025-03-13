@@ -14,7 +14,7 @@ interface TextFieldProps {
     name: string;
     label: string;
     // TODO: Improve the type safety of this prop
-    control: Control; // eslint-disable-line @typescript-eslint/no-explicit-any
+    control: Control<any>; // eslint-disable-line @typescript-eslint/no-explicit-any
     placeholder?: string;
     required?: boolean;
 }
