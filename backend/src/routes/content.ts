@@ -25,7 +25,7 @@ router.get(
     authenticate,
     getContent,
 );
-router.post(
+router.put(
     "/api/projects/:projectId/repositories/:repositoryId/contents/:id",
     authenticate,
     updateContent,
