@@ -1,9 +1,6 @@
 "use server";
 
 import { cookies } from "next/headers";
-import { cache } from "react";
-
-import axios from "axios";
 
 import { NewUser, User } from "@/validators/user";
 
@@ -28,46 +25,62 @@ export const setAuthToken = async (token: string) => {
     (await cookies()).set("token", token, { path: "/" });
 };
 
-export const getUser = cache(async (): Promise<User | undefined> => {
+export const getUser = async (): Promise<User> => {
     try {
-        const response = await axios.get(config.apiUrl + "/user", {
-            headers: await getAuthHeader(),
+        const response = await fetch(config.apiUrl + "/user", {
+            headers: {
+                "Content-Type": "application/json",
+                ...(await getAuthHeader()),
+            },
+            cache: "no-store",
         });
-        return response.data as User;
-    } catch (error: unknown) {
-        if (axios.isAxiosError(error) && error.response?.data?.error) {
-            throw new Error(error.response.data.error);
+
+        if (!response.ok) {
+            throw Error((await response.json()).error);
         }
 
+        return (await response.json()) as User;
+    } catch (error: unknown) {
         throw error;
     }
-});
+};
 
 export const login = async (username: string, password: string) => {
     try {
-        const response = await axios.post(config.apiUrl + "/login", {
-            username,
-            password,
+        const response = await fetch(config.apiUrl + "/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ username, password }),
         });
-        await setAuthToken(response.data.token);
-    } catch (error: unknown) {
-        if (axios.isAxiosError(error) && error.response?.data?.error) {
-            throw new Error(error.response.data.error);
+
+        if (!response.ok) {
+            throw new Error((await response.json()).error);
         }
 
+        await setAuthToken((await response.json()).token);
+    } catch (error: unknown) {
         throw error;
     }
 };
 
 export const register = async (newUser: NewUser) => {
     try {
-        const response = await axios.post(config.apiUrl + "/register", newUser);
-        await setAuthToken(response.data.token);
-    } catch (error: unknown) {
-        if (axios.isAxiosError(error) && error.response?.data?.error) {
-            throw new Error(error.response.data.error);
+        const response = await fetch(config.apiUrl + "/register", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(newUser),
+        });
+
+        if (!response.ok) {
+            throw new Error((await response.json()).error);
         }
 
+        await setAuthToken((await response.json()).token);
+    } catch (error: unknown) {
         throw error;
     }
 };

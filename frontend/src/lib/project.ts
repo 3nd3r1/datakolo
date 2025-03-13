@@ -1,66 +1,76 @@
 "use server";
 
-import { cache } from "react";
-
-import axios from "axios";
+import { revalidateTag } from "next/cache";
 
 import { NewProject, Project } from "@/validators/project";
 
 import { getAuthHeader } from "@/lib/auth";
 import { config } from "@/lib/config";
 
-export const getProjects = cache(async (): Promise<Project[]> => {
+export const getProjects = async (): Promise<Project[]> => {
     try {
-        const response = await axios.get(config.apiUrl + "/projects", {
-            headers: await getAuthHeader(),
+        const response = await fetch(config.apiUrl + "/projects", {
+            headers: {
+                "Content-Type": "application/json",
+                ...(await getAuthHeader()),
+            },
+            next: {
+                tags: ["project"],
+            },
         });
-        return response.data as Project[];
-    } catch (error: unknown) {
-        if (axios.isAxiosError(error) && error.response?.data?.error) {
-            throw new Error(error.response.data.error);
+
+        if (!response.ok) {
+            throw new Error((await response.json()).error);
         }
 
+        return (await response.json()) as Project[];
+    } catch (error: unknown) {
         throw error;
     }
-});
+};
 
-export const getProject = cache(
-    async (id: string): Promise<Project | undefined> => {
-        try {
-            const response = await axios.get(
-                config.apiUrl + "/projects/" + id,
-                {
-                    headers: await getAuthHeader(),
-                }
-            );
-            return response.data as Project;
-        } catch (error: unknown) {
-            if (axios.isAxiosError(error) && error.response?.data?.error) {
-                throw new Error(error.response.data.error);
-            }
+export const getProject = async (id: string): Promise<Project> => {
+    try {
+        const response = await fetch(config.apiUrl + "/projects/" + id, {
+            headers: {
+                "Content-Type": "application/json",
+                ...(await getAuthHeader()),
+            },
+            next: {
+                tags: ["project"],
+            },
+        });
 
-            throw error;
+        if (!response.ok) {
+            throw new Error((await response.json()).error);
         }
+
+        return (await response.json()) as Project;
+    } catch (error: unknown) {
+        throw error;
     }
-);
+};
 
 export const createProject = async (
     newProject: NewProject
 ): Promise<Project> => {
     try {
-        const response = await axios.post(
-            config.apiUrl + "/projects",
-            newProject,
-            {
-                headers: await getAuthHeader(),
-            }
-        );
-        return response.data as Project;
-    } catch (error: unknown) {
-        if (axios.isAxiosError(error) && error.response?.data?.error) {
-            throw new Error(error.response.data.error);
+        const response = await fetch(config.apiUrl + "/projects", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                ...(await getAuthHeader()),
+            },
+            body: JSON.stringify(newProject),
+        });
+
+        if (!response.ok) {
+            throw new Error((await response.json()).error);
         }
 
+        revalidateTag("project");
+        return (await response.json()) as Project;
+    } catch (error: unknown) {
         throw error;
     }
 };

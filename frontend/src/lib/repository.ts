@@ -1,74 +1,91 @@
 "use server";
 
-import { cache } from "react";
-
-import axios from "axios";
+import { revalidateTag } from "next/cache";
 
 import { NewRepository, Repository } from "@/validators/repository";
 
 import { getAuthHeader } from "@/lib/auth";
 import { config } from "@/lib/config";
 
-//TODO: Revalidate tags and leave axios
-
-export const getRepositories = cache(
-    async (projectId: string): Promise<Repository[]> => {
-        try {
-            const response = await axios.get(
-                `${config.apiUrl}/projects/${projectId}/repositories`,
-                {
-                    headers: await getAuthHeader(),
-                }
-            );
-            return response.data as Repository[];
-        } catch (error: unknown) {
-            if (axios.isAxiosError(error) && error.response?.data?.error) {
-                throw new Error(error.response.data.error);
+export const getRepositories = async (
+    projectId: string
+): Promise<Repository[]> => {
+    try {
+        const response = await fetch(
+            `${config.apiUrl}/projects/${projectId}/repositories`,
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                    ...(await getAuthHeader()),
+                },
+                next: {
+                    tags: ["repository"],
+                },
             }
+        );
 
-            throw error;
+        if (!response.ok) {
+            throw new Error((await response.json()).error);
         }
-    }
-);
 
-export const getRepository = cache(
-    async (projectId: string, id: string): Promise<Repository | undefined> => {
-        try {
-            const response = await axios.get(
-                `${config.apiUrl}/projects/${projectId}/repositories/${id}`,
-                {
-                    headers: await getAuthHeader(),
-                }
-            );
-            return response.data as Repository;
-        } catch (error: unknown) {
-            if (axios.isAxiosError(error) && error.response?.data?.error) {
-                throw new Error(error.response.data.error);
+        return (await response.json()) as Repository[];
+    } catch (error: unknown) {
+        throw error;
+    }
+};
+
+export const getRepository = async (
+    projectId: string,
+    id: string
+): Promise<Repository> => {
+    try {
+        const response = await fetch(
+            `${config.apiUrl}/projects/${projectId}/repositories/${id}`,
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                    ...(await getAuthHeader()),
+                },
+                next: {
+                    tags: ["repository"],
+                },
             }
+        );
 
-            throw error;
+        if (!response.ok) {
+            throw new Error((await response.json()).error);
         }
+
+        return (await response.json()) as Repository;
+    } catch (error: unknown) {
+        throw error;
     }
-);
+};
 
 export const createRepository = async (
     projectId: string,
     newRepository: NewRepository
 ): Promise<Repository> => {
     try {
-        const response = await axios.post(
+        const response = await fetch(
             `${config.apiUrl}/projects/${projectId}/repositories`,
-            newRepository,
             {
-                headers: await getAuthHeader(),
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    ...(await getAuthHeader()),
+                },
+                body: JSON.stringify(newRepository),
             }
         );
-        return response.data as Repository;
-    } catch (error: unknown) {
-        if (axios.isAxiosError(error) && error.response?.data?.error) {
-            throw new Error(error.response.data.error);
+
+        if (!response.ok) {
+            throw new Error((await response.json()).error);
         }
 
+        revalidateTag("repository");
+        return (await response.json()) as Repository;
+    } catch (error: unknown) {
         throw error;
     }
 };
@@ -79,19 +96,25 @@ export const updateRepository = async (
     repositoryUpdate: Partial<NewRepository>
 ): Promise<Repository> => {
     try {
-        const response = await axios.put(
+        const response = await fetch(
             `${config.apiUrl}/projects/${projectId}/repositories/${id}`,
-            repositoryUpdate,
             {
-                headers: await getAuthHeader(),
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    ...(await getAuthHeader()),
+                },
+                body: JSON.stringify(repositoryUpdate),
             }
         );
-        return response.data as Repository;
-    } catch (error: unknown) {
-        if (axios.isAxiosError(error) && error.response?.data?.error) {
-            throw new Error(error.response.data.error);
+
+        if (!response.ok) {
+            throw new Error((await response.json()).error);
         }
 
+        revalidateTag("repository");
+        return (await response.json()) as Repository;
+    } catch (error: unknown) {
         throw error;
     }
 };

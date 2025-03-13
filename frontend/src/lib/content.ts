@@ -1,57 +1,69 @@
 "use server";
 
-import { cache } from "react";
-
-import axios from "axios";
+import { revalidateTag } from "next/cache";
 
 import { Content, NewContent } from "@/validators/content";
 
 import { getAuthHeader } from "@/lib/auth";
 import { config } from "@/lib/config";
 
-export const getContents = cache(
-    async (projectId: string, repositoryId: string): Promise<Content[]> => {
-        try {
-            const response = await axios.get(
-                `${config.apiUrl}/projects/${projectId}/repositories/${repositoryId}/contents`,
-                {
-                    headers: await getAuthHeader(),
-                }
-            );
-            return response.data as Content[];
-        } catch (error: unknown) {
-            if (axios.isAxiosError(error) && error.response?.data?.error) {
-                throw new Error(error.response.data.error);
+export const getContents = async (
+    projectId: string,
+    repositoryId: string
+): Promise<Content[]> => {
+    try {
+        const response = await fetch(
+            `${config.apiUrl}/projects/${projectId}/repositories/${repositoryId}/contents`,
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                    ...(await getAuthHeader()),
+                },
+                next: {
+                    tags: ["content"],
+                },
             }
+        );
 
-            throw error;
+        if (!response.ok) {
+            throw new Error((await response.json()).error);
         }
-    }
-);
 
-export const getContent = cache(
-    async (
-        projectId: string,
-        repositoryId: string,
-        id: string
-    ): Promise<Content | undefined> => {
-        try {
-            const response = await axios.get(
-                `${config.apiUrl}/projects/${projectId}/repositories/${repositoryId}/contents/${id}`,
-                {
-                    headers: await getAuthHeader(),
-                }
-            );
-            return response.data as Content;
-        } catch (error: unknown) {
-            if (axios.isAxiosError(error) && error.response?.data?.error) {
-                throw new Error(error.response.data.error);
+        return (await response.json()) as Content[];
+    } catch (error: unknown) {
+        throw error;
+    }
+};
+
+export const getContent = async (
+    projectId: string,
+    repositoryId: string,
+    id: string
+): Promise<Content> => {
+    try {
+        const response = await fetch(
+            `${config.apiUrl}/projects/${projectId}/repositories/${repositoryId}/contents/${id}`,
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                    ...(await getAuthHeader()),
+                },
+                next: {
+                    tags: ["content"],
+                },
             }
-
-            throw error;
+        );
+        if (!response.ok) {
+            throw new Error(
+                (await response.json()).error || "An error occurred"
+            );
         }
+
+        return (await response.json()) as Content;
+    } catch (error: unknown) {
+        throw error;
     }
-);
+};
 
 export const createContent = async (
     projectId: string,
@@ -59,19 +71,27 @@ export const createContent = async (
     newContent: NewContent
 ): Promise<Content> => {
     try {
-        const response = await axios.post(
+        const response = await fetch(
             `${config.apiUrl}/projects/${projectId}/repositories/${repositoryId}/contents`,
-            newContent,
             {
-                headers: await getAuthHeader(),
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    ...(await getAuthHeader()),
+                },
+                body: JSON.stringify(newContent),
             }
         );
-        return response.data as Content;
-    } catch (error: unknown) {
-        if (axios.isAxiosError(error) && error.response?.data?.error) {
-            throw new Error(error.response.data.error);
+
+        if (!response.ok) {
+            throw new Error(
+                (await response.json()).error || "An error occurred"
+            );
         }
 
+        revalidateTag("content");
+        return (await response.json()) as Content;
+    } catch (error: unknown) {
         throw error;
     }
 };
@@ -86,7 +106,7 @@ export const updateContent = async (
         const response = await fetch(
             `${config.apiUrl}/projects/${projectId}/repositories/${repositoryId}/contents/${id}`,
             {
-                method: "POST",
+                method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
                     ...(await getAuthHeader()),
@@ -101,6 +121,7 @@ export const updateContent = async (
             );
         }
 
+        revalidateTag("content");
         return (await response.json()) as Content;
     } catch (error: unknown) {
         throw error;

@@ -56,14 +56,14 @@ const SchemaFieldCreateDialog = ({
 }) => {
     const { toast } = useToast();
 
-    const form = useForm<z.infer>({
+    const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
             name: "",
         },
     });
 
-    const onSubmit = async (values: z.infer) => {
+    const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
             const repositoryUpdate = newRepositorySchema.partial().parse({
                 contentSchema: {
