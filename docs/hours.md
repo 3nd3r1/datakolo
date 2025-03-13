@@ -71,4 +71,6 @@
 | 07.03.2025 | 1        | Find best way to input project context into LLM; Add Makefile and implement code2prompt                                                    |
 | 07.03.2025 | 1        | Add sorting for imports to frontend formatting                                                                                             |
 | 07.03.2025 | 2        | Restructuring / refactoring frontend components                                                                                            |
-|   Total    | 125      |                                                                                                                                            |
+| 13.03.2025 | 3        | Finnish implementing content editing                                                                                                       |
+| 13.03.2025 | 2        | Refactor frontend to use fetch instead of Axios                                                                                            |
+|   Total    | 130      |                                                                                                                                            |
