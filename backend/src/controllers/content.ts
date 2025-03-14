@@ -6,10 +6,8 @@ import {
     toNewContent,
     ValidationError,
 } from "@/validators/content.ts";
-import contentService, {
-    ContentNotFound,
-    RepositoryNotFound,
-} from "@/services/content.ts";
+import contentService, { ContentNotFoundError } from "@/services/content.ts";
+import { RepositoryNotFoundError } from "@/services/repository.ts";
 
 export const createContent = async (
     ctx: AppContext<{ projectId: string; repositoryId: string }>,
@@ -34,8 +32,8 @@ export const createContent = async (
         if (error instanceof ValidationError) {
             throw createHttpError(400, error.message);
         }
-        if (error instanceof RepositoryNotFound) {
-            throw createHttpError(404, error.message);
+        if (error instanceof RepositoryNotFoundError) {
+            throw createHttpError(404, "Repository not found");
         }
 
         throw error;
@@ -63,13 +61,20 @@ export const getContent = async (
 
     const id = ctx.params.id;
 
-    const content = await contentService.getContentById(id);
+    try {
+        const content = await contentService.getContentById(id);
 
-    if (!content || content.createdBy !== user.id) {
-        throw createHttpError(404, "Content not found");
+        // TODO: Service should handle this
+        if (content.createdBy !== user.id) {
+            throw createHttpError(500, "Not authorized");
+        }
+
+        ctx.response.body = content;
+    } catch (error: unknown) {
+        if (error instanceof ContentNotFoundError) {
+            throw createHttpError(404, "Content not found");
+        }
     }
-
-    ctx.response.body = content;
 };
 
 export const updateContent = async (
@@ -83,6 +88,7 @@ export const updateContent = async (
 
     try {
         const newContentData = toContentData(body.data);
+        // TODO: Update should not be allowed if content is not owned
         const updatedContent = await contentService.updateContentData(
             id,
             newContentData,
@@ -93,11 +99,11 @@ export const updateContent = async (
         if (error instanceof ValidationError) {
             throw createHttpError(400, error.message);
         }
-        if (error instanceof RepositoryNotFound) {
-            throw createHttpError(404, error.message);
+        if (error instanceof RepositoryNotFoundError) {
+            throw createHttpError(400, "Invalid repository");
         }
-        if (error instanceof ContentNotFound) {
-            throw createHttpError(404, error.message);
+        if (error instanceof ContentNotFoundError) {
+            throw createHttpError(404, "Content not found");
         }
     }
 };

@@ -4,16 +4,19 @@ import {
     RepositoryDTO,
     toRepositoryDTO,
 } from "@/validators/repository.ts";
+import projectService from "@/services/project.ts";
 
 export class DuplicateRepositoryError extends Error {}
+export class RepositoryNotFoundError extends Error {}
 
 const createRepository = async (
     newRepository: NewRepository,
 ): Promise<RepositoryDTO> => {
+    const project = await projectService.getProjectById(newRepository.project);
     if (
         await Repository.findOne({
             name: newRepository.name,
-            project: newRepository.project,
+            project: project.id,
         })
     ) {
         throw new DuplicateRepositoryError();
@@ -34,10 +37,10 @@ const getRepositoriesByProject = async (
 
 const getRepositoryById = async (
     id: string,
-): Promise<RepositoryDTO | undefined> => {
+): Promise<RepositoryDTO> => {
     const repository = await Repository.findById(id);
     if (!repository) {
-        return undefined;
+        throw new RepositoryNotFoundError();
     }
     return toRepositoryDTO(repository);
 };
@@ -46,6 +49,10 @@ const updateRepository = async (
     id: string,
     repositoryUpdate: Partial<NewRepository>,
 ): Promise<RepositoryDTO> => {
+    if (repositoryUpdate.project) {
+        await projectService.getProjectById(repositoryUpdate.project);
+    }
+
     const repository = await Repository.findByIdAndUpdate(
         id,
         repositoryUpdate,
@@ -53,7 +60,7 @@ const updateRepository = async (
     );
 
     if (!repository) {
-        throw new Error("Repository not found");
+        throw new RepositoryNotFoundError();
     }
 
     return toRepositoryDTO(repository);

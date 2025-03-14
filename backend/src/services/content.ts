@@ -8,16 +8,12 @@ import {
 import repositoryService from "@/services/repository.ts";
 import { ContentData } from "@/validators/content.ts";
 
-export class RepositoryNotFound extends Error {}
-export class ContentNotFound extends Error {}
+export class ContentNotFoundError extends Error {}
 
 const createContent = async (newContent: NewContent): Promise<ContentDTO> => {
     const repository = await repositoryService.getRepositoryById(
         newContent.repository,
     );
-    if (!repository) {
-        throw new RepositoryNotFound();
-    }
 
     validateContentData(newContent.data, repository.contentSchema);
 
@@ -34,10 +30,10 @@ const getContentsByRepository = async (
     return contents.map((content) => toContentDTO(content));
 };
 
-const getContentById = async (id: string): Promise<ContentDTO | undefined> => {
+const getContentById = async (id: string): Promise<ContentDTO> => {
     const content = await Content.findById(id);
     if (!content) {
-        return undefined;
+        throw new ContentNotFoundError();
     }
     return toContentDTO(content);
 };
@@ -47,22 +43,16 @@ const updateContentData = async (
     data: ContentData,
 ): Promise<ContentDTO> => {
     const content = await getContentById(id);
-    if (!content) {
-        throw new ContentNotFound();
-    }
 
     const repository = await repositoryService.getRepositoryById(
         content.repository,
     );
-    if (!repository) {
-        throw new RepositoryNotFound();
-    }
 
     validateContentData(data, repository.contentSchema);
 
     const updatedContent = await Content.findByIdAndUpdate(id, { data });
     if (!updatedContent) {
-        throw new ContentNotFound();
+        throw new ContentNotFoundError();
     }
 
     return toContentDTO(updatedContent);

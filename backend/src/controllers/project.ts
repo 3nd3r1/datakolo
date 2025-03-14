@@ -1,7 +1,10 @@
 import { createHttpError } from "oak";
 
 import { toNewProject, ValidationError } from "@/validators/project.ts";
-import projectService, { DuplicateProjectError } from "@/services/project.ts";
+import projectService, {
+    DuplicateProjectError,
+    ProjectNotFoundError,
+} from "@/services/project.ts";
 import { AppContext } from "@/utils/oak.ts";
 
 export const createProject = async (ctx: AppContext) => {
@@ -42,11 +45,17 @@ export const getProject = async (ctx: AppContext<{ id: string }>) => {
 
     const id = ctx.params.id;
 
-    const project = await projectService.getProjectById(id);
+    try {
+        const project = await projectService.getProjectById(id);
 
-    if (!project || project.createdBy !== user.id) {
-        throw createHttpError(404, "Project not found");
+        if (project.createdBy !== user.id) {
+            throw createHttpError(500, "Not authorized");
+        }
+
+        ctx.response.body = project;
+    } catch (error: unknown) {
+        if (error instanceof ProjectNotFoundError) {
+            throw createHttpError(404, "Project not found");
+        }
     }
-
-    ctx.response.body = project;
 };

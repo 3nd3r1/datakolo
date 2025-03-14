@@ -2,6 +2,7 @@ import { NewProject, ProjectDTO, toProjectDTO } from "@/validators/project.ts";
 import Project from "@/models/project.ts";
 
 export class DuplicateProjectError extends Error {}
+export class ProjectNotFoundError extends Error {}
 
 const createProject = async (newProject: NewProject): Promise<ProjectDTO> => {
     if (await Project.findOne({ name: newProject.name })) {
@@ -21,10 +22,10 @@ const getProjectsByCreator = async (
     return projects.map((project) => toProjectDTO(project));
 };
 
-const getProjectById = async (id: string): Promise<ProjectDTO | undefined> => {
+const getProjectById = async (id: string): Promise<ProjectDTO> => {
     const project = await Project.findById(id);
     if (!project) {
-        return undefined;
+        throw new ProjectNotFoundError();
     }
     return toProjectDTO(project);
 };

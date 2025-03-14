@@ -8,7 +8,9 @@ import {
 } from "@/validators/repository.ts";
 import repositoryService, {
     DuplicateRepositoryError,
+    RepositoryNotFoundError,
 } from "@/services/repository.ts";
+import { ProjectNotFoundError } from "@/services/project.ts";
 
 export const createRepository = async (
     ctx: AppContext<{ projectId: string }>,
@@ -38,6 +40,10 @@ export const createRepository = async (
         if (error instanceof DuplicateRepositoryError) {
             throw createHttpError(400, "Name already in use");
         }
+
+        if (error instanceof ProjectNotFoundError) {
+            throw createHttpError(500, "Invalid project");
+        }
         throw error;
     }
 };
@@ -65,13 +71,19 @@ export const getRepository = async (
 
     const id = ctx.params.id;
 
-    const repository = await repositoryService.getRepositoryById(id);
+    try {
+        const repository = await repositoryService.getRepositoryById(id);
 
-    if (!repository || repository.createdBy !== user.id) {
-        throw createHttpError(404, "Repository not found");
+        if (repository.createdBy !== user.id) {
+            throw createHttpError(500, "Not authorized");
+        }
+
+        ctx.response.body = repository;
+    } catch (error: unknown) {
+        if (error instanceof RepositoryNotFoundError) {
+            throw createHttpError(404, "Repository not found");
+        }
     }
-
-    ctx.response.body = repository;
 };
 
 export const updateRepository = async (
