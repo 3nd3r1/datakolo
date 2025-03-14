@@ -73,4 +73,5 @@
 | 07.03.2025 | 2        | Restructuring / refactoring frontend components                                                                                            |
 | 13.03.2025 | 3        | Finnish implementing content editing                                                                                                       |
 | 13.03.2025 | 2        | Refactor frontend to use fetch instead of Axios                                                                                            |
-|   Total    | 130      |                                                                                                                                            |
+| 13.03.2025 | 1        | Refactor backend notFound error handling in backend and starting to plan API_KEYS                                                          |
+|   Total    | 131      |                                                                                                                                            |
