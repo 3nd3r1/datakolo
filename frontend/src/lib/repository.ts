@@ -2,7 +2,11 @@
 
 import { revalidateTag } from "next/cache";
 
-import { NewRepository, Repository } from "@/validators/repository";
+import {
+    NewRepository,
+    Repository,
+    RepositoryUpdate,
+} from "@/validators/repository";
 
 import { getAuthHeader } from "@/lib/auth";
 import { config } from "@/lib/config";
@@ -93,7 +97,7 @@ export const createRepository = async (
 export const updateRepository = async (
     projectId: string,
     id: string,
-    repositoryUpdate: Partial<NewRepository>
+    repositoryUpdate: RepositoryUpdate
 ): Promise<Repository> => {
     try {
         const response = await fetch(

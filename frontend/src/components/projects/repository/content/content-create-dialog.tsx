@@ -51,15 +51,15 @@ const ContentCreateDialog = ({ repository }: { repository: Repository }) => {
             }
             return acc;
         },
-        {} as z.infer
+        {} as z.infer<typeof formSchema>
     );
 
-    const form = useForm<z.infer>({
+    const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: defaultValues,
     });
 
-    const onSubmit = async (values: z.infer) => {
+    const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
             // Remove undefined values
             // TODO: This should be done in a more type-safe way

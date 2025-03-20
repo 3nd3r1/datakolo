@@ -9,7 +9,7 @@ import {
     Repository,
     contentSchemaFieldNameSchema,
     contentSchemaFieldSchema,
-    newRepositorySchema,
+    repositoryUpdateSchema,
 } from "@/validators/repository";
 
 import { updateRepository } from "@/lib/repository";
@@ -65,7 +65,7 @@ const SchemaFieldCreateDialog = ({
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
-            const repositoryUpdate = newRepositorySchema.partial().parse({
+            const repositoryUpdate = repositoryUpdateSchema.parse({
                 contentSchema: {
                     ...repository.contentSchema,
                     [values.name]: contentSchemaFieldSchema.parse(values),

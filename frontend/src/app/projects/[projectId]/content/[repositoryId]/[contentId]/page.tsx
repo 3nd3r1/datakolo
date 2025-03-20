@@ -8,8 +8,8 @@ import { getRepository } from "@/lib/repository";
 
 import { Button } from "@/components/ui/button";
 
-import ContentDisplayName from "@/components/projects/repositories/content/content-display-name";
-import ContentEditForm from "@/components/projects/repositories/content/content-edit-form";
+import ContentDisplayName from "@/components/projects/repository/content/content-display-name";
+import ContentEditForm from "@/components/projects/repository/content/content-edit-form";
 
 const Content = async ({
     params,

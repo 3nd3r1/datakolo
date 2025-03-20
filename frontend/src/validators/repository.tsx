@@ -37,8 +37,20 @@ export const newRepositorySchema = repositorySchema.omit({
     createdBy: true,
     createdAt: true,
     updatedAt: true,
+    contentSchema: true,
 });
+
+export const repositoryUpdateSchema = repositorySchema
+    .omit({
+        id: true,
+        project: true,
+        createdBy: true,
+        createdAt: true,
+        updatedAt: true,
+    })
+    .partial();
 
 export type RepositoryContentSchema = z.infer<typeof contentSchemaSchema>;
 export type Repository = z.infer<typeof repositorySchema>;
 export type NewRepository = z.infer<typeof newRepositorySchema>;
+export type RepositoryUpdate = z.infer<typeof repositoryUpdateSchema>;

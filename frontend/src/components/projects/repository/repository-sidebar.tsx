@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+import { Box } from "lucide-react";
+
 import { Repository } from "@/validators/repository";
 
 import { cn } from "@/lib/utils";
@@ -10,17 +12,19 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 
-interface RepositoriesSidebarProps extends React.HTMLAttributes {
+import RepositoryCreateDialog from "@/components/projects/repository/repository-create-dialog";
+
+interface RepositorySidebarProps extends React.HTMLAttributes<HTMLDivElement> {
     projectId: string;
     repositories: Repository[];
     variant: "schema" | "content";
 }
 
-const RepositoriesSidebar = ({
+const RepositorySidebar = ({
     projectId,
     repositories,
     variant,
-}: RepositoriesSidebarProps) => {
+}: RepositorySidebarProps) => {
     const pathname = usePathname();
 
     return (
@@ -49,13 +53,15 @@ const RepositoriesSidebar = ({
                         <Link
                             href={`/projects/${projectId}/${variant}/${repository.id}`}
                         >
+                            <Box />
                             {repository.name}
                         </Link>
                     </Button>
                 ))}
+                <RepositoryCreateDialog projectId={projectId} />
             </div>
         </div>
     );
 };
 
-export default RepositoriesSidebar;
+export default RepositorySidebar;

@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 
 import { getRepository } from "@/lib/repository";
 
-import SchemaView from "@/components/projects/repositories/schema/schema-view";
+import SchemaView from "@/components/projects/repository/schema/schema-view";
 
 const Repository = async ({
     params,

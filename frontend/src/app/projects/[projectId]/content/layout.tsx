@@ -6,7 +6,7 @@ import { getRepositories } from "@/lib/repository";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 
-import RepositoriesSidebar from "@/components/projects/repositories/repositories-sidebar";
+import RepositorySidebar from "@/components/projects/repository/repository-sidebar";
 
 export default async function Layout({
     children,
@@ -25,7 +25,7 @@ export default async function Layout({
 
     return (
         <div className="flex flex-row h-screen">
-            <RepositoriesSidebar
+            <RepositorySidebar
                 projectId={projectId}
                 repositories={repositories}
                 variant="content"
