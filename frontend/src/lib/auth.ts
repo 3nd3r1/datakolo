@@ -32,7 +32,7 @@ export const getUser = async (): Promise<User> => {
                 "Content-Type": "application/json",
                 ...(await getAuthHeader()),
             },
-            cache: "no-store",
+            cache: "no-cache",
         });
 
         if (!response.ok) {
@@ -52,6 +52,7 @@ export const login = async (username: string, password: string) => {
             headers: {
                 "Content-Type": "application/json",
             },
+            cache: "no-cache",
             body: JSON.stringify({ username, password }),
         });
 
@@ -72,6 +73,7 @@ export const register = async (newUser: NewUser) => {
             headers: {
                 "Content-Type": "application/json",
             },
+            cache: "no-cache",
             body: JSON.stringify(newUser),
         });
 

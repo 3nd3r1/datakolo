@@ -72,6 +72,10 @@ const SchemaFieldCreateDialog = ({
                 },
             });
 
+            if (repository.contentSchema[values.name]) {
+                throw new Error("Field with that name already exists");
+            }
+
             await updateRepository(
                 repository.project,
                 repository.id,

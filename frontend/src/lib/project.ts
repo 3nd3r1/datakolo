@@ -61,6 +61,7 @@ export const createProject = async (
                 "Content-Type": "application/json",
                 ...(await getAuthHeader()),
             },
+            cache: "no-cache",
             body: JSON.stringify(newProject),
         });
 

@@ -25,9 +25,11 @@ const SchemaView = ({ repository }: { repository: Repository }) => {
                                     </div>
                                     <div className="text-xs text-muted-foreground">
                                         <span>{value.type}</span>
-                                        <span> · </span>
                                         {value.required && (
-                                            <span>Required</span>
+                                            <>
+                                                <span> · </span>
+                                                <span>Required</span>
+                                            </>
                                         )}
                                     </div>
                                 </div>

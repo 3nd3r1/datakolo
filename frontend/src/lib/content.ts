@@ -79,6 +79,7 @@ export const createContent = async (
                     "Content-Type": "application/json",
                     ...(await getAuthHeader()),
                 },
+                cache: "no-cache",
                 body: JSON.stringify(newContent),
             }
         );
@@ -111,6 +112,7 @@ export const updateContent = async (
                     "Content-Type": "application/json",
                     ...(await getAuthHeader()),
                 },
+                cache: "no-cache",
                 body: JSON.stringify(contentUpdate),
             }
         );

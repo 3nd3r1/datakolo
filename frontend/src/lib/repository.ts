@@ -79,6 +79,7 @@ export const createRepository = async (
                     "Content-Type": "application/json",
                     ...(await getAuthHeader()),
                 },
+                cache: "no-cache",
                 body: JSON.stringify(newRepository),
             }
         );
@@ -108,6 +109,7 @@ export const updateRepository = async (
                     "Content-Type": "application/json",
                     ...(await getAuthHeader()),
                 },
+                cache: "no-cache",
                 body: JSON.stringify(repositoryUpdate),
             }
         );

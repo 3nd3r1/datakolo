@@ -119,8 +119,10 @@ export const BooleanField = ({
                     </FormLabel>
                     <FormControl>
                         <Switch
-                            checked={field.value}
-                            onChange={field.onChange}
+                            checked={field.value === true}
+                            onCheckedChange={(checked) =>
+                                field.onChange(checked)
+                            }
                         />
                     </FormControl>
                     <FormMessage />
