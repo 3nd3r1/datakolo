@@ -15,7 +15,11 @@ const repositorySchema = new Schema<IRepository>(
     {
         _id: { type: Schema.Types.ObjectId, required: true, auto: true },
         name: { type: String, required: true },
-        contentSchema: { type: Schema.Types.Mixed, required: true },
+        contentSchema: {
+            type: Schema.Types.Mixed,
+            required: true,
+            default: {},
+        },
         project: {
             type: Schema.Types.ObjectId,
             ref: "Project",
@@ -23,7 +27,7 @@ const repositorySchema = new Schema<IRepository>(
         },
         createdBy: { type: Schema.Types.ObjectId, ref: "User", required: true },
     },
-    { timestamps: true },
+    { timestamps: true, minimize: false },
 );
 
 repositorySchema.index({ project: 1, name: 1 }, { unique: true });

@@ -3,24 +3,27 @@ import { IRepository } from "@/models/repository.ts";
 
 export class ValidationError extends Error {}
 
-export const contentSchemaSchema = z.record(
-    z.string(),
-    z.union([
-        z.object({
-            type: z.literal("string"),
-            required: z.boolean().optional(),
-        }),
-        z.object({
-            type: z.literal("number"),
-            required: z.boolean().optional(),
-        }),
-        z.object({
-            type: z.literal("boolean"),
-            required: z.boolean().optional(),
-        }),
-    ]),
-    { message: "Content schema is required" },
-);
+export const contentSchemaSchema = z.union([
+    z.record(
+        z.string(),
+        z.union([
+            z.object({
+                type: z.literal("string"),
+                required: z.boolean().optional(),
+            }),
+            z.object({
+                type: z.literal("number"),
+                required: z.boolean().optional(),
+            }),
+            z.object({
+                type: z.literal("boolean"),
+                required: z.boolean().optional(),
+            }),
+        ]),
+        { message: "Content schema is required" },
+    ),
+    z.record(z.string(), z.never()),
+]);
 
 const repositoryDTOSchema = z.object({
     id: z.string(),
@@ -38,6 +41,7 @@ const repositoryDTOSchema = z.object({
 const newRepositorySchema = repositoryDTOSchema.omit({ id: true }).extend({
     createdAt: repositoryDTOSchema.shape.createdAt.optional(),
     updatedAt: repositoryDTOSchema.shape.updatedAt.optional(),
+    contentSchema: repositoryDTOSchema.shape.contentSchema.optional(),
 });
 
 export type ContentSchema = z.infer<typeof contentSchemaSchema>;
