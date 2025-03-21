@@ -10,3 +10,10 @@ export const verifyPassword = async (
 ): Promise<boolean> => {
     return await compare(password, hash);
 };
+
+export const generateApiKey = (): string => {
+    const randomBytes = crypto.getRandomValues(new Uint8Array(32));
+    return Array.from(randomBytes)
+        .map((byte) => byte.toString(16).padStart(2, "0"))
+        .join("");
+};
