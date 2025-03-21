@@ -77,4 +77,5 @@
 | 20.03.2025 | 2        | Fixing: By default the repository contentSchema should be empty. What is an empty object in Typescript? Apparently mongoose just removes empty objects.. |
 | 20.03.2025 | 2        | Implement repository creation                                                                                                                            |
 | 20.03.2025 | 2        | Alot of fixing and refactoring of mainly frontend                                                                                                        |
-|   Total    | 137      |                                                                                                                                                          |
+| 21.03.2025 | 2        | Start implementing project apiKey in backend                                                                                                             |
+|   Total    | 139      |                                                                                                                                                          |
