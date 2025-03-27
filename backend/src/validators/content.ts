@@ -2,8 +2,7 @@ import { z } from "zod";
 
 import { IContent } from "@/models/content.ts";
 import { ContentSchema } from "@/validators/repository.ts";
-
-export class ValidationError extends Error {}
+import { ValidationError } from "@/utils/errors.ts";
 
 const contentDataSchema = z.record(
     z.string(),

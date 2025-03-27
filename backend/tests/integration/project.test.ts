@@ -96,7 +96,7 @@ describe("/api/projects", () => {
             .set("Authorization", `Bearer ${token}`)
             .send({ name: "Test Project 1" })
             .expect(400)
-            .expect({ error: "Name already in use" });
+            .expect({ error: "Project name already in use" });
     });
     it("should generate an api key", async () => {
         const projectId = await getProjectIdByName("Test Project 1");
@@ -119,7 +119,7 @@ describe("/api/projects", () => {
             .expect(403)
             .expect((res) => {
                 const { apiKey, error } = res.body;
-                assertEquals(error, "Forbidden");
+                assertEquals(error, "Unauthorized");
                 assertEquals(apiKey, undefined);
             });
     });

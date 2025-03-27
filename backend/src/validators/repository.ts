@@ -1,7 +1,6 @@
 import { z } from "zod";
 import { IRepository } from "@/models/repository.ts";
-
-export class ValidationError extends Error {}
+import { ValidationError } from "@/utils/errors.ts";
 
 export const contentSchemaSchema = z.union([
     z.record(

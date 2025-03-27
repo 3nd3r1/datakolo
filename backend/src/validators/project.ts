@@ -1,7 +1,6 @@
 import { z } from "zod";
 import { IProject } from "@/models/project.ts";
-
-export class ValidationError extends Error {}
+import { ValidationError } from "@/utils/errors.ts";
 
 const projectDTOSchema = z.object({
     id: z.string(),

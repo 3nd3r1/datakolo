@@ -4,13 +4,8 @@ import { AppContext } from "@/utils/oak.ts";
 import {
     toNewRepository,
     toRepositoryUpdate,
-    ValidationError,
 } from "@/validators/repository.ts";
-import repositoryService, {
-    DuplicateRepositoryError,
-    RepositoryNotFoundError,
-} from "@/services/repository.ts";
-import { ProjectNotFoundError } from "@/services/project.ts";
+import repositoryService from "@/services/repository.ts";
 
 export const createRepository = async (
     ctx: AppContext<{ projectId: string }>,
@@ -21,31 +16,17 @@ export const createRepository = async (
     const body = await ctx.request.body.json();
     const projectId = ctx.params.projectId;
 
-    try {
-        const newRepository = toNewRepository({
-            createdBy: user.id,
-            project: projectId,
-            ...body,
-        });
-        const createdRepository = await repositoryService.createRepository(
-            newRepository,
-        );
+    const newRepository = toNewRepository({
+        createdBy: user.id,
+        project: projectId,
+        ...body,
+    });
+    const createdRepository = await repositoryService.createRepository(
+        newRepository,
+        user.id,
+    );
 
-        ctx.response.body = createdRepository;
-    } catch (error: unknown) {
-        if (error instanceof ValidationError) {
-            throw createHttpError(400, error.message);
-        }
-
-        if (error instanceof DuplicateRepositoryError) {
-            throw createHttpError(400, "Name already in use");
-        }
-
-        if (error instanceof ProjectNotFoundError) {
-            throw createHttpError(500, "Invalid project");
-        }
-        throw error;
-    }
+    ctx.response.body = createdRepository;
 };
 
 export const getRepositories = async (
@@ -58,6 +39,7 @@ export const getRepositories = async (
 
     const repositories = await repositoryService.getRepositoriesByProject(
         projectId,
+        user.id,
     );
 
     ctx.response.body = repositories;
@@ -71,19 +53,16 @@ export const getRepository = async (
 
     const id = ctx.params.id;
 
-    try {
-        const repository = await repositoryService.getRepositoryById(id);
+    const repository = await repositoryService.getRepositoryById(
+        id,
+        user.id,
+    );
 
-        if (repository.createdBy !== user.id) {
-            throw createHttpError(500, "Not authorized");
-        }
-
-        ctx.response.body = repository;
-    } catch (error: unknown) {
-        if (error instanceof RepositoryNotFoundError) {
-            throw createHttpError(404, "Repository not found");
-        }
+    if (repository.createdBy !== user.id) {
+        throw createHttpError(500, "Not authorized");
     }
+
+    ctx.response.body = repository;
 };
 
 export const updateRepository = async (
@@ -95,19 +74,12 @@ export const updateRepository = async (
     const id = ctx.params.id;
     const body = await ctx.request.body.json();
 
-    try {
-        const repositoryUpdate = toRepositoryUpdate(body);
-        const updatedRepository = await repositoryService.updateRepository(
-            id,
-            repositoryUpdate,
-        );
+    const repositoryUpdate = toRepositoryUpdate(body);
+    const updatedRepository = await repositoryService.updateRepository(
+        id,
+        repositoryUpdate,
+        user.id,
+    );
 
-        ctx.response.body = updatedRepository;
-    } catch (error: unknown) {
-        if (error instanceof ValidationError) {
-            throw createHttpError(400, error.message);
-        }
-
-        throw error;
-    }
+    ctx.response.body = updatedRepository;
 };

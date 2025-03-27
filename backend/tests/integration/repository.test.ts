@@ -140,7 +140,7 @@ describe("/api/projects/:id/repositories", () => {
             .set("Authorization", `Bearer ${token}`)
             .send({ name: "Test Repository 1", contentSchema })
             .expect(400)
-            .expect({ error: "Name already in use" });
+            .expect({ error: "Repository name already in use" });
     });
     it("should update repository with valid update", async () => {
         const newContentSchema = {

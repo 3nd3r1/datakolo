@@ -1,33 +1,16 @@
-import { createHttpError } from "oak";
-
-import {
-    toNewUser,
-    toNonSensitiveUser,
-    ValidationError,
-} from "@/validators/user.ts";
+import { toNewUser, toNonSensitiveUser } from "@/validators/user.ts";
 import { generateUserToken } from "@/utils/jwt.ts";
-import userService, { DuplicateUserError } from "@/services/user.ts";
+import userService from "@/services/user.ts";
 import { AppContext } from "@/utils/oak.ts";
+import { AuthenticationError } from "@/utils/errors.ts";
 
 export const register = async (ctx: AppContext) => {
     const body = await ctx.request.body.json();
 
-    try {
-        const newUser = toNewUser(body);
-        const createdUser = await userService.createUser(newUser);
-        const token = await generateUserToken(createdUser.id);
-        ctx.response.body = { token };
-    } catch (error: unknown) {
-        if (error instanceof ValidationError) {
-            throw createHttpError(400, error.message);
-        }
-
-        if (error instanceof DuplicateUserError) {
-            throw createHttpError(400, "Username is already in use");
-        }
-
-        throw error;
-    }
+    const newUser = toNewUser(body);
+    const createdUser = await userService.createUser(newUser);
+    const token = await generateUserToken(createdUser.id);
+    ctx.response.body = { token };
 };
 
 export const login = async (ctx: AppContext) => {
@@ -36,15 +19,12 @@ export const login = async (ctx: AppContext) => {
     const { username, password } = body;
 
     if (!(await userService.verifyUserPassword(username, password))) {
-        throw createHttpError(401, "Invalid credentials");
+        throw new AuthenticationError("Invalid credentials");
     }
 
     const user = await userService.getUserByUsername(username);
-    if (!user) {
-        throw createHttpError(401, "Invalid credentials");
-    }
-
     const token = await generateUserToken(user.id);
+
     ctx.response.body = { token };
 };
 

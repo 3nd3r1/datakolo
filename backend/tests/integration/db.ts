@@ -66,7 +66,7 @@ const seedProjects = async () => {
         {
             name: "Jane's Project",
             createdBy: janeId,
-        }
+        },
     ];
 
     await Project.insertMany(seedProjects);

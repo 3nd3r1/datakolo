@@ -1,14 +1,7 @@
 import { createHttpError } from "oak";
 
-import {
-    toNewProject,
-    toNonSensitiveProject,
-    ValidationError,
-} from "@/validators/project.ts";
-import projectService, {
-    DuplicateProjectError,
-    ProjectNotFoundError,
-} from "@/services/project.ts";
+import { toNewProject, toNonSensitiveProject } from "@/validators/project.ts";
+import projectService from "@/services/project.ts";
 import { AppContext } from "@/utils/oak.ts";
 
 export const createProject = async (ctx: AppContext) => {
@@ -17,21 +10,10 @@ export const createProject = async (ctx: AppContext) => {
     const user = ctx.state.user;
     if (!user) return;
 
-    try {
-        const newProject = toNewProject({ createdBy: user.id, ...body });
-        const createdProject = await projectService.createProject(newProject);
+    const newProject = toNewProject({ createdBy: user.id, ...body });
+    const createdProject = await projectService.createProject(newProject);
 
-        ctx.response.body = toNonSensitiveProject(createdProject);
-    } catch (error: unknown) {
-        if (error instanceof ValidationError) {
-            throw createHttpError(400, error.message);
-        }
-
-        if (error instanceof DuplicateProjectError) {
-            throw createHttpError(400, "Name already in use");
-        }
-        throw error;
-    }
+    ctx.response.body = toNonSensitiveProject(createdProject);
 };
 
 export const getProjects = async (ctx: AppContext) => {
@@ -51,19 +33,8 @@ export const getProject = async (ctx: AppContext<{ id: string }>) => {
 
     const id = ctx.params.id;
 
-    try {
-        const project = await projectService.getProjectById(id);
-
-        if (project.createdBy !== user.id) {
-            throw createHttpError(403, "Forbidden");
-        }
-
-        ctx.response.body = toNonSensitiveProject(project);
-    } catch (error: unknown) {
-        if (error instanceof ProjectNotFoundError) {
-            throw createHttpError(404, "Project not found");
-        }
-    }
+    const project = await projectService.getProjectById(id, user.id);
+    ctx.response.body = toNonSensitiveProject(project);
 };
 
 export const generateApiKey = async (ctx: AppContext<{ id: string }>) => {
@@ -72,24 +43,12 @@ export const generateApiKey = async (ctx: AppContext<{ id: string }>) => {
 
     const id = ctx.params.id;
 
-    try {
-        const project = await projectService.getProjectById(id);
-        if (project.createdBy !== user.id) {
-            throw createHttpError(403, "Forbidden");
-        }
-
-        const updatedProject = await projectService.generateProjectApiKey(id);
-        if (!updatedProject.apiKey) {
-            throw createHttpError(500, "Something went wrong");
-        }
-
-        ctx.response.body = {
-            apiKey: updatedProject.apiKey,
-        };
-    } catch (error: unknown) {
-        if (error instanceof ProjectNotFoundError) {
-            throw createHttpError(404, error.message);
-        }
-        throw error;
+    const project = await projectService.generateProjectApiKey(id, user.id);
+    if (!project.apiKey) {
+        throw createHttpError(500, "Something went wrong");
     }
+
+    ctx.response.body = {
+        apiKey: project.apiKey,
+    };
 };

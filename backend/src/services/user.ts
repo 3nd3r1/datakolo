@@ -1,10 +1,9 @@
 import { NewUser, toUserDTO, UserDTO } from "@/validators/user.ts";
 import User from "@/models/user.ts";
-
-export class DuplicateUserError extends Error {}
+import { DuplicateUserError, UserNotFoundError } from "@/utils/errors.ts";
 
 const createUser = async (newUser: NewUser): Promise<UserDTO> => {
-    if (await User.findOne({ username: newUser.username })) {
+    if (await User.exists({ username: newUser.username })) {
         throw new DuplicateUserError();
     }
 
@@ -14,12 +13,14 @@ const createUser = async (newUser: NewUser): Promise<UserDTO> => {
     return toUserDTO(createdUser);
 };
 
-const getUserByUsername = async (username: string): Promise<UserDTO | null> => {
+const getUserByUsername = async (username: string): Promise<UserDTO> => {
     const user = await User.findOne({ username });
-    if (user) {
-        return toUserDTO(user);
+
+    if (!user) {
+        throw new UserNotFoundError();
     }
-    return null;
+
+    return toUserDTO(user);
 };
 
 const verifyUserPassword = async (

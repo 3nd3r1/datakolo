@@ -1,13 +1,6 @@
-import { createHttpError } from "oak";
-
 import { AppContext } from "@/utils/oak.ts";
-import {
-    toContentData,
-    toNewContent,
-    ValidationError,
-} from "@/validators/content.ts";
-import contentService, { ContentNotFoundError } from "@/services/content.ts";
-import { RepositoryNotFoundError } from "@/services/repository.ts";
+import { toContentData, toNewContent } from "@/validators/content.ts";
+import contentService from "@/services/content.ts";
 
 export const createContent = async (
     ctx: AppContext<{ projectId: string; repositoryId: string }>,
@@ -19,25 +12,17 @@ export const createContent = async (
 
     const repositoryId = ctx.params.repositoryId;
 
-    try {
-        const newContent = toNewContent({
-            createdBy: user.id,
-            repository: repositoryId,
-            ...body,
-        });
-        const createdContent = await contentService.createContent(newContent);
+    const newContent = toNewContent({
+        createdBy: user.id,
+        repository: repositoryId,
+        ...body,
+    });
+    const createdContent = await contentService.createContent(
+        newContent,
+        user.id,
+    );
 
-        ctx.response.body = createdContent;
-    } catch (error: unknown) {
-        if (error instanceof ValidationError) {
-            throw createHttpError(400, error.message);
-        }
-        if (error instanceof RepositoryNotFoundError) {
-            throw createHttpError(404, "Repository not found");
-        }
-
-        throw error;
-    }
+    ctx.response.body = createdContent;
 };
 
 export const getContents = async (
@@ -48,7 +33,10 @@ export const getContents = async (
 
     const repositoryId = ctx.params.repositoryId;
 
-    const contents = await contentService.getContentsByRepository(repositoryId);
+    const contents = await contentService.getContentsByRepository(
+        repositoryId,
+        user.id,
+    );
 
     ctx.response.body = contents;
 };
@@ -61,20 +49,9 @@ export const getContent = async (
 
     const id = ctx.params.id;
 
-    try {
-        const content = await contentService.getContentById(id);
+    const content = await contentService.getContentById(id, user.id);
 
-        // TODO: Service should handle this
-        if (content.createdBy !== user.id) {
-            throw createHttpError(500, "Not authorized");
-        }
-
-        ctx.response.body = content;
-    } catch (error: unknown) {
-        if (error instanceof ContentNotFoundError) {
-            throw createHttpError(404, "Content not found");
-        }
-    }
+    ctx.response.body = content;
 };
 
 export const updateContent = async (
@@ -86,24 +63,12 @@ export const updateContent = async (
     const body = await ctx.request.body.json();
     const id = ctx.params.id;
 
-    try {
-        const newContentData = toContentData(body.data);
-        // TODO: Update should not be allowed if content is not owned
-        const updatedContent = await contentService.updateContentData(
-            id,
-            newContentData,
-        );
+    const newContentData = toContentData(body.data);
+    const updatedContent = await contentService.updateContentData(
+        id,
+        newContentData,
+        user.id,
+    );
 
-        ctx.response.body = updatedContent;
-    } catch (error: unknown) {
-        if (error instanceof ValidationError) {
-            throw createHttpError(400, error.message);
-        }
-        if (error instanceof RepositoryNotFoundError) {
-            throw createHttpError(400, "Invalid repository");
-        }
-        if (error instanceof ContentNotFoundError) {
-            throw createHttpError(404, "Content not found");
-        }
-    }
+    ctx.response.body = updatedContent;
 };

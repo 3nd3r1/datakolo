@@ -1,7 +1,6 @@
 import { z } from "zod";
 import { IUser } from "@/models/user.ts";
-
-export class ValidationError extends Error {}
+import { ValidationError } from "@/utils/errors.ts";
 
 const userDTOSchema = z.object({
     id: z.string(),
