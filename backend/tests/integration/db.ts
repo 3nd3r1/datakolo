@@ -52,6 +52,7 @@ const seedUsers = async () => {
 
 const seedProjects = async () => {
     const johnId = await getUserIdByUsername("John");
+    const janeId = await getUserIdByUsername("Jane");
 
     const seedProjects: NewProject[] = [
         {
@@ -62,6 +63,10 @@ const seedProjects = async () => {
             name: "Test Project 2",
             createdBy: johnId,
         },
+        {
+            name: "Jane's Project",
+            createdBy: janeId,
+        }
     ];
 
     await Project.insertMany(seedProjects);

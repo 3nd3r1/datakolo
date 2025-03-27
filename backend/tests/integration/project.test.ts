@@ -98,4 +98,29 @@ describe("/api/projects", () => {
             .expect(400)
             .expect({ error: "Name already in use" });
     });
+    it("should generate an api key", async () => {
+        const projectId = await getProjectIdByName("Test Project 1");
+
+        await (await superoak(app))
+            .post(`/api/projects/${projectId}/generate-api-key`)
+            .set("Authorization", `Bearer ${token}`)
+            .expect(200)
+            .expect((res) => {
+                const { apiKey } = res.body;
+                assertMatch(apiKey, /[a-f0-9]{32}/);
+            });
+    });
+    it("should not generate an api key without permissions", async () => {
+        const projectId = await getProjectIdByName("Jane's Project");
+
+        await (await superoak(app))
+            .post(`/api/projects/${projectId}/generate-api-key`)
+            .set("Authorization", `Bearer ${token}`)
+            .expect(403)
+            .expect((res) => {
+                const { apiKey, error } = res.body;
+                assertEquals(error, "Forbidden");
+                assertEquals(apiKey, undefined);
+            });
+    });
 });
