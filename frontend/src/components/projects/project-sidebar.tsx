@@ -3,7 +3,13 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { Database, FileText, HomeIcon, LucideIcon } from "lucide-react";
+import {
+    Database,
+    FileText,
+    HomeIcon,
+    LucideIcon,
+    Settings,
+} from "lucide-react";
 
 import { Project } from "@/validators/project";
 
@@ -45,6 +51,12 @@ const ProjectSidebar = ({ project }: { project: Project }) => {
             icon: FileText,
             href: `/projects/${project.id}/content`,
             isActive: pathname.startsWith(`/projects/${project.id}/content`),
+        },
+        {
+            title: "Settings",
+            icon: Settings,
+            href: `/projects/${project.id}/settings`,
+            isActive: pathname.startsWith(`/projects/${project.id}/settings`),
         },
     ];
 
