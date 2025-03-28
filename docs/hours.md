@@ -78,4 +78,6 @@
 | 20.03.2025 | 2        | Implement repository creation                                                                                                                            |
 | 20.03.2025 | 2        | Alot of fixing and refactoring of mainly frontend                                                                                                        |
 | 21.03.2025 | 2        | Start implementing project apiKey in backend                                                                                                             |
-|   Total    | 139      |                                                                                                                                                          |
+| 27.03.2025 | 1        | Add some project apiKey tests                                                                                                                            |
+| 27.03.2025 | 3        | Start refactoring error handling and project permissions in backend                                                                                      |
+|   Total    | 143      |                                                                                                                                                          |
