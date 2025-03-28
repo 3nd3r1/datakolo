@@ -80,4 +80,6 @@
 | 21.03.2025 | 2        | Start implementing project apiKey in backend                                                                                                             |
 | 27.03.2025 | 1        | Add some project apiKey tests                                                                                                                            |
 | 27.03.2025 | 3        | Start refactoring error handling and project permissions in backend                                                                                      |
-|   Total    | 143      |                                                                                                                                                          |
+| 28.03.2025 | 1        | Finish refactoring error handling and project permissions in backend                                                                                     |
+| 28.03.2025 | 2        | Start implementing project apiKey in frontend                                                                                                            |
+|   Total    | 146      |                                                                                                                                                          |
