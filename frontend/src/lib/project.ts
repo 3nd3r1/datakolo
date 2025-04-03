@@ -2,7 +2,7 @@
 
 import { revalidateTag } from "next/cache";
 
-import { NewProject, Project } from "@/validators/project";
+import { NewProject, Project, ProjectUpdate } from "@/validators/project";
 
 import { getAuthHeader } from "@/lib/auth";
 import { config } from "@/lib/config";
@@ -58,6 +58,30 @@ export const createProject = async (
 
     if (!response.ok) {
         throw new Error((await response.json()).error);
+    }
+
+    revalidateTag("project");
+    return (await response.json()) as Project;
+};
+
+export const updateProject = async (
+    id: string,
+    projectUpdate: ProjectUpdate
+): Promise<Project> => {
+    const response = await fetch(`${config.apiUrl}/projects/${id}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            ...(await getAuthHeader()),
+        },
+        cache: "no-cache",
+        body: JSON.stringify(projectUpdate),
+    });
+
+    if (!response.ok) {
+        throw new Error(
+            (await response.json()).error || "Something went wrong"
+        );
     }
 
     revalidateTag("project");

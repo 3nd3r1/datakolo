@@ -1,5 +1,7 @@
 "use client";
 
+import { useRef } from "react";
+
 import { Project } from "@/validators/project";
 
 import {
@@ -11,7 +13,11 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 
+import ProjectEditForm from "./project-edit-form";
+
 const ProjectSettings = ({ project }: { project: Project }) => {
+    const projectEditFormRef = useRef<{ submit: () => void }>(null);
+
     return (
         <div className="container mx-auto py-6 max-w-4xl">
             <div className="flex items-center mb-6">
@@ -21,12 +27,17 @@ const ProjectSettings = ({ project }: { project: Project }) => {
             <div className="grid gap-6">
                 <Card>
                     <CardHeader>
-                        <CardTitle>Project Details - {project.name}</CardTitle>
+                        <CardTitle>Project Details</CardTitle>
                         <CardDescription>
                             View and edit your project information
                         </CardDescription>
                     </CardHeader>
-                    <CardContent>Not Implemented</CardContent>
+                    <CardContent>
+                        <ProjectEditForm
+                            project={project}
+                            ref={projectEditFormRef}
+                        />
+                    </CardContent>
                 </Card>
 
                 <Card>
