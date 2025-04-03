@@ -82,4 +82,6 @@
 | 27.03.2025 | 3        | Start refactoring error handling and project permissions in backend                                                                                      |
 | 28.03.2025 | 1        | Finish refactoring error handling and project permissions in backend                                                                                     |
 | 28.03.2025 | 2        | Start implementing project apiKey in frontend                                                                                                            |
-|   Total    | 146      |                                                                                                                                                          |
+| 03.04.2025 | 1        | Implement project update in backend                                                                                                                      |
+| 03.04.2025 | 2        | Re-learn how forwardRef works; Implement project edit form in frontend                                                                                   |
+|   Total    | 149      |                                                                                                                                                          |
