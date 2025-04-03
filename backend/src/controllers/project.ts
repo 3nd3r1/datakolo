@@ -1,6 +1,10 @@
 import { createHttpError } from "oak";
 
-import { toNewProject, toNonSensitiveProject } from "@/validators/project.ts";
+import {
+    toNewProject,
+    toNonSensitiveProject,
+    toProjectUpdate,
+} from "@/validators/project.ts";
 import projectService from "@/services/project.ts";
 import { AppContext } from "@/utils/oak.ts";
 
@@ -35,6 +39,23 @@ export const getProject = async (ctx: AppContext<{ id: string }>) => {
 
     const project = await projectService.getProjectById(id, user.id);
     ctx.response.body = toNonSensitiveProject(project);
+};
+
+export const updateProject = async (ctx: AppContext<{ id: string }>) => {
+    const user = ctx.state.user;
+    if (!user) return;
+
+    const id = ctx.params.id;
+    const body = await ctx.request.body.json();
+
+    const projectUpdate = toProjectUpdate(body);
+    const updatedProject = await projectService.updateProject(
+        id,
+        user.id,
+        projectUpdate,
+    );
+
+    ctx.response.body = toNonSensitiveProject(updatedProject);
 };
 
 export const generateApiKey = async (ctx: AppContext<{ id: string }>) => {

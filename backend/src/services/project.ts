@@ -42,6 +42,26 @@ const getProjectById = async (
     return projectDTO;
 };
 
+const updateProject = async (
+    id: string,
+    userId: string,
+    projectUpdate: Partial<NewProject>,
+): Promise<ProjectDTO> => {
+    await getProjectById(id, userId);
+
+    const project = await Project.findByIdAndUpdate(
+        id,
+        projectUpdate,
+        { new: true },
+    );
+
+    if (!project) {
+        throw new ProjectNotFoundError();
+    }
+
+    return toProjectDTO(project);
+};
+
 const generateProjectApiKey = async (
     id: string,
     userId: string,
@@ -103,6 +123,7 @@ const projectService = {
     createProject,
     getProjectsByCreator,
     getProjectById,
+    updateProject,
     generateProjectApiKey,
     removeProjectApiKey,
     getProjectByApiKey,

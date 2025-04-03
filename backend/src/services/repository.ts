@@ -62,8 +62,8 @@ const getRepositoryById = async (
 
 const updateRepository = async (
     id: string,
-    repositoryUpdate: Partial<NewRepository>,
     userId: string,
+    repositoryUpdate: Partial<NewRepository>,
 ): Promise<RepositoryDTO> => {
     await getRepositoryById(id, userId);
 

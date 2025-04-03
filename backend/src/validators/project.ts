@@ -69,3 +69,18 @@ export const toNonSensitiveProject = (
         throw error;
     }
 };
+
+export const toProjectUpdate = (
+    obj: Partial<NewProject>,
+): Partial<NewProject> => {
+    try {
+        return newProjectSchema.partial().parse(obj);
+    } catch (error: unknown) {
+        if (error instanceof z.ZodError) {
+            throw new ValidationError(
+                error.issues.flatMap((e) => e.message).join(", "),
+            );
+        }
+        throw error;
+    }
+};

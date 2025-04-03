@@ -77,8 +77,8 @@ export const updateRepository = async (
     const repositoryUpdate = toRepositoryUpdate(body);
     const updatedRepository = await repositoryService.updateRepository(
         id,
-        repositoryUpdate,
         user.id,
+        repositoryUpdate,
     );
 
     ctx.response.body = updatedRepository;
