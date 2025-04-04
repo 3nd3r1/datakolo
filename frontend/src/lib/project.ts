@@ -88,6 +88,31 @@ export const updateProject = async (
     return (await response.json()) as Project;
 };
 
+export const getApiKey = async (projectId: string): Promise<string> => {
+    const response = await fetch(
+        `${config.apiUrl}/projects/${projectId}/api-key`,
+        {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                ...(await getAuthHeader()),
+            },
+            cache: "no-cache",
+        }
+    );
+
+    if (!response.ok) {
+        throw new Error((await response.json()).error);
+    }
+
+    const data = await response.json();
+    if (!data.apiKey) {
+        throw new Error("Something went wrong");
+    }
+
+    return data.apiKey;
+};
+
 export const generateApiKey = async (projectId: string): Promise<string> => {
     const response = await fetch(
         `${config.apiUrl}/projects/${projectId}/generate-api-key`,

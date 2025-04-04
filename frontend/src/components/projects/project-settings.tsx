@@ -1,6 +1,11 @@
 "use client";
 
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
+
 import { useRef } from "react";
+
+import { Copy, Key, ListRestart, Trash } from "lucide-react";
 
 import { Project } from "@/validators/project";
 
@@ -50,8 +55,54 @@ const ProjectSettings = ({ project }: { project: Project }) => {
                     </CardHeader>
                     <CardContent>
                         <div className="space-y-4">
-                            <div className="flex items-center space-x-2">
-                                Not Implemented
+                            <div className="space-y-4 w-full">
+                                <div className="flex flex-col p-4 gap-y-4 border rounded-md">
+                                    <div className="flex flex-row justify-between">
+                                        <div className="flex flex-row gap-x-4">
+                                            <div className="flex items-center">
+                                                <div className="bg-secondary rounded p-2">
+                                                    <Key size={18} />
+                                                </div>
+                                            </div>
+                                            <div className="flex flex-col">
+                                                <span>API Key</span>
+                                                <span className="text-xs text-muted-foreground"></span>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <Button
+                                                variant="ghost"
+                                                className="border text-destructive"
+                                            >
+                                                <Trash />
+                                                <span>Revoke Key</span>
+                                            </Button>
+                                        </div>
+                                    </div>
+                                    <div className="flex flex-row gap-x-4">
+                                        <div className="grow">
+                                            <Input type="password" />
+                                        </div>
+                                        <div>
+                                            <Button
+                                                variant="ghost"
+                                                className="border"
+                                            >
+                                                <Copy />
+                                            </Button>
+                                        </div>
+                                    </div>
+                                    <div></div>
+                                </div>
+                                <div>
+                                    <Button
+                                        variant="ghost"
+                                        className="border w-full"
+                                    >
+                                        <ListRestart />
+                                        <span>Regenerate API Key</span>
+                                    </Button>
+                                </div>
                             </div>
 
                             <Separator className="my-4" />
@@ -62,7 +113,14 @@ const ProjectSettings = ({ project }: { project: Project }) => {
                                 </h3>
                                 <div className="bg-muted rounded-md p-4">
                                     <pre className="text-xs overflow-x-auto whitespace-pre-wrap">
-                                        Not Implemented
+                                        {`fetch('http://localhost:3000/content/blog-posts', {
+  headers: {
+    'Authorization': 'Bearer YOUR_API_KEY',
+    'Content-Type': 'application/json'
+  }
+})
+.then(response => response.json())
+.then(data => console.log(data));`}
                                     </pre>
                                 </div>
                             </div>
