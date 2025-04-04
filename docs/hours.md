@@ -84,4 +84,5 @@
 | 28.03.2025 | 2        | Start implementing project apiKey in frontend                                                                                                            |
 | 03.04.2025 | 1        | Implement project update in backend                                                                                                                      |
 | 03.04.2025 | 2        | Re-learn how forwardRef works; Implement project edit form in frontend                                                                                   |
-|   Total    | 149      |                                                                                                                                                          |
+| 04.04.2025 | 1        | Continue implementing api-key in frontend                                                                                                                |
+|   Total    | 150      |                                                                                                                                                          |
