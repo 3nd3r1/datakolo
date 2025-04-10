@@ -85,4 +85,5 @@
 | 03.04.2025 | 1        | Implement project update in backend                                                                                                                      |
 | 03.04.2025 | 2        | Re-learn how forwardRef works; Implement project edit form in frontend                                                                                   |
 | 04.04.2025 | 1        | Continue implementing api-key in frontend                                                                                                                |
-|   Total    | 150      |                                                                                                                                                          |
+| 10.04.2025 | 3        | Continue implementing api-key in frontend                                                                                                                |
+|   Total    | 153      |                                                                                                                                                          |
