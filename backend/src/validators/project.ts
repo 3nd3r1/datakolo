@@ -16,10 +16,11 @@ const projectDTOSchema = z.object({
 
 const nonSensitiveProjectSchema = projectDTOSchema.omit({ apiKey: true });
 
-const newProjectSchema = projectDTOSchema.omit({ id: true }).extend({
-    createdAt: projectDTOSchema.shape.createdAt.optional(),
-    updatedAt: projectDTOSchema.shape.updatedAt.optional(),
-});
+const newProjectSchema = projectDTOSchema.omit({ id: true, apiKey: true })
+    .extend({
+        createdAt: projectDTOSchema.shape.createdAt.optional(),
+        updatedAt: projectDTOSchema.shape.updatedAt.optional(),
+    });
 
 export type ProjectDTO = z.infer<typeof projectDTOSchema>;
 export type NewProject = z.infer<typeof newProjectSchema>;

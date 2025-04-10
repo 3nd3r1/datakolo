@@ -66,13 +66,7 @@ const generateProjectApiKey = async (
     id: string,
     userId: string,
 ): Promise<ProjectDTO> => {
-    const project = await Project.findById(id);
-    if (!project) {
-        throw new ProjectNotFoundError();
-    }
-    if (project.createdBy.toString() !== userId) {
-        throw new UnauthorizedError();
-    }
+    await getProjectById(id, userId);
 
     const apiKey = generateApiKey();
     const updatedProject = await Project.findByIdAndUpdate(
@@ -80,6 +74,7 @@ const generateProjectApiKey = async (
         { apiKey },
         { new: true },
     );
+
     if (!updatedProject) {
         throw new ProjectNotFoundError();
     }
@@ -91,13 +86,7 @@ const removeProjectApiKey = async (
     id: string,
     userId: string,
 ): Promise<ProjectDTO> => {
-    const project = await Project.findById(id);
-    if (!project) {
-        throw new ProjectNotFoundError();
-    }
-    if (project.createdBy.toString() !== userId) {
-        throw new UnauthorizedError();
-    }
+    await getProjectById(id, userId);
 
     const updatedProject = await Project.findByIdAndUpdate(
         id,
@@ -116,6 +105,7 @@ const getProjectByApiKey = async (apiKey: string): Promise<ProjectDTO> => {
     if (!project) {
         throw new ProjectNotFoundError();
     }
+
     return toProjectDTO(project);
 };
 

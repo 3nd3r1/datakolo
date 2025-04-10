@@ -73,3 +73,16 @@ export const generateApiKey = async (ctx: AppContext<{ id: string }>) => {
         apiKey: project.apiKey,
     };
 };
+
+export const getProjectApiKey = async (ctx: AppContext<{ id: string }>) => {
+    const user = ctx.state.user;
+    if (!user) return;
+
+    const id = ctx.params.id;
+
+    const project = await projectService.getProjectById(id, user.id);
+
+    ctx.response.body = {
+        apiKey: project.apiKey,
+    };
+};
