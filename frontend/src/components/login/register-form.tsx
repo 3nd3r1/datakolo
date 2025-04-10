@@ -33,7 +33,7 @@ const RegisterForm = () => {
     const { toast } = useToast();
     const [loading, setLoading] = useState(false);
 
-    const form = useForm<z.infer>({
+    const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
             username: "",
@@ -41,7 +41,7 @@ const RegisterForm = () => {
         },
     });
 
-    const onSubmit = async (values: z.infer) => {
+    const onSubmit = async (values: z.infer<typeof formSchema>) => {
         let success = false;
         setLoading(true);
 

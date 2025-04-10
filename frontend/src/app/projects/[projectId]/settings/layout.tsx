@@ -19,9 +19,11 @@ export default async function Layout({
     return (
         <div className="flex flex-row h-screen">
             <div className="grow flex flex-col">
-                <header className="block min-h-14 bg-card"></header>
-                <Separator />
-                <div className="grow py-4 px-8">{children}</div>
+                <div className="fixed w-full">
+                    <header className="block min-h-14 bg-card"></header>
+                    <Separator />
+                </div>
+                <div className="grow py-4 px-8 mt-14">{children}</div>
             </div>
         </div>
     );

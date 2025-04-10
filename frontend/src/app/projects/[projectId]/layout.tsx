@@ -19,7 +19,7 @@ export default async function Layout({
     return (
         <div className="flex flex-row h-screen">
             <ProjectSidebar project={project} />
-            <main className="flex-1">{children}</main>
+            <main className="flex-1 ml-[55px]">{children}</main>
         </div>
     );
 }

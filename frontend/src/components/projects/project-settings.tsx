@@ -1,14 +1,17 @@
 "use client";
 
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
+import { useEffect, useRef, useState } from "react";
 
-import { useRef } from "react";
-
-import { Copy, Key, ListRestart, Trash } from "lucide-react";
+import { Copy, Eye, EyeOff, Key, Plus, RefreshCw, Trash } from "lucide-react";
+import { ClipLoader } from "react-spinners";
 
 import { Project } from "@/validators/project";
 
+import { generateApiKey, getApiKey } from "@/lib/project";
+
+import { useToast } from "@/hooks/use-toast";
+
+import { Button } from "@/components/ui/button";
 import {
     Card,
     CardContent,
@@ -16,12 +19,122 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 
 import ProjectEditForm from "./project-edit-form";
 
+const NoProjectApiKey = () => (
+    <div className="flex flex-col border rounded-md px-4 py-10 items-center">
+        <Key size={32} className="text-muted-foreground mb-2" />
+        <h3 className="font-bold text-md mb-2">No API Key Generated</h3>
+        <p className="text-sm text-muted-foreground">
+            Generate an API key to access your project
+        </p>
+    </div>
+);
+
+const ProjectApiKey = ({ apiKey }: { apiKey: string }) => {
+    const [isApiKeyVisible, setIsApiKeyVisible] = useState(false);
+
+    return (
+        <div className="flex flex-col p-4 gap-y-4 border rounded-md">
+            <div className="flex flex-row justify-between">
+                <div className="flex flex-row gap-x-4">
+                    <div className="flex items-center">
+                        <div className="bg-secondary rounded p-2">
+                            <Key size={18} />
+                        </div>
+                    </div>
+                    <div className="flex flex-col">
+                        <span>API Key</span>
+                        <span className="text-xs text-muted-foreground"></span>
+                    </div>
+                </div>
+                <div>
+                    <Button variant="ghost" className="border text-destructive">
+                        <Trash />
+                        <span>Revoke Key</span>
+                    </Button>
+                </div>
+            </div>
+            <div className="flex flex-row gap-x-4">
+                <div className="grow relative">
+                    <Input
+                        type={isApiKeyVisible ? "text" : "password"}
+                        value={apiKey}
+                        readOnly
+                    />
+                    <Button
+                        variant="ghost"
+                        className="absolute right-0 top-0"
+                        onClick={() => setIsApiKeyVisible(!isApiKeyVisible)}
+                    >
+                        {isApiKeyVisible ? <EyeOff /> : <Eye />}
+                    </Button>
+                </div>
+                <div>
+                    <Button variant="ghost" className="border">
+                        <Copy />
+                    </Button>
+                </div>
+            </div>
+            <div></div>
+        </div>
+    );
+};
+
 const ProjectSettings = ({ project }: { project: Project }) => {
     const projectEditFormRef = useRef<{ submit: () => void }>(null);
+
+    const { toast } = useToast();
+    const [loading, setLoading] = useState(true);
+    const [apiKey, setApiKey] = useState<string | undefined>(undefined);
+
+    const handleRegenerateApiKey = async () => {
+        try {
+            setLoading(true);
+            const newApiKey = await generateApiKey(project.id);
+            setApiKey(newApiKey);
+            toast({
+                title: "API Key Regenerated",
+                description: "Your new API key has been generated.",
+            });
+        } catch (error: unknown) {
+            console.error(error);
+            toast({
+                variant: "destructive",
+                title: "Error",
+                description:
+                    error instanceof Error
+                        ? error.message
+                        : "Something went wrong",
+            });
+        }
+        setLoading(false);
+    };
+
+    useEffect(() => {
+        const fetchApiKey = async () => {
+            const apiKey = await getApiKey(project.id).catch(
+                (error: unknown) => {
+                    toast({
+                        variant: "destructive",
+                        title: "Error",
+                        description:
+                            error instanceof Error
+                                ? error.message
+                                : "Something went wrong",
+                    });
+                    return undefined;
+                }
+            );
+            setApiKey(apiKey);
+            setLoading(false);
+        };
+
+        fetchApiKey();
+    }, [project.id]);
 
     return (
         <div className="container mx-auto py-6 max-w-4xl">
@@ -54,53 +167,36 @@ const ProjectSettings = ({ project }: { project: Project }) => {
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
+                        <div className="mb-4">
+                            {loading ? (
+                                <div className="flex items-center justify-center">
+                                    <ClipLoader color="white" />
+                                </div>
+                            ) : apiKey ? (
+                                <ProjectApiKey apiKey={apiKey} />
+                            ) : (
+                                <NoProjectApiKey />
+                            )}
+                        </div>
                         <div className="space-y-4">
                             <div className="space-y-4 w-full">
-                                <div className="flex flex-col p-4 gap-y-4 border rounded-md">
-                                    <div className="flex flex-row justify-between">
-                                        <div className="flex flex-row gap-x-4">
-                                            <div className="flex items-center">
-                                                <div className="bg-secondary rounded p-2">
-                                                    <Key size={18} />
-                                                </div>
-                                            </div>
-                                            <div className="flex flex-col">
-                                                <span>API Key</span>
-                                                <span className="text-xs text-muted-foreground"></span>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <Button
-                                                variant="ghost"
-                                                className="border text-destructive"
-                                            >
-                                                <Trash />
-                                                <span>Revoke Key</span>
-                                            </Button>
-                                        </div>
-                                    </div>
-                                    <div className="flex flex-row gap-x-4">
-                                        <div className="grow">
-                                            <Input type="password" />
-                                        </div>
-                                        <div>
-                                            <Button
-                                                variant="ghost"
-                                                className="border"
-                                            >
-                                                <Copy />
-                                            </Button>
-                                        </div>
-                                    </div>
-                                    <div></div>
-                                </div>
                                 <div>
                                     <Button
                                         variant="ghost"
                                         className="border w-full"
+                                        onClick={handleRegenerateApiKey}
                                     >
-                                        <ListRestart />
-                                        <span>Regenerate API Key</span>
+                                        {apiKey ? (
+                                            <>
+                                                <RefreshCw />
+                                                <span>Regenerate API Key</span>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <Plus />
+                                                <span>Generate API Key</span>
+                                            </>
+                                        )}
                                     </Button>
                                 </div>
                             </div>

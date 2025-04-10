@@ -28,7 +28,7 @@ const RepositorySidebar = ({
     const pathname = usePathname();
 
     return (
-        <div className="flex flex-col border-r">
+        <div className="flex flex-col border-r fixed h-full w-[225px]">
             <div className="p-2 flex items-center justify-center h-14">
                 <h2 className="text-lg font-bold">
                     {variant == "schema"

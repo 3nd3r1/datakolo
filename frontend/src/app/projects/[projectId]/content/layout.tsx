@@ -30,15 +30,21 @@ export default async function Layout({
                 repositories={repositories}
                 variant="content"
             />
-            <div className="grow flex flex-col">
-                <header className="flex h-14 items-center gap-4 bg-card px-6">
-                    <Button variant="ghost" size="icon" className="md:hidden">
-                        <Menu className="h-5 w-5" />
-                    </Button>
-                    <div className="ml-auto flex items-center gap-4"></div>
-                </header>
-                <Separator />
-                <div className="grow py-4 px-8">{children}</div>
+            <div className="grow flex flex-col ml-[225px]">
+                <div className="w-full fixed">
+                    <header className="flex h-14 items-center gap-4 bg-card px-6">
+                        <Button
+                            variant="ghost"
+                            size="icon"
+                            className="md:hidden"
+                        >
+                            <Menu className="h-5 w-5" />
+                        </Button>
+                        <div className="ml-auto flex items-center gap-4"></div>
+                    </header>
+                    <Separator />
+                </div>
+                <div className="grow py-4 px-8 mt-14">{children}</div>
             </div>
         </div>
     );

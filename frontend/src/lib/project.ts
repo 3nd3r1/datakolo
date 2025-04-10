@@ -88,7 +88,9 @@ export const updateProject = async (
     return (await response.json()) as Project;
 };
 
-export const getApiKey = async (projectId: string): Promise<string> => {
+export const getApiKey = async (
+    projectId: string
+): Promise<string | undefined> => {
     const response = await fetch(
         `${config.apiUrl}/projects/${projectId}/api-key`,
         {
@@ -106,11 +108,8 @@ export const getApiKey = async (projectId: string): Promise<string> => {
     }
 
     const data = await response.json();
-    if (!data.apiKey) {
-        throw new Error("Something went wrong");
-    }
 
-    return data.apiKey;
+    return data.apiKey || undefined;
 };
 
 export const generateApiKey = async (projectId: string): Promise<string> => {
@@ -126,14 +125,15 @@ export const generateApiKey = async (projectId: string): Promise<string> => {
         }
     );
 
+    const data = await response.json();
+
     if (!response.ok) {
-        throw new Error((await response.json()).error);
+        throw new Error(data.error);
     }
 
-    const data = await response.json();
     if (!data.apiKey) {
         throw new Error("Something went wrong");
     }
 
-    return data.apikey;
+    return data.apiKey;
 };

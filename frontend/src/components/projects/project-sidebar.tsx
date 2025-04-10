@@ -61,7 +61,7 @@ const ProjectSidebar = ({ project }: { project: Project }) => {
     ];
 
     return (
-        <div className="flex flex-col border-r">
+        <div className="flex flex-col border-r fixed h-full w-[55px]">
             <Link href={"/"}>
                 <div className="p-2 flex items-center justify-center h-14">
                     <h1 className="text-lg font-bold">D</h1>
