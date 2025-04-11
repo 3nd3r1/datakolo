@@ -2,7 +2,14 @@
 
 import { revalidateTag } from "next/cache";
 
-import { NewProject, Project, ProjectUpdate } from "@/validators/project";
+import {
+    NewProject,
+    Project,
+    ProjectApiKey,
+    ProjectUpdate,
+    projectApiKeySchema,
+    projectSchema,
+} from "@/validators/project";
 
 import { getAuthHeader } from "@/lib/auth";
 import { config } from "@/lib/config";
@@ -22,7 +29,9 @@ export const getProjects = async (): Promise<Project[]> => {
         throw new Error((await response.json()).error);
     }
 
-    return (await response.json()) as Project[];
+    const data = await response.json();
+
+    return data.map((project: unknown) => projectSchema.parse(project));
 };
 
 export const getProject = async (id: string): Promise<Project> => {
@@ -40,7 +49,7 @@ export const getProject = async (id: string): Promise<Project> => {
         throw new Error((await response.json()).error);
     }
 
-    return (await response.json()) as Project;
+    return projectSchema.parse(await response.json());
 };
 
 export const createProject = async (
@@ -61,7 +70,7 @@ export const createProject = async (
     }
 
     revalidateTag("project");
-    return (await response.json()) as Project;
+    return projectSchema.parse(await response.json());
 };
 
 export const updateProject = async (
@@ -85,23 +94,20 @@ export const updateProject = async (
     }
 
     revalidateTag("project");
-    return (await response.json()) as Project;
+    return projectSchema.parse(await response.json());
 };
 
-export const getApiKey = async (
-    projectId: string
-): Promise<string | undefined> => {
-    const response = await fetch(
-        `${config.apiUrl}/projects/${projectId}/api-key`,
-        {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                ...(await getAuthHeader()),
-            },
-            cache: "no-cache",
-        }
-    );
+export const getProjectApiKey = async (
+    id: string
+): Promise<ProjectApiKey | undefined> => {
+    const response = await fetch(`${config.apiUrl}/projects/${id}/api-key`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            ...(await getAuthHeader()),
+        },
+        cache: "no-cache",
+    });
 
     if (!response.ok) {
         throw new Error((await response.json()).error);
@@ -109,12 +115,18 @@ export const getApiKey = async (
 
     const data = await response.json();
 
-    return data.apiKey || undefined;
+    if (!data.apiKey || !data.apiKeyGeneratedAt) {
+        return undefined;
+    }
+
+    return projectApiKeySchema.parse(data);
 };
 
-export const generateApiKey = async (projectId: string): Promise<string> => {
+export const generateProjectApiKey = async (
+    id: string
+): Promise<ProjectApiKey> => {
     const response = await fetch(
-        `${config.apiUrl}/projects/${projectId}/generate-api-key`,
+        `${config.apiUrl}/projects/${id}/generate-api-key`,
         {
             method: "POST",
             headers: {
@@ -128,12 +140,28 @@ export const generateApiKey = async (projectId: string): Promise<string> => {
     const data = await response.json();
 
     if (!response.ok) {
-        throw new Error(data.error);
+        throw new Error(data.error || "Something went wrong");
     }
 
-    if (!data.apiKey) {
-        throw new Error("Something went wrong");
-    }
+    return projectApiKeySchema.parse(data);
+};
 
-    return data.apiKey;
+export const revokeProjectApiKey = async (id: string): Promise<void> => {
+    const response = await fetch(
+        `${config.apiUrl}/projects/${id}/revoke-api-key`,
+        {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                ...(await getAuthHeader()),
+            },
+            cache: "no-cache",
+        }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(data.error || "Something went wrong");
+    }
 };

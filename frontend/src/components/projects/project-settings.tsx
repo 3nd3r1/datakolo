@@ -5,9 +5,13 @@ import { useEffect, useRef, useState } from "react";
 import { Copy, Eye, EyeOff, Key, Plus, RefreshCw, Trash } from "lucide-react";
 import { ClipLoader } from "react-spinners";
 
-import { Project } from "@/validators/project";
+import { Project, ProjectApiKey } from "@/validators/project";
 
-import { generateApiKey, getApiKey } from "@/lib/project";
+import {
+    generateProjectApiKey,
+    getProjectApiKey,
+    revokeProjectApiKey,
+} from "@/lib/project";
 
 import { useToast } from "@/hooks/use-toast";
 
@@ -24,7 +28,7 @@ import { Separator } from "@/components/ui/separator";
 
 import ProjectEditForm from "./project-edit-form";
 
-const NoProjectApiKey = () => (
+const NoProjectApiKeyView = () => (
     <div className="flex flex-col border rounded-md px-4 py-10 items-center">
         <Key size={32} className="text-muted-foreground mb-2" />
         <h3 className="font-bold text-md mb-2">No API Key Generated</h3>
@@ -34,8 +38,23 @@ const NoProjectApiKey = () => (
     </div>
 );
 
-const ProjectApiKey = ({ apiKey }: { apiKey: string }) => {
+const ProjectApiKeyView = ({
+    apiKey,
+    handleRevoke,
+}: {
+    apiKey: ProjectApiKey;
+    handleRevoke: () => void;
+}) => {
+    const { toast } = useToast();
     const [isApiKeyVisible, setIsApiKeyVisible] = useState(false);
+
+    const handleCopy = () => {
+        navigator.clipboard.writeText(apiKey.apiKey);
+        toast({
+            title: "API Key Copied",
+            description: "The API key has been copied to your clipboard.",
+        });
+    };
 
     return (
         <div className="flex flex-col p-4 gap-y-4 border rounded-md">
@@ -48,11 +67,17 @@ const ProjectApiKey = ({ apiKey }: { apiKey: string }) => {
                     </div>
                     <div className="flex flex-col">
                         <span>API Key</span>
-                        <span className="text-xs text-muted-foreground"></span>
+                        <span className="text-xs text-muted-foreground">
+                            Generated on {apiKey.apiKeyGeneratedAt.toString()}
+                        </span>
                     </div>
                 </div>
                 <div>
-                    <Button variant="ghost" className="border text-destructive">
+                    <Button
+                        variant="ghost"
+                        className="border text-destructive"
+                        onClick={handleRevoke}
+                    >
                         <Trash />
                         <span>Revoke Key</span>
                     </Button>
@@ -62,7 +87,7 @@ const ProjectApiKey = ({ apiKey }: { apiKey: string }) => {
                 <div className="grow relative">
                     <Input
                         type={isApiKeyVisible ? "text" : "password"}
-                        value={apiKey}
+                        value={apiKey.apiKey}
                         readOnly
                     />
                     <Button
@@ -74,7 +99,11 @@ const ProjectApiKey = ({ apiKey }: { apiKey: string }) => {
                     </Button>
                 </div>
                 <div>
-                    <Button variant="ghost" className="border">
+                    <Button
+                        variant="ghost"
+                        className="border"
+                        onClick={handleCopy}
+                    >
                         <Copy />
                     </Button>
                 </div>
@@ -89,12 +118,12 @@ const ProjectSettings = ({ project }: { project: Project }) => {
 
     const { toast } = useToast();
     const [loading, setLoading] = useState(true);
-    const [apiKey, setApiKey] = useState<string | undefined>(undefined);
+    const [apiKey, setApiKey] = useState<ProjectApiKey | undefined>(undefined);
 
     const handleRegenerateApiKey = async () => {
         try {
             setLoading(true);
-            const newApiKey = await generateApiKey(project.id);
+            const newApiKey = await generateProjectApiKey(project.id);
             setApiKey(newApiKey);
             toast({
                 title: "API Key Regenerated",
@@ -114,9 +143,31 @@ const ProjectSettings = ({ project }: { project: Project }) => {
         setLoading(false);
     };
 
+    const handleRevokeApiKey = async () => {
+        try {
+            setLoading(true);
+            await revokeProjectApiKey(project.id);
+            setApiKey(undefined);
+            toast({
+                title: "API Key Revoked",
+                description: "Your API key has been revoked.",
+            });
+        } catch (error: unknown) {
+            toast({
+                variant: "destructive",
+                title: "Error",
+                description:
+                    error instanceof Error
+                        ? error.message
+                        : "Something went wrong",
+            });
+        }
+        setLoading(false);
+    };
+
     useEffect(() => {
         const fetchApiKey = async () => {
-            const apiKey = await getApiKey(project.id).catch(
+            const apiKey = await getProjectApiKey(project.id).catch(
                 (error: unknown) => {
                     toast({
                         variant: "destructive",
@@ -173,9 +224,12 @@ const ProjectSettings = ({ project }: { project: Project }) => {
                                     <ClipLoader color="white" />
                                 </div>
                             ) : apiKey ? (
-                                <ProjectApiKey apiKey={apiKey} />
+                                <ProjectApiKeyView
+                                    apiKey={apiKey}
+                                    handleRevoke={handleRevokeApiKey}
+                                />
                             ) : (
-                                <NoProjectApiKey />
+                                <NoProjectApiKeyView />
                             )}
                         </div>
                         <div className="space-y-4">
