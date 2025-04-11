@@ -1,0 +1,1 @@
+The components in this folder are from [shadcn/ui](https://ui.shadcn.com/), a collection of components built using Radix UI and Tailwind CSS. There can be some modifications made by me but the core of the code is from shadcn/ui.
