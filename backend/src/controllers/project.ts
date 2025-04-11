@@ -58,20 +58,34 @@ export const updateProject = async (ctx: AppContext<{ id: string }>) => {
     ctx.response.body = toNonSensitiveProject(updatedProject);
 };
 
-export const generateApiKey = async (ctx: AppContext<{ id: string }>) => {
+export const generateProjectApiKey = async (
+    ctx: AppContext<{ id: string }>,
+) => {
     const user = ctx.state.user;
     if (!user) return;
 
     const id = ctx.params.id;
 
     const project = await projectService.generateProjectApiKey(id, user.id);
-    if (!project.apiKey) {
+    if (!project.apiKey || !project.apiKeyGeneratedAt) {
         throw createHttpError(500, "Something went wrong");
     }
 
     ctx.response.body = {
         apiKey: project.apiKey,
+        apiKeyGeneratedAt: project.apiKeyGeneratedAt,
     };
+};
+
+export const revokeProjectApiKey = async (ctx: AppContext<{ id: string }>) => {
+    const user = ctx.state.user;
+    if (!user) return;
+
+    const id = ctx.params.id;
+
+    await projectService.removeProjectApiKey(id, user.id);
+
+    ctx.response.body = {};
 };
 
 export const getProjectApiKey = async (ctx: AppContext<{ id: string }>) => {
@@ -84,5 +98,6 @@ export const getProjectApiKey = async (ctx: AppContext<{ id: string }>) => {
 
     ctx.response.body = {
         apiKey: project.apiKey,
+        apiKeyGeneratedAt: project.apiKeyGeneratedAt,
     };
 };

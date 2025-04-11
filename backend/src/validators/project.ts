@@ -9,14 +9,22 @@ const projectDTOSchema = z.object({
         .min(2, { message: "Name must be at least 2 characters" })
         .max(100, { message: "Name must be at most 100 characters" }),
     apiKey: z.string().optional(),
+    apiKeyGeneratedAt: z.date().optional(),
     createdBy: z.string(),
     createdAt: z.date(),
     updatedAt: z.date(),
 });
 
-const nonSensitiveProjectSchema = projectDTOSchema.omit({ apiKey: true });
+const nonSensitiveProjectSchema = projectDTOSchema.omit({
+    apiKey: true,
+    apiKeyGeneratedAt: true,
+});
 
-const newProjectSchema = projectDTOSchema.omit({ id: true, apiKey: true })
+const newProjectSchema = projectDTOSchema.omit({
+    id: true,
+    apiKey: true,
+    apiKeyGeneratedAt: true,
+})
     .extend({
         createdAt: projectDTOSchema.shape.createdAt.optional(),
         updatedAt: projectDTOSchema.shape.updatedAt.optional(),
