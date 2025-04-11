@@ -8,6 +8,8 @@ import {
     updateRepository,
 } from "@/controllers/repository.ts";
 
+// TODO: Make all controllers a struct like with publicApiContentController
+
 const router = new Router();
 
 router.post(

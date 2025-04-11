@@ -7,6 +7,8 @@ import {
     UnauthorizedError,
 } from "@/utils/errors.ts";
 
+// TODO: Use ProjectId, UserId and ApiKey types instead of string
+
 const createProject = async (newProject: NewProject): Promise<ProjectDTO> => {
     if (await Project.findOne({ name: newProject.name })) {
         throw new DuplicateProjectError();
@@ -100,15 +102,6 @@ const removeProjectApiKey = async (
     return toProjectDTO(updatedProject);
 };
 
-const getProjectByApiKey = async (apiKey: string): Promise<ProjectDTO> => {
-    const project = await Project.findOne({ apiKey });
-    if (!project) {
-        throw new ProjectNotFoundError();
-    }
-
-    return toProjectDTO(project);
-};
-
 const projectService = {
     createProject,
     getProjectsByCreator,
@@ -116,7 +109,6 @@ const projectService = {
     updateProject,
     generateProjectApiKey,
     removeProjectApiKey,
-    getProjectByApiKey,
 };
 
 export default projectService;

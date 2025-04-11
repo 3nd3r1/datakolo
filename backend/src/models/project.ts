@@ -1,4 +1,4 @@
-import { Document, model, Schema } from "mongoose";
+import { Document, Model, model, Schema } from "mongoose";
 
 export interface IProject extends Document {
     _id: Schema.Types.ObjectId;
@@ -10,7 +10,13 @@ export interface IProject extends Document {
     updatedAt: Date;
 }
 
-const projectSchema = new Schema<IProject>(
+export interface IProjectMethods {
+    verifyApiKey(apiKey: string): boolean;
+}
+
+type ProjectModel = Model<IProject, Record<string, never>, IProjectMethods>;
+
+const projectSchema = new Schema<IProject, ProjectModel, IProjectMethods>(
     {
         _id: { type: Schema.Types.ObjectId, required: true, auto: true },
         name: { type: String, required: true, unique: true },
@@ -49,4 +55,8 @@ projectSchema.pre("findOneAndUpdate", function (next) {
     next();
 });
 
-export default model<IProject>("Project", projectSchema);
+projectSchema.methods.verifyApiKey = function (apiKey: string) {
+    return this.apiKey === apiKey;
+};
+
+export default model<IProject, ProjectModel>("Project", projectSchema);

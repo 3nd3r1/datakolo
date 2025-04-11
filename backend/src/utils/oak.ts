@@ -3,6 +3,7 @@ import { UserDTO } from "@/validators/user.ts";
 
 export interface AppState {
     user?: UserDTO;
+    projectApiKey?: string;
 }
 
 export type AppContext<

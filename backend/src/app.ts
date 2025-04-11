@@ -6,6 +6,8 @@ import projectRouter from "@/routes/project.ts";
 import repositoryRouter from "@/routes/repository.ts";
 import contentRouter from "@/routes/content.ts";
 
+import publicApiContentRouter from "@/routes/publicApi/content.ts";
+
 import { errorHandler } from "@/middlewares/error.ts";
 import { AppState } from "@/utils/oak.ts";
 
@@ -22,12 +24,14 @@ app.use(authRouter.routes());
 app.use(projectRouter.routes());
 app.use(repositoryRouter.routes());
 app.use(contentRouter.routes());
+app.use(publicApiContentRouter.routes());
 
 app.use(homeRouter.allowedMethods());
 app.use(authRouter.allowedMethods());
 app.use(projectRouter.allowedMethods());
 app.use(repositoryRouter.allowedMethods());
 app.use(contentRouter.allowedMethods());
+app.use(publicApiContentRouter.allowedMethods());
 
 app.addEventListener("listen", ({ hostname, port, secure }) => {
     if (secure) {

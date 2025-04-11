@@ -1,8 +1,6 @@
-import { model, Schema } from "mongoose";
+import { Document, Model, model, Schema } from "mongoose";
 
 import { hashPassword, verifyPassword } from "@/utils/hash.ts";
-import { Document } from "mongoose";
-import { Model } from "mongoose";
 
 export interface IUser extends Document {
     _id: Schema.Types.ObjectId;
