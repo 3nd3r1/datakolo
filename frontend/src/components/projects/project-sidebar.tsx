@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import {
+    Code,
     Database,
     FileText,
     HomeIcon,
@@ -51,6 +52,14 @@ const ProjectSidebar = ({ project }: { project: Project }) => {
             icon: FileText,
             href: `/projects/${project.id}/content`,
             isActive: pathname.startsWith(`/projects/${project.id}/content`),
+        },
+        {
+            title: "API Builder",
+            icon: Code,
+            href: `/projects/${project.id}/api-builder`,
+            isActive: pathname.startsWith(
+                `/projects/${project.id}/api-builder`
+            ),
         },
         {
             title: "Settings",
