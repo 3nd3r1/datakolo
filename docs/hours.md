@@ -89,4 +89,6 @@
 | 11.04.2025 | 1        | Add apiKeyGeneratedAt and RevokeApiKey to backend                                                                                                        |
 | 11.04.2025 | 2        | Finish implementing api-key in frontend                                                                                                                  |
 | 11.04.2025 | 3        | Implement public content api in backend                                                                                                                  |
-|   Total    | 159      |                                                                                                                                                          |
+| 17.04.2025 | 2        | Refactor project-settings and start planning what to do next                                                                                             |
+| 17.04.2025 | 2        | Plan and start implementing api-builder                                                                                                                  |
+|   Total    | 163      |                                                                                                                                                          |
