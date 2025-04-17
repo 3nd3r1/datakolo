@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Copy, Eye, EyeOff, Key, Plus, RefreshCw, Trash } from "lucide-react";
 import { ClipLoader } from "react-spinners";
@@ -24,9 +24,6 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Separator } from "@/components/ui/separator";
-
-import ProjectEditForm from "./project-edit-form";
 
 const NoProjectApiKeyView = () => (
     <div className="flex flex-col border rounded-md px-4 py-10 items-center">
@@ -113,24 +110,21 @@ const ProjectApiKeyView = ({
     );
 };
 
-const ProjectSettings = ({ project }: { project: Project }) => {
-    const projectEditFormRef = useRef<{ submit: () => void }>(null);
-
+const ProjectApiKeyCard = ({ project }: { project: Project }) => {
     const { toast } = useToast();
-    const [loading, setLoading] = useState(true);
     const [apiKey, setApiKey] = useState<ProjectApiKey | undefined>(undefined);
+    const [loading, setLoading] = useState(true);
 
-    const handleRegenerateApiKey = async () => {
+    const handleRevokeApiKey = async () => {
         try {
             setLoading(true);
-            const newApiKey = await generateProjectApiKey(project.id);
-            setApiKey(newApiKey);
+            await revokeProjectApiKey(project.id);
+            setApiKey(undefined);
             toast({
-                title: "API Key Regenerated",
-                description: "Your new API key has been generated.",
+                title: "API Key Revoked",
+                description: "Your API key has been revoked.",
             });
         } catch (error: unknown) {
-            console.error(error);
             toast({
                 variant: "destructive",
                 title: "Error",
@@ -143,16 +137,17 @@ const ProjectSettings = ({ project }: { project: Project }) => {
         setLoading(false);
     };
 
-    const handleRevokeApiKey = async () => {
+    const handleRegenerateApiKey = async () => {
         try {
             setLoading(true);
-            await revokeProjectApiKey(project.id);
-            setApiKey(undefined);
+            const newApiKey = await generateProjectApiKey(project.id);
+            setApiKey(newApiKey);
             toast({
-                title: "API Key Revoked",
-                description: "Your API key has been revoked.",
+                title: "API Key Regenerated",
+                description: "Your new API key has been generated.",
             });
         } catch (error: unknown) {
+            console.error(error);
             toast({
                 variant: "destructive",
                 title: "Error",
@@ -185,101 +180,57 @@ const ProjectSettings = ({ project }: { project: Project }) => {
         };
 
         fetchApiKey();
-    }, [project.id]);
-
+    }, [project.id, toast]);
     return (
-        <div className="container mx-auto py-6 max-w-4xl">
-            <div className="flex items-center mb-6">
-                <h1 className="text-2xl font-bold">Project Settings</h1>
-            </div>
-
-            <div className="grid gap-6">
-                <Card>
-                    <CardHeader>
-                        <CardTitle>Project Details</CardTitle>
-                        <CardDescription>
-                            View and edit your project information
-                        </CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                        <ProjectEditForm
-                            project={project}
-                            ref={projectEditFormRef}
+        <Card>
+            <CardHeader>
+                <CardTitle>API Keys</CardTitle>
+                <CardDescription>
+                    Generate and manage API keys for accessing your content
+                    programmatically
+                </CardDescription>
+            </CardHeader>
+            <CardContent>
+                <div className="mb-4">
+                    {loading ? (
+                        <div className="flex items-center justify-center">
+                            <ClipLoader color="white" />
+                        </div>
+                    ) : apiKey ? (
+                        <ProjectApiKeyView
+                            apiKey={apiKey}
+                            handleRevoke={handleRevokeApiKey}
                         />
-                    </CardContent>
-                </Card>
-
-                <Card>
-                    <CardHeader>
-                        <CardTitle>API Keys</CardTitle>
-                        <CardDescription>
-                            Generate and manage API keys for accessing your
-                            content programmatically
-                        </CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="mb-4">
-                            {loading ? (
-                                <div className="flex items-center justify-center">
-                                    <ClipLoader color="white" />
-                                </div>
-                            ) : apiKey ? (
-                                <ProjectApiKeyView
-                                    apiKey={apiKey}
-                                    handleRevoke={handleRevokeApiKey}
-                                />
-                            ) : (
-                                <NoProjectApiKeyView />
-                            )}
+                    ) : (
+                        <NoProjectApiKeyView />
+                    )}
+                </div>
+                <div className="space-y-4">
+                    <div className="space-y-4 w-full">
+                        <div>
+                            <Button
+                                variant="ghost"
+                                className="border w-full"
+                                onClick={handleRegenerateApiKey}
+                            >
+                                {apiKey ? (
+                                    <>
+                                        <RefreshCw />
+                                        <span>Regenerate API Key</span>
+                                    </>
+                                ) : (
+                                    <>
+                                        <Plus />
+                                        <span>Generate API Key</span>
+                                    </>
+                                )}
+                            </Button>
                         </div>
-                        <div className="space-y-4">
-                            <div className="space-y-4 w-full">
-                                <div>
-                                    <Button
-                                        variant="ghost"
-                                        className="border w-full"
-                                        onClick={handleRegenerateApiKey}
-                                    >
-                                        {apiKey ? (
-                                            <>
-                                                <RefreshCw />
-                                                <span>Regenerate API Key</span>
-                                            </>
-                                        ) : (
-                                            <>
-                                                <Plus />
-                                                <span>Generate API Key</span>
-                                            </>
-                                        )}
-                                    </Button>
-                                </div>
-                            </div>
-
-                            <Separator className="my-4" />
-
-                            <div>
-                                <h3 className="text-md font-medium mb-2">
-                                    Usage Example
-                                </h3>
-                                <div className="bg-muted rounded-md p-4">
-                                    <pre className="text-xs overflow-x-auto whitespace-pre-wrap">
-                                        {`fetch('http://localhost:3000/content/blog-posts', {
-  headers: {
-    'Authorization': 'Bearer YOUR_API_KEY',
-    'Content-Type': 'application/json'
-  }
-})
-.then(response => response.json())
-.then(data => console.log(data));`}
-                                    </pre>
-                                </div>
-                            </div>
-                        </div>
-                    </CardContent>
-                </Card>
-            </div>
-        </div>
+                    </div>
+                </div>
+            </CardContent>
+        </Card>
     );
 };
 
-export default ProjectSettings;
+export default ProjectApiKeyCard;

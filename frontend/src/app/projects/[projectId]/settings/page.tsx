@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 
 import { getProject } from "@/lib/project";
 
-import ProjectSettings from "@/components/projects/project-settings";
+import ProjectSettings from "@/components/projects/settings/project-settings";
 
 const Settings = async ({
     params,
