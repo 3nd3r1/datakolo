@@ -8,15 +8,26 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 
-interface TextFieldProps {
+interface BaseFieldProps {
     name: string;
     label: string;
-    // TODO: Improve the type safety of this prop
     control: Control<any>; // eslint-disable-line @typescript-eslint/no-explicit-any
-    placeholder?: string;
     required?: boolean;
+}
+
+interface TextFieldProps extends BaseFieldProps {
+    placeholder?: string;
 }
 
 export const TextField = ({
@@ -48,13 +59,7 @@ export const TextField = ({
     );
 };
 
-interface NumberFieldProps {
-    name: string;
-    label: string;
-    // TODO: Improve the type safety of this prop
-    control: Control<any>; // eslint-disable-line @typescript-eslint/no-explicit-any
-    required?: boolean;
-}
+interface NumberFieldProps extends BaseFieldProps {} // eslint-disable-line @typescript-eslint/no-empty-object-type
 
 export const NumberField = ({
     name,
@@ -91,13 +96,7 @@ export const NumberField = ({
     );
 };
 
-interface BooleanFieldProps {
-    name: string;
-    label: string;
-    // TODO: Improve the type safety of this prop
-    control: Control<any>; // eslint-disable-line @typescript-eslint/no-explicit-any
-    required?: boolean;
-}
+interface BooleanFieldProps extends BaseFieldProps {} // eslint-disable-line @typescript-eslint/no-empty-object-type
 
 export const BooleanField = ({
     name,
@@ -125,6 +124,59 @@ export const BooleanField = ({
                             }
                         />
                     </FormControl>
+                    <FormMessage />
+                </FormItem>
+            )}
+        />
+    );
+};
+
+interface SelectFieldProps extends BaseFieldProps {
+    options: { value: string; label: string }[];
+}
+
+export const SelectField = ({
+    name,
+    label,
+    control,
+    options,
+    required = false,
+}: SelectFieldProps) => {
+    return (
+        <FormField
+            control={control}
+            name={name}
+            render={({ field }) => (
+                <FormItem>
+                    <FormLabel className="capitalize">
+                        {label}{" "}
+                        {required && (
+                            <span className="text-destructive">*</span>
+                        )}
+                    </FormLabel>
+                    <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                    >
+                        <FormControl>
+                            <SelectTrigger className="w-[180px]">
+                                <SelectValue placeholder="Select a fruit" />
+                            </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                            <SelectGroup>
+                                <SelectLabel>{label}</SelectLabel>
+                                {options.map((option) => (
+                                    <SelectItem
+                                        key={option.value}
+                                        value={option.value}
+                                    >
+                                        {option.label}
+                                    </SelectItem>
+                                ))}
+                            </SelectGroup>
+                        </SelectContent>
+                    </Select>
                     <FormMessage />
                 </FormItem>
             )}

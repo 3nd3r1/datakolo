@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 
 import { getProject } from "@/lib/project";
+import { getRepositories } from "@/lib/repository";
 
 import ProjectApiBuilder from "@/components/projects/api-builder/project-api-builder";
 
@@ -16,7 +17,9 @@ const ApiBuilder = async ({
         return notFound();
     }
 
-    return <ProjectApiBuilder />;
+    const repositories = await getRepositories(projectId).catch(() => []);
+
+    return <ProjectApiBuilder project={project} repositories={repositories} />;
 };
 
 export default ApiBuilder;
