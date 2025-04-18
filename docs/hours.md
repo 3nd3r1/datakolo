@@ -91,4 +91,6 @@
 | 11.04.2025 | 3        | Implement public content api in backend                                                                                                                  |
 | 17.04.2025 | 2        | Refactor project-settings and start planning what to do next                                                                                             |
 | 17.04.2025 | 2        | Plan and start implementing api-builder                                                                                                                  |
-|   Total    | 163      |                                                                                                                                                          |
+| 18.04.2025 | 2        | Create a logo and icon for Datakolo                                                                                                                      |
+| 18.04.2025 | 2        | Continued implementing api-builder in frontend                                                                                                           |
+|   Total    | 167      |                                                                                                                                                          |
