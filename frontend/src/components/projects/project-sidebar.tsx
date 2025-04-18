@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -73,7 +74,12 @@ const ProjectSidebar = ({ project }: { project: Project }) => {
         <div className="flex flex-col border-r fixed h-full w-[55px]">
             <Link href={"/"}>
                 <div className="p-2 flex items-center justify-center h-14">
-                    <h1 className="text-lg font-bold">D</h1>
+                    <Image
+                        src="/images/datakolo-icon.svg"
+                        alt="logo"
+                        width={30}
+                        height={30}
+                    />
                 </div>
             </Link>
             <Separator />

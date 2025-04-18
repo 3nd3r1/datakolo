@@ -1,4 +1,6 @@
-<h1 align="center">Datakolo</h1>
+<p align="center">
+    <img src="docs/images/logo.png" alt="Datakolo Logo" width="200"/>
+</p>
 
 <p align="center">
     <a href="https://codecov.io/gh/3nd3r1/datakolo" > 
