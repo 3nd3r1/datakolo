@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -34,7 +35,12 @@ const MainNavbar = () => {
             <div className="flex flex-row justify-between">
                 <div className="flex flex-row">
                     <div className="py-3 px-4">
-                        <h1 className="text-xl">Datakolo</h1>
+                        <Image
+                            src="/images/datakolo-logo.svg"
+                            alt="Datakolo logo"
+                            width={150}
+                            height={150}
+                        />
                     </div>
                     <Separator orientation="vertical" />
                     <nav className="py-2 px-4 grow">
