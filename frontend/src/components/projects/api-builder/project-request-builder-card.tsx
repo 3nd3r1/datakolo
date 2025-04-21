@@ -7,6 +7,7 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
     Select,
@@ -17,64 +18,93 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 
-const RequestSelect = ({
-    value,
-    onChange,
-    label,
-    options,
-}: {
-    value: string | undefined;
-    onChange: (value: string) => void;
-    label: string;
-    options: { label: string; value: string }[];
-}) => {
-    return (
-        <div className="space-y-2">
-            <Label>{label}</Label>
-            <Select onValueChange={onChange} defaultValue={value}>
-                <SelectTrigger>
-                    <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                    <SelectGroup>
-                        {options.map((option) => (
-                            <SelectItem key={option.value} value={option.value}>
-                                {option.label}
-                            </SelectItem>
-                        ))}
-                    </SelectGroup>
-                </SelectContent>
-            </Select>
-        </div>
-    );
-};
+import { ApiOperation } from "./project-api-builder";
 
 const ProjectRequestBuilderCard = ({
     selectedRepositoryId,
     setSelectedRepositoryId,
+    selectedOperation,
+    setSelectedOperation,
+    getOneContentId,
+    setGetOneContentId,
     repositories,
 }: {
     selectedRepositoryId: string | undefined;
     setSelectedRepositoryId: (repositoryId: string) => void;
+    selectedOperation: ApiOperation;
+    setSelectedOperation: (operation: ApiOperation) => void;
+    getOneContentId: string;
+    setGetOneContentId: (contentId: string) => void;
     repositories: Repository[];
 }) => {
     return (
-        <Card className="grow">
+        <Card>
             <CardHeader>
-                <CardTitle>API Builder</CardTitle>
+                <CardTitle>Request Builder</CardTitle>
                 <CardDescription>
-                    Create and manage your API endpoints.
+                    Configure your API request parameters
                 </CardDescription>
             </CardHeader>
-            <CardContent>
-                <RequestSelect
-                    value={selectedRepositoryId}
-                    onChange={setSelectedRepositoryId}
-                    label={"Repository"}
-                    options={repositories.map((repository) => {
-                        return { label: repository.name, value: repository.id };
-                    })}
-                />
+            <CardContent className="space-y-4">
+                <div className="space-y-2">
+                    <Label>Repository</Label>
+                    <Select
+                        onValueChange={setSelectedRepositoryId}
+                        defaultValue={selectedRepositoryId}
+                    >
+                        <SelectTrigger>
+                            <SelectValue placeholder="Select a repository" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectGroup>
+                                {repositories.map((repository) => (
+                                    <SelectItem
+                                        key={repository.id}
+                                        value={repository.id}
+                                    >
+                                        {repository.name}
+                                    </SelectItem>
+                                ))}
+                            </SelectGroup>
+                        </SelectContent>
+                    </Select>
+                </div>
+                <div className="space-y-2">
+                    <Label>Operation</Label>
+                    <Select
+                        onValueChange={setSelectedOperation}
+                        defaultValue={selectedOperation}
+                    >
+                        <SelectTrigger>
+                            <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectGroup>
+                                {Object.values(ApiOperation).map(
+                                    (operation) => (
+                                        <SelectItem
+                                            key={operation}
+                                            value={operation}
+                                        >
+                                            {operation}
+                                        </SelectItem>
+                                    )
+                                )}
+                            </SelectGroup>
+                        </SelectContent>
+                    </Select>
+                </div>
+                {selectedOperation === ApiOperation.GetOne && (
+                    <div className="space-y-2">
+                        <Label>Content ID</Label>
+                        <Input
+                            type="text"
+                            placeholder="Enter content ID"
+                            onChange={(e) => setGetOneContentId(e.target.value)}
+                            value={getOneContentId}
+                        />
+                    </div>
+                )}
             </CardContent>
         </Card>
     );

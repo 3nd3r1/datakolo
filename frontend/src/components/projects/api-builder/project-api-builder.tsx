@@ -1,39 +1,59 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
-import { Project } from "@/validators/project";
 import { Repository } from "@/validators/repository";
 
 import ProjectRequestBuilderCard from "./project-request-builder-card";
 import ProjectRequestPreviewCard from "./project-request-preview-card";
 
+export enum ApiOperation {
+    GetAll = "Get All",
+    GetOne = "Get One",
+}
+
 const ProjectApiBuilder = ({
-    project,
     repositories,
 }: {
-    project: Project;
     repositories: Repository[];
 }) => {
     const [selectedRepositoryId, setSelectedRepositoryId] = useState<
         string | undefined
-    >(repositories[0]?.id);
+    >(undefined);
+    const [selectedOperation, setSelectedOperation] = useState<ApiOperation>(
+        ApiOperation.GetAll
+    );
+    const [getOneContentId, setGetOneContentId] = useState<string>("");
+
+    const selectedRepository = useMemo(() => {
+        return repositories.find(
+            (repository) => repository.id === selectedRepositoryId
+        );
+    }, [selectedRepositoryId, repositories]);
 
     return (
         <div className="p-2">
             <div className="mb-8">
                 <h1 className="text-2xl font-bold">API Builder</h1>
                 <p className="text-gray-500">
-                    Create and manage your API endpoints.
+                    Build API requests to access your content
                 </p>
             </div>
-            <div className="flex flex-row gap-x-4 justify-between">
+            <div className="grid gap-6 md:grid-cols-2">
                 <ProjectRequestBuilderCard
                     selectedRepositoryId={selectedRepositoryId}
                     setSelectedRepositoryId={setSelectedRepositoryId}
+                    selectedOperation={selectedOperation}
+                    setSelectedOperation={setSelectedOperation}
+                    getOneContentId={getOneContentId}
+                    setGetOneContentId={setGetOneContentId}
                     repositories={repositories}
                 />
-                <ProjectRequestPreviewCard project={project} />
+                <ProjectRequestPreviewCard
+                    repository={selectedRepository}
+                    operation={selectedOperation}
+                    contentId={getOneContentId}
+                />
             </div>
         </div>
     );

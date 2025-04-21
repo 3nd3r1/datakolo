@@ -19,7 +19,7 @@ const ApiBuilder = async ({
 
     const repositories = await getRepositories(projectId).catch(() => []);
 
-    return <ProjectApiBuilder project={project} repositories={repositories} />;
+    return <ProjectApiBuilder repositories={repositories} />;
 };
 
 export default ApiBuilder;
