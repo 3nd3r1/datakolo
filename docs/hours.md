@@ -93,4 +93,7 @@
 | 17.04.2025 | 2        | Plan and start implementing api-builder                                                                                                                  |
 | 18.04.2025 | 2        | Create a logo and icon for Datakolo                                                                                                                      |
 | 18.04.2025 | 2        | Continued implementing api-builder in frontend                                                                                                           |
-|   Total    | 167      |                                                                                                                                                          |
+| 21.04.2025 | 1        | Fix / improve the logos                                                                                                                                  |
+| 21.04.2025 | 2        | Finish implementing api-builder in frontend                                                                                                              |
+| 21.04.2025 | 2        | Start making component tests for api-builder in frontend                                                                                                 |
+|   Total    | 172      |                                                                                                                                                          |
