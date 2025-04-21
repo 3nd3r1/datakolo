@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="docs/images/logo.png" alt="Datakolo Logo" width="200"/>
+    <img src="docs/images/logo.png" alt="Datakolo Logo" width="500"/>
 </p>
 
 <p align="center">
