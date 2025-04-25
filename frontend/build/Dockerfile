@@ -3,11 +3,10 @@ WORKDIR /app
 COPY package*.json ./
 EXPOSE 80
 
-
 FROM base as builder
 WORKDIR /app
 COPY . .
-RUN npm run build
+RUN npm ci && npm run build
 
 FROM base as production
 
@@ -17,10 +16,8 @@ ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
 WORKDIR /app
 
 ENV NODE_ENV=production
-RUN npm ci
 
-RUN addgroup -g 1001 -S nodejs
-RUN adduser -S nextjs -u 1001
+RUN addgroup -g 1001 -S nodejs && adduser -S nextjs -u 1001
 USER nextjs
 
 COPY --from=builder --chown=nextjs:nodejs /app/.next ./.next
