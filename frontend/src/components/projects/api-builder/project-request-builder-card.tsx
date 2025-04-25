@@ -46,53 +46,57 @@ const ProjectRequestBuilderCard = ({
                 </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-                <div className="space-y-2">
-                    <Label>Repository</Label>
-                    <Select
-                        onValueChange={setSelectedRepositoryId}
-                        defaultValue={selectedRepositoryId}
-                    >
-                        <SelectTrigger>
-                            <SelectValue placeholder="Select a repository" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectGroup>
-                                {repositories.map((repository) => (
-                                    <SelectItem
-                                        key={repository.id}
-                                        value={repository.id}
-                                    >
-                                        {repository.name}
-                                    </SelectItem>
-                                ))}
-                            </SelectGroup>
-                        </SelectContent>
-                    </Select>
-                </div>
-                <div className="space-y-2">
-                    <Label>Operation</Label>
-                    <Select
-                        onValueChange={setSelectedOperation}
-                        defaultValue={selectedOperation}
-                    >
-                        <SelectTrigger>
-                            <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectGroup>
-                                {Object.values(ApiOperation).map(
-                                    (operation) => (
+                <div>
+                    <Label className="space-y-2">
+                        <span>Repository</span>
+                        <Select
+                            onValueChange={setSelectedRepositoryId}
+                            defaultValue={selectedRepositoryId}
+                        >
+                            <SelectTrigger>
+                                <SelectValue placeholder="Select a repository" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectGroup>
+                                    {repositories.map((repository) => (
                                         <SelectItem
-                                            key={operation}
-                                            value={operation}
+                                            key={repository.id}
+                                            value={repository.id}
                                         >
-                                            {operation}
+                                            {repository.name}
                                         </SelectItem>
-                                    )
-                                )}
-                            </SelectGroup>
-                        </SelectContent>
-                    </Select>
+                                    ))}
+                                </SelectGroup>
+                            </SelectContent>
+                        </Select>
+                    </Label>
+                </div>
+                <div>
+                    <Label className="space-y-2">
+                        <span>Operation</span>
+                        <Select
+                            onValueChange={setSelectedOperation}
+                            defaultValue={selectedOperation}
+                        >
+                            <SelectTrigger>
+                                <SelectValue placeholder="Select an operation" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectGroup>
+                                    {Object.values(ApiOperation).map(
+                                        (operation) => (
+                                            <SelectItem
+                                                key={operation}
+                                                value={operation}
+                                            >
+                                                {operation}
+                                            </SelectItem>
+                                        )
+                                    )}
+                                </SelectGroup>
+                            </SelectContent>
+                        </Select>
+                    </Label>
                 </div>
                 {selectedOperation === ApiOperation.GetOne && (
                     <div className="space-y-2">
