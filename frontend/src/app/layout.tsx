@@ -21,6 +21,9 @@ const geistMono = localFont({
 export const metadata: Metadata = {
     title: "Datakolo CMS",
     description: "Datakolo is headless CMS for developers",
+    appleWebApp: {
+        title: "Datakolo CMS",
+    },
 };
 
 export default function RootLayout({
