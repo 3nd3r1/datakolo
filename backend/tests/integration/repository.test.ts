@@ -52,7 +52,6 @@ describe("/api/projects/:id/repositories", () => {
             .set("Authorization", `Bearer ${token}`)
             .expect(200)
             .expect((res) => {
-                console.log(res.body);
                 assertEquals(res.body.length, 2);
             });
     });

@@ -6,7 +6,7 @@ const EnvSchema = z.object({
     ),
     DATABASE_URL: z.string(),
     PORT: z.string().transform(Number).default("8000"),
-    LOG_LEVEL: z.enum(["debug", "info", "warning", "error"]).default("info"),
+    LOG_LEVEL: z.enum(["DEBUG", "INFO", "WARN", "ERROR"]).default("INFO"),
 });
 
 function loadEnv() {

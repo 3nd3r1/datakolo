@@ -10,11 +10,11 @@ import publicApiContentRouter from "@/routes/publicApi/content.ts";
 
 import { errorHandler } from "@/middlewares/error.ts";
 import { AppState } from "@/utils/oak.ts";
-
+import { logger } from "@/utils/logger.ts";
 const app = new Application<AppState>();
 
 app.use(async (context, next) => {
-    console.log(`${context.request.method} ${context.request.url}`);
+    logger.debug(`${context.request.method} ${context.request.url}`);
     await next();
 });
 app.use(errorHandler);
@@ -35,9 +35,9 @@ app.use(publicApiContentRouter.allowedMethods());
 
 app.addEventListener("listen", ({ hostname, port, secure }) => {
     if (secure) {
-        console.log(`Listening on https://${hostname ?? "localhost"}:${port}`);
+        logger.info(`Listening on https://${hostname ?? "localhost"}:${port}`);
     } else {
-        console.log(`Listening on http://${hostname ?? "localhost"}:${port}`);
+        logger.info(`Listening on http://${hostname ?? "localhost"}:${port}`);
     }
 });
 
