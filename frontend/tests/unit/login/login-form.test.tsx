@@ -4,6 +4,7 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { login } from "@/lib/auth";
+import { createErrorResult, createSuccessResult } from "@/lib/utils";
 
 import { useToast } from "@/hooks/use-toast";
 
@@ -55,7 +56,7 @@ describe("LoginForm", () => {
     });
 
     it("shows success toast and redirects on successful login", async () => {
-        mockLogin.mockResolvedValueOnce(undefined);
+        mockLogin.mockResolvedValueOnce(createSuccessResult());
 
         render(<LoginForm />);
 
@@ -78,7 +79,7 @@ describe("LoginForm", () => {
     });
 
     it("shows error toast on failed login", async () => {
-        mockLogin.mockRejectedValueOnce(new Error("Invalid password"));
+        mockLogin.mockResolvedValueOnce(createErrorResult("Invalid password"));
 
         render(<LoginForm />);
 

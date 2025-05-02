@@ -96,4 +96,9 @@
 | 21.04.2025 | 1        | Fix / improve the logos                                                                                                                                  |
 | 21.04.2025 | 2        | Finish implementing api-builder in frontend                                                                                                              |
 | 21.04.2025 | 2        | Start making component tests for api-builder in frontend                                                                                                 |
-|   Total    | 172      |                                                                                                                                                          |
+| 25.04.2025 | 1        | Add favicons                                                                                                                                             |
+| 25.04.2025 | 2        | Add a test-case for the frontend api-builder                                                                                                             |
+| 25.04.2025 | 2        | Start hosting Datakolo in production                                                                                                                     |
+| 01.05.2025 | 2        | Refactor backend for production                                                                                                                          |
+| 01.05.2025 | 1        | Learn that server actions cannot throw expected errors; Start refactoring frontend server actions                                                        |
+|   Total    | 180      |                                                                                                                                                          |

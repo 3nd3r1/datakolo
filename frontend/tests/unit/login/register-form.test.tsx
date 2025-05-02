@@ -4,6 +4,7 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { register } from "@/lib/auth";
+import { createSuccessResult } from "@/lib/utils";
 
 import { useToast } from "@/hooks/use-toast";
 
@@ -55,7 +56,7 @@ describe("RegisterForm", () => {
     });
 
     it("shows success toast and redirects on successful register", async () => {
-        mockRegister.mockResolvedValueOnce(undefined);
+        mockRegister.mockResolvedValueOnce(createSuccessResult());
 
         render(<RegisterForm />);
 

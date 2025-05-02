@@ -1,13 +1,8 @@
-"use client";
-
 import Link from "next/link";
-import { useEffect, useState } from "react";
 
 import { UserIcon } from "lucide-react";
 
 import { User } from "@/validators/user";
-
-import { getUser } from "@/lib/auth";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -23,16 +18,8 @@ const items: { title: string; href: string }[] = [
     { title: "Logout", href: "/logout" },
 ];
 
-const UserNav = () => {
-    const [user, setUser] = useState<User | undefined>(undefined);
-
-    useEffect(() => {
-        const fetchUser = async () => {
-            setUser(await getUser().catch(() => undefined));
-        };
-        fetchUser();
-    }, []);
-
+const UserNav = ({ user }: { user: User }) => {
+    if (!user) return null;
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>

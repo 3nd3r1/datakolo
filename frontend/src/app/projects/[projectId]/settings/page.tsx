@@ -10,11 +10,12 @@ const Settings = async ({
     params: Promise<{ projectId: string }>;
 }) => {
     const { projectId } = await params;
-    const project = await getProject(projectId).catch(() => undefined);
 
-    if (!project) {
+    const result = await getProject(projectId);
+    if (!result.success) {
         return notFound();
     }
+    const project = result.data;
 
     return <ProjectSettings project={project} />;
 };

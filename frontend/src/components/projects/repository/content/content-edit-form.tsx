@@ -53,25 +53,22 @@ const ContentEditForm = ({
     );
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
-        try {
-            await updateContent(
-                repository.project,
-                content.repository,
-                content.id,
-                { data: values }
-            );
+        const result = await updateContent(
+            repository.project,
+            content.repository,
+            content.id,
+            { data: values }
+        );
+        if (result.success) {
             toast({
                 title: "Success",
-                description: `Content has been updated`,
+                description: "Content updated successfully",
             });
-        } catch (error: unknown) {
+        } else {
             toast({
                 variant: "destructive",
                 title: "Error",
-                description:
-                    error instanceof Error
-                        ? error.message
-                        : "An error occurred",
+                description: result.error,
             });
         }
     };

@@ -9,7 +9,7 @@ import { useForm } from "react-hook-form";
 import { ClipLoader } from "react-spinners";
 import { z } from "zod";
 
-import { Repository, newRepositorySchema } from "@/validators/repository";
+import { newRepositorySchema } from "@/validators/repository";
 
 import { createRepository } from "@/lib/repository";
 
@@ -46,37 +46,29 @@ const RepositoryCreateDialog = ({ projectId }: { projectId: string }) => {
     });
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
-        console.log(values);
-        let success = false;
-        let createdRepository: Repository | undefined = undefined;
         setLoading(true);
 
-        try {
-            createdRepository = await createRepository(projectId, values);
+        const result = await createRepository(projectId, values);
+        if (result.success) {
+            const createdRepository = result.data;
             toast({
                 title: "Success",
                 description: "Repository created successfully",
             });
-            success = true;
-        } catch (error: unknown) {
+            setOpen(false);
+            form.reset();
+            router.push(
+                `/projects/${createdRepository.project}/schema/${createdRepository.id}`
+            );
+        } else {
             toast({
                 variant: "destructive",
                 title: "Error",
-                description:
-                    error instanceof Error
-                        ? error.message
-                        : "An error occurred",
+                description: result.error,
             });
-        } finally {
-            if (success && createdRepository) {
-                setOpen(false);
-                form.reset();
-                router.push(
-                    `/projects/${createdRepository.project}/schema/${createdRepository.id}`
-                );
-            }
-            setLoading(false);
         }
+
+        setLoading(false);
     };
 
     return (

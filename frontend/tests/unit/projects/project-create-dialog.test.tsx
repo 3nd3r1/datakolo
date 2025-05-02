@@ -3,7 +3,10 @@ import { redirect } from "next/navigation";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
+import { Project } from "@/validators/project";
+
 import { createProject } from "@/lib/project";
+import { createSuccessResult } from "@/lib/utils";
 
 import { useToast } from "@/hooks/use-toast";
 
@@ -54,13 +57,15 @@ describe("ProjectCreateDialog", () => {
     });
 
     it("creates a valid project", async () => {
-        mockCreateProject.mockResolvedValue({
-            id: "123",
-            name: "Test Project",
-            createdBy: "345",
-            createdAt: new Date(),
-            updatedAt: new Date(),
-        });
+        mockCreateProject.mockResolvedValue(
+            createSuccessResult<Project>({
+                id: "123",
+                name: "Test Project",
+                createdBy: "345",
+                createdAt: new Date(),
+                updatedAt: new Date(),
+            })
+        );
 
         render(<ProjectCreateDialog />);
 

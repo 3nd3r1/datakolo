@@ -2,9 +2,14 @@
 
 import { cookies } from "next/headers";
 
-import { NewUser, User } from "@/validators/user";
+import { NewUser, User, userSchema } from "@/validators/user";
 
 import { config } from "@/lib/config";
+import {
+    ServerActionResult,
+    createErrorResult,
+    createSuccessResult,
+} from "@/lib/utils";
 
 export const getAuthHeader = async (): Promise<
     | {
@@ -25,66 +30,61 @@ export const setAuthToken = async (token: string) => {
     (await cookies()).set("token", token, { path: "/" });
 };
 
-export const getUser = async (): Promise<User> => {
-    try {
-        const response = await fetch(config.apiUrl + "/user", {
-            headers: {
-                "Content-Type": "application/json",
-                ...(await getAuthHeader()),
-            },
-            cache: "no-cache",
-        });
+export const getUser = async (): Promise<ServerActionResult<User>> => {
+    const response = await fetch(config.apiUrl + "/user", {
+        headers: {
+            "Content-Type": "application/json",
+            ...(await getAuthHeader()),
+        },
+        cache: "no-cache",
+    });
 
-        if (!response.ok) {
-            throw Error((await response.json()).error);
-        }
-
-        return (await response.json()) as User;
-    } catch (error: unknown) {
-        throw error;
+    if (!response.ok) {
+        return createErrorResult((await response.json()).error);
     }
+
+    return createSuccessResult<User>(userSchema.parse(await response.json()));
 };
 
-export const login = async (username: string, password: string) => {
-    try {
-        const response = await fetch(config.apiUrl + "/login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            cache: "no-cache",
-            body: JSON.stringify({ username, password }),
-        });
+export const login = async (
+    username: string,
+    password: string
+): Promise<ServerActionResult<void>> => {
+    const response = await fetch(config.apiUrl + "/login", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        cache: "no-cache",
+        body: JSON.stringify({ username, password }),
+    });
 
-        if (!response.ok) {
-            throw new Error((await response.json()).error);
-        }
-
-        await setAuthToken((await response.json()).token);
-    } catch (error: unknown) {
-        throw error;
+    if (!response.ok) {
+        return createErrorResult((await response.json()).error);
     }
+
+    await setAuthToken((await response.json()).token);
+    return createSuccessResult();
 };
 
-export const register = async (newUser: NewUser) => {
-    try {
-        const response = await fetch(config.apiUrl + "/register", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            cache: "no-cache",
-            body: JSON.stringify(newUser),
-        });
+export const register = async (
+    newUser: NewUser
+): Promise<ServerActionResult<void>> => {
+    const response = await fetch(config.apiUrl + "/register", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        cache: "no-cache",
+        body: JSON.stringify(newUser),
+    });
 
-        if (!response.ok) {
-            throw new Error((await response.json()).error);
-        }
-
-        await setAuthToken((await response.json()).token);
-    } catch (error: unknown) {
-        throw error;
+    if (!response.ok) {
+        return createErrorResult((await response.json()).error);
     }
+
+    await setAuthToken((await response.json()).token);
+    return createSuccessResult();
 };
 
 export const logout = async () => {

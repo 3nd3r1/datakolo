@@ -9,7 +9,7 @@ import { useForm } from "react-hook-form";
 import { ClipLoader } from "react-spinners";
 import { z } from "zod";
 
-import { Project, newProjectSchema } from "@/validators/project";
+import { newProjectSchema } from "@/validators/project";
 
 import { createProject } from "@/lib/project";
 
@@ -44,32 +44,25 @@ const ProjectCreateDialog = () => {
     });
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
-        let success = false;
-        let createdProject: Project | undefined = undefined;
         setLoading(true);
 
-        try {
-            createdProject = await createProject(values);
+        const result = await createProject(values);
+        if (result.success) {
+            const createdProject = result.data;
             toast({
                 title: "Success",
                 description: "Project created successfully",
             });
-            success = true;
-        } catch (error: unknown) {
+            redirect("/projects/" + createdProject.id);
+        } else {
             toast({
                 variant: "destructive",
                 title: "Error",
-                description:
-                    error instanceof Error
-                        ? error.message
-                        : "An error occurred",
+                description: result.error,
             });
-        } finally {
-            if (success && createdProject) {
-                redirect("/projects/" + createdProject.id);
-            }
-            setLoading(false);
         }
+
+        setLoading(false);
     };
 
     if (loading) {

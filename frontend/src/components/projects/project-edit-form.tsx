@@ -1,7 +1,3 @@
-import { TextField } from "../common/forms/form-fields";
-import { Button } from "../ui/button";
-import { Form } from "../ui/form";
-
 import { forwardRef, useImperativeHandle } from "react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -14,6 +10,11 @@ import { Project, projectUpdateSchema } from "@/validators/project";
 import { updateProject } from "@/lib/project";
 
 import { useToast } from "@/hooks/use-toast";
+
+import { Button } from "@/components/ui/button";
+import { Form } from "@/components/ui/form";
+
+import { TextField } from "@/components/common/forms/form-fields";
 
 const ProjectEditForm = forwardRef<
     { submit: () => void },
@@ -35,22 +36,20 @@ const ProjectEditForm = forwardRef<
     }));
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
-        try {
-            await updateProject(project.id, {
-                name: values.name,
-            });
+        const result = await updateProject(project.id, {
+            name: values.name,
+        });
+
+        if (result.success) {
             toast({
                 title: "Success",
                 description: "Project updated successfully",
             });
-        } catch (error: unknown) {
+        } else {
             toast({
                 variant: "destructive",
                 title: "Error",
-                description:
-                    error instanceof Error
-                        ? error.message
-                        : "An error occurred",
+                description: result.error,
             });
         }
     };

@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 
 import { Project } from "@/validators/project";
+import { User } from "@/validators/user";
 
 import { cn } from "@/lib/utils";
 
@@ -28,7 +29,13 @@ import {
 
 import UserNav from "@/components/common/layouts/user-nav";
 
-const ProjectSidebar = ({ project }: { project: Project }) => {
+const ProjectSidebar = ({
+    project,
+    user,
+}: {
+    project: Project;
+    user: User;
+}) => {
     const pathname = usePathname();
     const items: {
         title: string;
@@ -110,7 +117,7 @@ const ProjectSidebar = ({ project }: { project: Project }) => {
             </nav>
             <Separator />
             <div>
-                <UserNav />
+                <UserNav user={user} />
             </div>
         </div>
     );

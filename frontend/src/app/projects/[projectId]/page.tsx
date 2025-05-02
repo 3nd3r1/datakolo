@@ -9,11 +9,11 @@ const Project = async ({
 }) => {
     const { projectId } = await params;
 
-    const project = await getProject(projectId).catch(() => undefined);
-
-    if (!project) {
+    const result = await getProject(projectId);
+    if (!result.success) {
         return notFound();
     }
+    const project = result.data;
 
     return <div>{project.name}</div>;
 };

@@ -11,13 +11,11 @@ const Repository = async ({
 }) => {
     const { projectId, repositoryId } = await params;
 
-    const repository = await getRepository(projectId, repositoryId).catch(
-        () => undefined
-    );
-
-    if (!repository) {
+    const result = await getRepository(projectId, repositoryId);
+    if (!result.success) {
         return notFound();
     }
+    const repository = result.data;
 
     return (
         <div className="flex flex-col gap-1">

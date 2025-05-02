@@ -21,3 +21,19 @@ export function getContentDisplayValue(content: Content): string {
 
     return content.id;
 }
+
+export type ServerActionResult<T = void> =
+    | { success: true; data: T }
+    | { success: false; error: string };
+
+export function createSuccessResult(): ServerActionResult<void>;
+export function createSuccessResult<T>(data: T): ServerActionResult<T>;
+export function createSuccessResult<T>(data?: T): ServerActionResult<T | void> {
+    return { success: true, data: data as T };
+}
+
+export function createErrorResult(
+    error: string = "An error occurred"
+): ServerActionResult<never> {
+    return { success: false, error: error };
+}
