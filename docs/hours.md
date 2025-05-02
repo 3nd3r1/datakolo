@@ -101,4 +101,7 @@
 | 25.04.2025 | 2        | Start hosting Datakolo in production                                                                                                                     |
 | 01.05.2025 | 2        | Refactor backend for production                                                                                                                          |
 | 01.05.2025 | 1        | Learn that server actions cannot throw expected errors; Start refactoring frontend server actions                                                        |
-|   Total    | 180      |                                                                                                                                                          |
+| 02.05.2025 | 2        | Finish refactoring server actions in frontend                                                                                                            |
+| 02.05.2025 | 1        | Fix issues in backend                                                                                                                                    |
+| 02.05.2025 | 1        | Fix Dockerfile issues                                                                                                                                    |
+|   Total    | 184      |                                                                                                                                                          |
