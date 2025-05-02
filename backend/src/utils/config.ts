@@ -4,9 +4,14 @@ const EnvSchema = z.object({
     NODE_ENV: z.enum(["development", "production", "test"]).default(
         "development",
     ),
-    DATABASE_URL: z.string(),
+    DATABASE_URL: z.string().optional(),
     PORT: z.string().transform(Number).default("8000"),
     LOG_LEVEL: z.enum(["DEBUG", "INFO", "WARN", "ERROR"]).default("INFO"),
+}).refine((data) => {
+    return data.NODE_ENV === "test" || Boolean(data.DATABASE_URL);
+}, {
+    message: "DATABASE_URL is required",
+    path: ["DATABASE_URL"],
 });
 
 function loadEnv() {

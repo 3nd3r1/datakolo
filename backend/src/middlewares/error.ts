@@ -13,11 +13,9 @@ export const errorHandler = async (ctx: Context, next: Next) => {
         if (error instanceof AppError) {
             status = error.status;
             message = error.message;
-            stack = error.stack;
         } else if (isHttpError(error)) {
             status = error.status;
             message = error.message;
-            stack = error.stack;
         } else if (error instanceof Error) {
             status = 500;
             message = error.message;
@@ -29,7 +27,7 @@ export const errorHandler = async (ctx: Context, next: Next) => {
             error: status >= 500 && config.environment === "production"
                 ? "Internal server error"
                 : message,
-            ...(config.environment !== "production" && stack ? { stack } : {}),
+            ...(config.environment === "development" && stack ? { stack } : {}),
         };
     }
 };
