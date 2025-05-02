@@ -4,18 +4,19 @@ COPY package*.json ./
 EXPOSE 80
 
 FROM base as builder
-WORKDIR /app
-COPY . .
-RUN npm ci && npm run build
-
-FROM base as production
 
 ARG NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
 ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
 
 WORKDIR /app
 
-ENV NODE_ENV=production
+COPY . .
+
+RUN npm ci && npm run build
+
+FROM base as production
+
+WORKDIR /app
 
 RUN addgroup -g 1001 -S nodejs && adduser -S nextjs -u 1001
 USER nextjs
