@@ -22,14 +22,17 @@ const Content = async ({
 }) => {
     const { projectId, repositoryId, contentId } = await params;
 
-    const repository = await getRepository(projectId, repositoryId).catch(
-        () => undefined
-    );
-    const content = await getContent(projectId, repositoryId, contentId);
-
-    if (!repository || !content) {
+    const repositoryResult = await getRepository(projectId, repositoryId);
+    if (!repositoryResult.success) {
         return notFound();
     }
+    const repository = repositoryResult.data;
+
+    const contentResult = await getContent(projectId, repositoryId, contentId);
+    if (!contentResult.success) {
+        return notFound();
+    }
+    const content = contentResult.data;
 
     return (
         <div className="flex flex-col gap-1">

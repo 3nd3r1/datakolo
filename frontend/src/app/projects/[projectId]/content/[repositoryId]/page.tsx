@@ -1,5 +1,7 @@
 import { notFound } from "next/navigation";
 
+import { Content } from "@/validators/content";
+
 import { getContents } from "@/lib/content";
 import { getRepository } from "@/lib/repository";
 
@@ -13,15 +15,17 @@ const RepositoryContent = async ({
 }) => {
     const { projectId, repositoryId } = await params;
 
-    const repository = await getRepository(projectId, repositoryId).catch(
-        () => undefined
-    );
-
-    if (!repository) {
+    const repositoryResult = await getRepository(projectId, repositoryId);
+    if (!repositoryResult.success) {
         return notFound();
     }
+    const repository = repositoryResult.data;
 
-    const contents = await getContents(projectId, repositoryId).catch(() => []);
+    let contents: Content[] = [];
+    const contentsResult = await getContents(projectId, repositoryId);
+    if (contentsResult.success) {
+        contents = contentsResult.data;
+    }
 
     return (
         <div className="flex flex-col gap-1">

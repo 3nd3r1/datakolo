@@ -1,6 +1,5 @@
-import { notFound } from "next/navigation";
+import { Repository } from "@/validators/repository";
 
-import { getProject } from "@/lib/project";
 import { getRepositories } from "@/lib/repository";
 
 import ProjectApiBuilder from "@/components/projects/api-builder/project-api-builder";
@@ -11,13 +10,12 @@ const ApiBuilder = async ({
     params: Promise<{ projectId: string }>;
 }) => {
     const { projectId } = await params;
-    const project = await getProject(projectId).catch(() => undefined);
 
-    if (!project) {
-        return notFound();
+    let repositories: Repository[] = [];
+    const result = await getRepositories(projectId);
+    if (result.success) {
+        repositories = result.data;
     }
-
-    const repositories = await getRepositories(projectId).catch(() => []);
 
     return <ProjectApiBuilder repositories={repositories} />;
 };

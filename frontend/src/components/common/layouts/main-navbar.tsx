@@ -6,6 +6,8 @@ import { usePathname } from "next/navigation";
 
 import { Library, LucideIcon } from "lucide-react";
 
+import { User } from "@/validators/user";
+
 import { cn } from "@/lib/utils";
 
 import { Button } from "@/components/ui/button";
@@ -13,7 +15,7 @@ import { Separator } from "@/components/ui/separator";
 
 import UserNav from "@/components/common/layouts/user-nav";
 
-const MainNavbar = () => {
+const MainNavbar = ({ user }: { user: User }) => {
     const pathname = usePathname();
 
     const items: {
@@ -61,7 +63,7 @@ const MainNavbar = () => {
                 </div>
                 <div className="min-h-full flex">
                     <Separator orientation="vertical" />
-                    <UserNav />
+                    <UserNav user={user} />
                 </div>
             </div>
         </header>

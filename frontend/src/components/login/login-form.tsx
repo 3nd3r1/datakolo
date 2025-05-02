@@ -42,31 +42,24 @@ const LoginForm = () => {
     });
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
-        let success = false;
         setLoading(true);
 
-        try {
-            await login(values.username, values.password);
+        const result = await login(values.username, values.password);
+        if (result.success) {
             toast({
                 title: "Success",
                 description: "Logged in successfully",
             });
-            success = true;
-        } catch (error: unknown) {
+            redirect("/");
+        } else {
             toast({
                 variant: "destructive",
                 title: "Error",
-                description:
-                    error instanceof Error
-                        ? error.message
-                        : "An error occurred",
+                description: result.error,
             });
-        } finally {
-            if (success) {
-                redirect("/");
-            }
-            setLoading(false);
         }
+
+        setLoading(false);
     };
 
     if (loading) {

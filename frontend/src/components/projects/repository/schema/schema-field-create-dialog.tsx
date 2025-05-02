@@ -64,35 +64,38 @@ const SchemaFieldCreateDialog = ({
     });
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
-        try {
-            const repositoryUpdate = repositoryUpdateSchema.parse({
-                contentSchema: {
-                    ...repository.contentSchema,
-                    [values.name]: contentSchemaFieldSchema.parse(values),
-                },
+        const repositoryUpdate = repositoryUpdateSchema.parse({
+            contentSchema: {
+                ...repository.contentSchema,
+                [values.name]: contentSchemaFieldSchema.parse(values),
+            },
+        });
+
+        if (repository.contentSchema[values.name]) {
+            toast({
+                variant: "destructive",
+                title: "Error",
+                description: `Field ${values.name} already exists`,
             });
+            return;
+        }
 
-            if (repository.contentSchema[values.name]) {
-                throw new Error("Field with that name already exists");
-            }
+        const result = await updateRepository(
+            repository.project,
+            repository.id,
+            repositoryUpdate
+        );
 
-            await updateRepository(
-                repository.project,
-                repository.id,
-                repositoryUpdate
-            );
+        if (result.success) {
             toast({
                 title: "Success",
                 description: "Field added successfully",
             });
-        } catch (error: unknown) {
+        } else {
             toast({
                 variant: "destructive",
                 title: "Error",
-                description:
-                    error instanceof Error
-                        ? error.message
-                        : "An error occurred",
+                description: result.error,
             });
         }
     };

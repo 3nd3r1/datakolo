@@ -1,10 +1,17 @@
+import { Project } from "@/validators/project";
+
 import { getProjects } from "@/lib/project";
 
 import ProjectCreateDialog from "@/components/projects/project-create-dialog";
 import ProjectList from "@/components/projects/project-list";
 
 const Projects = async () => {
-    const projects = await getProjects();
+    const result = await getProjects();
+
+    let projects: Project[] = [];
+    if (result.success) {
+        projects = result.data;
+    }
 
     return (
         <div className="max-w-xl mx-auto mt-8">

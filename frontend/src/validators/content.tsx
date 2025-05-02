@@ -39,13 +39,13 @@ const contentDataSchema = z.record(
     z.union([z.string(), z.number(), z.boolean()])
 );
 
-const contentSchema = z.object({
+export const contentSchema = z.object({
     id: z.string(),
     data: contentDataSchema,
     repository: z.string(),
     createdBy: z.string(),
-    createdAt: z.date(),
-    updatedAt: z.date(),
+    createdAt: z.coerce.date(),
+    updatedAt: z.coerce.date(),
 });
 
 export const newContentSchema = contentSchema.omit({

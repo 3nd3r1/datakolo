@@ -42,31 +42,25 @@ const RegisterForm = () => {
     });
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
-        let success = false;
         setLoading(true);
 
-        try {
-            await register(values);
+        const result = await register(values);
+
+        if (result.success) {
             toast({
                 title: "Success",
                 description: "Registered successfully",
             });
-            success = true;
-        } catch (error: unknown) {
+            redirect("/");
+        } else {
             toast({
                 variant: "destructive",
                 title: "Error",
-                description:
-                    error instanceof Error
-                        ? error.message
-                        : "An error occurred",
+                description: result.error,
             });
-        } finally {
-            if (success) {
-                redirect("/");
-            }
-            setLoading(false);
         }
+
+        setLoading(false);
     };
 
     if (loading) {

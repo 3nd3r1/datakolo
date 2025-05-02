@@ -60,24 +60,29 @@ const ContentCreateDialog = ({ repository }: { repository: Repository }) => {
     });
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
-        try {
-            // Remove undefined values
-            // TODO: This should be done in a more type-safe way
-            Object.keys(values).forEach((key) =>
-                values[key] === undefined ? delete values[key] : {}
-            );
+        // Remove undefined values
+        // TODO: This should be done in a more type-safe way
+        Object.keys(values).forEach((key) =>
+            values[key] === undefined ? delete values[key] : {}
+        );
+        const newContent = newContentSchema.parse({ data: values });
 
-            const newContent = newContentSchema.parse({ data: values });
-            await createContent(repository.project, repository.id, newContent);
-            toast({ title: "Success", description: "Content created" });
-        } catch (error: unknown) {
+        const result = await createContent(
+            repository.project,
+            repository.id,
+            newContent
+        );
+
+        if (result.success) {
+            toast({
+                title: "Success",
+                description: "Content created successfully",
+            });
+        } else {
             toast({
                 variant: "destructive",
                 title: "Error",
-                description:
-                    error instanceof Error
-                        ? error.message
-                        : "An error occurred",
+                description: result.error,
             });
         }
     };

@@ -116,45 +116,39 @@ const ProjectApiKeyCard = ({ project }: { project: Project }) => {
     const [loading, setLoading] = useState(true);
 
     const handleRevokeApiKey = async () => {
-        try {
-            setLoading(true);
-            await revokeProjectApiKey(project.id);
+        setLoading(true);
+        const result = await revokeProjectApiKey(project.id);
+        if (result.success) {
             setApiKey(undefined);
             toast({
                 title: "API Key Revoked",
                 description: "Your API key has been revoked.",
             });
-        } catch (error: unknown) {
+        } else {
             toast({
                 variant: "destructive",
                 title: "Error",
-                description:
-                    error instanceof Error
-                        ? error.message
-                        : "Something went wrong",
+                description: result.error,
             });
         }
         setLoading(false);
     };
 
     const handleRegenerateApiKey = async () => {
-        try {
-            setLoading(true);
-            const newApiKey = await generateProjectApiKey(project.id);
+        setLoading(true);
+        const result = await generateProjectApiKey(project.id);
+        if (result.success) {
+            const newApiKey = result.data;
             setApiKey(newApiKey);
             toast({
                 title: "API Key Regenerated",
                 description: "Your new API key has been generated.",
             });
-        } catch (error: unknown) {
-            console.error(error);
+        } else {
             toast({
                 variant: "destructive",
                 title: "Error",
-                description:
-                    error instanceof Error
-                        ? error.message
-                        : "Something went wrong",
+                description: result.error,
             });
         }
         setLoading(false);
@@ -162,20 +156,16 @@ const ProjectApiKeyCard = ({ project }: { project: Project }) => {
 
     useEffect(() => {
         const fetchApiKey = async () => {
-            const apiKey = await getProjectApiKey(project.id).catch(
-                (error: unknown) => {
-                    toast({
-                        variant: "destructive",
-                        title: "Error",
-                        description:
-                            error instanceof Error
-                                ? error.message
-                                : "Something went wrong",
-                    });
-                    return undefined;
-                }
-            );
-            setApiKey(apiKey);
+            const result = await getProjectApiKey(project.id);
+            if (result.success) {
+                setApiKey(result.data);
+            } else {
+                toast({
+                    variant: "destructive",
+                    title: "Error",
+                    description: result.error,
+                });
+            }
             setLoading(false);
         };
 

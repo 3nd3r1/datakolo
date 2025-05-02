@@ -1,6 +1,5 @@
 import { Menu } from "lucide-react";
 
-import { getProject } from "@/lib/project";
 import { getRepositories } from "@/lib/repository";
 
 import { Button } from "@/components/ui/button";
@@ -16,12 +15,12 @@ export default async function Layout({
     params: Promise<{ projectId: string }>;
 }) {
     const projectId = (await params).projectId;
-    const project = await getProject(projectId).catch(() => undefined);
-    const repositories = await getRepositories(projectId).catch(() => []);
 
-    if (!project) {
+    const result = await getRepositories(projectId);
+    if (!result.success) {
         return null;
     }
+    const repositories = result.data;
 
     return (
         <div className="flex flex-row h-screen">

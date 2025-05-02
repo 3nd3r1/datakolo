@@ -26,8 +26,10 @@ export type ServerActionResult<T = void> =
     | { success: true; data: T }
     | { success: false; error: string };
 
-export function createSuccessResult<T>(data: T): ServerActionResult<T> {
-    return { success: true, data };
+export function createSuccessResult(): ServerActionResult<void>;
+export function createSuccessResult<T>(data: T): ServerActionResult<T>;
+export function createSuccessResult<T>(data?: T): ServerActionResult<T | void> {
+    return { success: true, data: data as T };
 }
 
 export function createErrorResult(

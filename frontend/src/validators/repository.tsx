@@ -27,8 +27,8 @@ export const repositorySchema = z.object({
     contentSchema: contentSchemaSchema,
     project: z.string(),
     createdBy: z.string(),
-    createdAt: z.date(),
-    updatedAt: z.date(),
+    createdAt: z.coerce.date(),
+    updatedAt: z.coerce.date(),
 });
 
 export const newRepositorySchema = repositorySchema.omit({
