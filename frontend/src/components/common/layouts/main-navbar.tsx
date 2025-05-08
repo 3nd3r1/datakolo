@@ -41,7 +41,8 @@ const MainNavbar = ({ user }: { user: User }) => {
                             src="/images/datakolo-logo.svg"
                             alt="Datakolo logo"
                             width={150}
-                            height={150}
+                            height={36}
+                            priority
                         />
                     </div>
                     <Separator orientation="vertical" />
