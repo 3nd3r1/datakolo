@@ -4,6 +4,8 @@ import { UserIcon } from "lucide-react";
 
 import { User } from "@/validators/user";
 
+import { logout } from "@/lib/auth";
+
 import { Button } from "@/components/ui/button";
 import {
     DropdownMenu,
@@ -14,12 +16,11 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-const items: { title: string; href: string }[] = [
-    { title: "Logout", href: "/logout" },
-];
+const items: { title: string; href: string }[] = [];
 
 const UserNav = ({ user }: { user: User }) => {
     if (!user) return null;
+
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -51,6 +52,8 @@ const UserNav = ({ user }: { user: User }) => {
                         </Link>
                     </DropdownMenuItem>
                 ))}
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={logout}>Logout</DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
     );
