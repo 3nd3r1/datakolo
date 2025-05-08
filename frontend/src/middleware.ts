@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { User } from "@/validators/user";
 
-import { getUser, logout } from "@/lib/auth";
+import { deleteAuthToken, getUser } from "@/lib/auth";
 
 const notLoggedRoutes = ["/login", "/signup"];
 
@@ -13,7 +13,7 @@ export default async function middleware(req: NextRequest) {
     let user: User | undefined = undefined;
     const result = await getUser();
     if (!result.success) {
-        await logout();
+        await deleteAuthToken();
     } else {
         user = result.data;
     }
@@ -34,5 +34,7 @@ export default async function middleware(req: NextRequest) {
 }
 
 export const config = {
-    matcher: ["/((?!api|_next/static|_next/image|.*\\.png$).*)"],
+    matcher: [
+        "/((?!api|_next/static|_next/image|favicon.ico|manifest.json|.*\\.png$).*)",
+    ],
 };

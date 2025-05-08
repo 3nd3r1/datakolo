@@ -1,6 +1,7 @@
 "use server";
 
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 import { NewUser, User, userSchema } from "@/validators/user";
 
@@ -28,6 +29,10 @@ export const getAuthHeader = async (): Promise<
 
 export const setAuthToken = async (token: string) => {
     (await cookies()).set("token", token, { path: "/" });
+};
+
+export const deleteAuthToken = async () => {
+    (await cookies()).delete("token");
 };
 
 export const getUser = async (): Promise<ServerActionResult<User>> => {
@@ -88,5 +93,6 @@ export const register = async (
 };
 
 export const logout = async () => {
-    (await cookies()).delete("token");
+    await deleteAuthToken();
+    redirect("/login");
 };
