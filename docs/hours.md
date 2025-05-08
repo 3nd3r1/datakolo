@@ -104,4 +104,5 @@
 | 02.05.2025 | 2        | Finish refactoring server actions in frontend                                                                                                            |
 | 02.05.2025 | 1        | Fix issues in backend                                                                                                                                    |
 | 02.05.2025 | 1        | Fix Dockerfile issues                                                                                                                                    |
-|   Total    | 184      |                                                                                                                                                          |
+| 08.05.2025 | 2        | Fix logout issue in production; Fix logo resizing issue; Fix manifest.json                                                                               |
+|   Total    | 186      |                                                                                                                                                          |
