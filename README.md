@@ -63,17 +63,17 @@ Example Post Schema:
 ![Create a repository](img/screenshots/create-repository.png)
 ![Create a schema](img/screenshots/create-schema.png)
 
-### 4 Create Some Content
+### 4️⃣ Create Some Content
 Fill in the fields based on your schema. Datakolo validates everything so you can't mess it up.
 
 ![Add content](img/screenshots/create-content.png)
 
-### 5 Get Your API Key
+### 5️⃣ Get Your API Key
 Go to Settings, generate an API key. Keep this secret.
 
 ![Get API key](img/screenshots/create-apikey.png)
 
-### 6 Use the API Builder
+### 6️⃣ Use the API Builder
 Head to the API Builder tab and create your API queries:
 
 - Select which repository you want to work with
@@ -83,7 +83,7 @@ Head to the API Builder tab and create your API queries:
 
 ![Use the API builder](img/screenshots/use-apibuilder.png)
 
-### 7 Use Your Content Anywhere
+### 7️⃣ Use Your Content Anywhere
 Your content is now available through a clean API.
 
 ## API Quick Start 🔌
