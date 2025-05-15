@@ -48,7 +48,7 @@ Sign up, log in, the usual drill.
 ### 2️⃣ Make a Project
 Projects are like folders for your content.
 
-![Create a project](img/screenshots/create-project.png)
+![Create a project](docs/images/screenshots/create-project.png)
 
 ### 3️⃣ Define Your Content Structure
 This is where it gets fun. Want a blog? Define what posts look like. Product catalog? Define what products look like.
@@ -60,18 +60,18 @@ Example Post Schema:
 - isPublished (boolean)
 ```
 
-![Create a repository](img/screenshots/create-repository.png)
-![Create a schema](img/screenshots/create-schema.png)
+![Create a repository](docs/images/screenshots/create-repository.png)
+![Create a schema](docs/images/screenshots/create-schema.png)
 
 ### 4️⃣ Create Some Content
 Fill in the fields based on your schema. Datakolo validates everything so you can't mess it up.
 
-![Add content](img/screenshots/create-content.png)
+![Add content](docs/images/screenshots/create-content.png)
 
 ### 5️⃣ Get Your API Key
 Go to Settings, generate an API key. Keep this secret.
 
-![Get API key](img/screenshots/create-apikey.png)
+![Get API key](docs/images/screenshots/create-apikey.png)
 
 ### 6️⃣ Use the API Builder
 Head to the API Builder tab and create your API queries:
@@ -81,7 +81,7 @@ Head to the API Builder tab and create your API queries:
 - If you're getting a specific item, enter its ID
 - Copy the generated URL and code snippets
 
-![Use the API builder](img/screenshots/use-apibuilder.png)
+![Use the API builder](docs/images/screenshots/use-apibuilder.png)
 
 ### 7️⃣ Use Your Content Anywhere
 Your content is now available through a clean API.
