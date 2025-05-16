@@ -18,6 +18,7 @@
 ## Links
 
 [Hour Reporting](./docs/hours.md)
+[Datakolo](https://datakolo-frontend.host.ender.fi)
 
 ## What is a Headless CMS? 🤔
 It's like WordPress, but without all the bloated garbage.
