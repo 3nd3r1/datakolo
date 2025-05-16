@@ -105,4 +105,7 @@
 | 02.05.2025 | 1        | Fix issues in backend                                                                                                                                    |
 | 02.05.2025 | 1        | Fix Dockerfile issues                                                                                                                                    |
 | 08.05.2025 | 2        | Fix logout issue in production; Fix logo resizing issue; Fix manifest.json                                                                               |
-|   Total    | 186      |                                                                                                                                                          |
+| 15.05.2025 | 2        | Create a very descriptive README.md                                                                                                                      |
+| 16.05.2025 | 1        | Use serverApiUrl in frontend and improve the docker-compose                                                                                              |
+| 16.05.2025 | 1        | Create better screenshots for the tutorial                                                                                                               |
+|   Total    | 190      |                                                                                                                                                          |
