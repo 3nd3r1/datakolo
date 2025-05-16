@@ -9,9 +9,7 @@ import {
     repositorySchema,
 } from "@/validators/repository";
 
-import { getAuthHeader } from "@/lib/auth";
-import { config } from "@/lib/config";
-
+import { apiRequest } from "./api";
 import {
     ServerActionResult,
     createErrorResult,
@@ -21,18 +19,9 @@ import {
 export const getRepositories = async (
     projectId: string
 ): Promise<ServerActionResult<Repository[]>> => {
-    const response = await fetch(
-        `${config.apiUrl}/projects/${projectId}/repositories`,
-        {
-            headers: {
-                "Content-Type": "application/json",
-                ...(await getAuthHeader()),
-            },
-            next: {
-                tags: ["repository"],
-            },
-        }
-    );
+    const response = await apiRequest(`/projects/${projectId}/repositories`, {
+        tags: ["repository"],
+    });
 
     if (!response.ok) {
         return createErrorResult((await response.json()).error);
@@ -49,16 +38,10 @@ export const getRepository = async (
     projectId: string,
     id: string
 ): Promise<ServerActionResult<Repository>> => {
-    const response = await fetch(
-        `${config.apiUrl}/projects/${projectId}/repositories/${id}`,
+    const response = await apiRequest(
+        `/projects/${projectId}/repositories/${id}`,
         {
-            headers: {
-                "Content-Type": "application/json",
-                ...(await getAuthHeader()),
-            },
-            next: {
-                tags: ["repository"],
-            },
+            tags: ["repository"],
         }
     );
 
@@ -75,18 +58,11 @@ export const createRepository = async (
     projectId: string,
     newRepository: NewRepository
 ): Promise<ServerActionResult<Repository>> => {
-    const response = await fetch(
-        `${config.apiUrl}/projects/${projectId}/repositories`,
-        {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                ...(await getAuthHeader()),
-            },
-            cache: "no-cache",
-            body: JSON.stringify(newRepository),
-        }
-    );
+    const response = await apiRequest(`/projects/${projectId}/repositories`, {
+        method: "POST",
+        cache: "no-cache",
+        body: newRepository,
+    });
 
     if (!response.ok) {
         return createErrorResult((await response.json()).error);
@@ -103,16 +79,12 @@ export const updateRepository = async (
     id: string,
     repositoryUpdate: RepositoryUpdate
 ): Promise<ServerActionResult<Repository>> => {
-    const response = await fetch(
-        `${config.apiUrl}/projects/${projectId}/repositories/${id}`,
+    const response = await apiRequest(
+        `/projects/${projectId}/repositories/${id}`,
         {
             method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-                ...(await getAuthHeader()),
-            },
             cache: "no-cache",
-            body: JSON.stringify(repositoryUpdate),
+            body: repositoryUpdate,
         }
     );
 

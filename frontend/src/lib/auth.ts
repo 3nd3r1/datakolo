@@ -5,12 +5,13 @@ import { redirect } from "next/navigation";
 
 import { NewUser, User, userSchema } from "@/validators/user";
 
-import { config } from "@/lib/config";
 import {
     ServerActionResult,
     createErrorResult,
     createSuccessResult,
 } from "@/lib/utils";
+
+import { apiRequest } from "./api";
 
 export const getAuthHeader = async (): Promise<
     | {
@@ -36,11 +37,7 @@ export const deleteAuthToken = async () => {
 };
 
 export const getUser = async (): Promise<ServerActionResult<User>> => {
-    const response = await fetch(config.apiUrl + "/user", {
-        headers: {
-            "Content-Type": "application/json",
-            ...(await getAuthHeader()),
-        },
+    const response = await apiRequest("/user", {
         cache: "no-cache",
     });
 
@@ -55,13 +52,10 @@ export const login = async (
     username: string,
     password: string
 ): Promise<ServerActionResult<void>> => {
-    const response = await fetch(config.apiUrl + "/login", {
+    const response = await apiRequest("/login", {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
         cache: "no-cache",
-        body: JSON.stringify({ username, password }),
+        body: { username, password },
     });
 
     if (!response.ok) {
@@ -75,13 +69,10 @@ export const login = async (
 export const register = async (
     newUser: NewUser
 ): Promise<ServerActionResult<void>> => {
-    const response = await fetch(config.apiUrl + "/register", {
+    const response = await apiRequest("/register", {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
         cache: "no-cache",
-        body: JSON.stringify(newUser),
+        body: newUser,
     });
 
     if (!response.ok) {
