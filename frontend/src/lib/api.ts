@@ -5,7 +5,7 @@ import { getApiUrl } from "@/lib/config";
 
 type ApiOptions = {
     method?: "GET" | "POST" | "PUT" | "DELETE";
-    body?: BodyInit;
+    body?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
     headers?: Record<string, string>;
     cache?: RequestCache;
     tags?: string[];
