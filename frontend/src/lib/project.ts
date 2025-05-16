@@ -11,23 +11,17 @@ import {
     projectSchema,
 } from "@/validators/project";
 
-import { getAuthHeader } from "@/lib/auth";
-import { config } from "@/lib/config";
 import {
     ServerActionResult,
     createErrorResult,
     createSuccessResult,
 } from "@/lib/utils";
 
+import { apiRequest } from "./api";
+
 export const getProjects = async (): Promise<ServerActionResult<Project[]>> => {
-    const response = await fetch(config.apiUrl + "/projects", {
-        headers: {
-            "Content-Type": "application/json",
-            ...(await getAuthHeader()),
-        },
-        next: {
-            tags: ["project"],
-        },
+    const response = await apiRequest("/projects", {
+        tags: ["project"],
     });
 
     if (!response.ok) {
@@ -43,14 +37,8 @@ export const getProjects = async (): Promise<ServerActionResult<Project[]>> => {
 export const getProject = async (
     id: string
 ): Promise<ServerActionResult<Project>> => {
-    const response = await fetch(config.apiUrl + "/projects/" + id, {
-        headers: {
-            "Content-Type": "application/json",
-            ...(await getAuthHeader()),
-        },
-        next: {
-            tags: ["project"],
-        },
+    const response = await apiRequest(`/projects/${id}`, {
+        tags: ["project"],
     });
 
     if (!response.ok) {
@@ -65,14 +53,10 @@ export const getProject = async (
 export const createProject = async (
     newProject: NewProject
 ): Promise<ServerActionResult<Project>> => {
-    const response = await fetch(config.apiUrl + "/projects", {
+    const response = await apiRequest("/projects", {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            ...(await getAuthHeader()),
-        },
         cache: "no-cache",
-        body: JSON.stringify(newProject),
+        body: newProject,
     });
 
     if (!response.ok) {
@@ -89,14 +73,10 @@ export const updateProject = async (
     id: string,
     projectUpdate: ProjectUpdate
 ): Promise<ServerActionResult<Project>> => {
-    const response = await fetch(`${config.apiUrl}/projects/${id}`, {
+    const response = await apiRequest(`/projects/${id}`, {
         method: "PUT",
-        headers: {
-            "Content-Type": "application/json",
-            ...(await getAuthHeader()),
-        },
         cache: "no-cache",
-        body: JSON.stringify(projectUpdate),
+        body: projectUpdate,
     });
 
     if (!response.ok) {
@@ -112,12 +92,7 @@ export const updateProject = async (
 export const getProjectApiKey = async (
     id: string
 ): Promise<ServerActionResult<ProjectApiKey | undefined>> => {
-    const response = await fetch(`${config.apiUrl}/projects/${id}/api-key`, {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-            ...(await getAuthHeader()),
-        },
+    const response = await apiRequest(`/projects/${id}/api-key`, {
         cache: "no-cache",
     });
 
@@ -139,17 +114,10 @@ export const getProjectApiKey = async (
 export const generateProjectApiKey = async (
     id: string
 ): Promise<ServerActionResult<ProjectApiKey>> => {
-    const response = await fetch(
-        `${config.apiUrl}/projects/${id}/generate-api-key`,
-        {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                ...(await getAuthHeader()),
-            },
-            cache: "no-cache",
-        }
-    );
+    const response = await apiRequest(`/projects/${id}/generate-api-key`, {
+        method: "POST",
+        cache: "no-cache",
+    });
 
     if (!response.ok) {
         return createErrorResult((await response.json()).error);
@@ -163,17 +131,10 @@ export const generateProjectApiKey = async (
 export const revokeProjectApiKey = async (
     id: string
 ): Promise<ServerActionResult<void>> => {
-    const response = await fetch(
-        `${config.apiUrl}/projects/${id}/revoke-api-key`,
-        {
-            method: "DELETE",
-            headers: {
-                "Content-Type": "application/json",
-                ...(await getAuthHeader()),
-            },
-            cache: "no-cache",
-        }
-    );
+    const response = await apiRequest(`/projects/${id}/revoke-api-key`, {
+        method: "DELETE",
+        cache: "no-cache",
+    });
 
     if (!response.ok) {
         return createErrorResult((await response.json()).error);

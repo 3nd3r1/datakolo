@@ -4,28 +4,22 @@ import { revalidateTag } from "next/cache";
 
 import { Content, NewContent, contentSchema } from "@/validators/content";
 
-import { getAuthHeader } from "@/lib/auth";
-import { config } from "@/lib/config";
 import {
     ServerActionResult,
     createErrorResult,
     createSuccessResult,
 } from "@/lib/utils";
 
+import { apiRequest } from "./api";
+
 export const getContents = async (
     projectId: string,
     repositoryId: string
 ): Promise<ServerActionResult<Content[]>> => {
-    const response = await fetch(
-        `${config.apiUrl}/projects/${projectId}/repositories/${repositoryId}/contents`,
+    const response = await apiRequest(
+        `/projects/${projectId}/repositories/${repositoryId}/contents`,
         {
-            headers: {
-                "Content-Type": "application/json",
-                ...(await getAuthHeader()),
-            },
-            next: {
-                tags: ["content"],
-            },
+            tags: ["content"],
         }
     );
 
@@ -45,16 +39,10 @@ export const getContent = async (
     repositoryId: string,
     id: string
 ): Promise<ServerActionResult<Content>> => {
-    const response = await fetch(
-        `${config.apiUrl}/projects/${projectId}/repositories/${repositoryId}/contents/${id}`,
+    const response = await apiRequest(
+        `/projects/${projectId}/repositories/${repositoryId}/contents/${id}`,
         {
-            headers: {
-                "Content-Type": "application/json",
-                ...(await getAuthHeader()),
-            },
-            next: {
-                tags: ["content"],
-            },
+            tags: ["content"],
         }
     );
     if (!response.ok) {
@@ -71,16 +59,12 @@ export const createContent = async (
     repositoryId: string,
     newContent: NewContent
 ): Promise<ServerActionResult<Content>> => {
-    const response = await fetch(
-        `${config.apiUrl}/projects/${projectId}/repositories/${repositoryId}/contents`,
+    const response = await apiRequest(
+        `/projects/${projectId}/repositories/${repositoryId}/contents`,
         {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                ...(await getAuthHeader()),
-            },
             cache: "no-cache",
-            body: JSON.stringify(newContent),
+            body: newContent,
         }
     );
 
@@ -100,16 +84,12 @@ export const updateContent = async (
     id: string,
     contentUpdate: Partial<NewContent>
 ): Promise<ServerActionResult<Content>> => {
-    const response = await fetch(
-        `${config.apiUrl}/projects/${projectId}/repositories/${repositoryId}/contents/${id}`,
+    const response = await apiRequest(
+        `/projects/${projectId}/repositories/${repositoryId}/contents/${id}`,
         {
             method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-                ...(await getAuthHeader()),
-            },
             cache: "no-cache",
-            body: JSON.stringify(contentUpdate),
+            body: contentUpdate,
         }
     );
 
