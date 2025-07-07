@@ -1,4 +1,4 @@
-import app from "@/app.ts";
+import { app } from "@/app.ts";
 import connectDatabase from "@/utils/db.ts";
 import { config } from "@/utils/config.ts";
 
