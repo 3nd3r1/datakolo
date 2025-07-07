@@ -3,7 +3,7 @@ WORKDIR /app
 COPY . .
 RUN deno cache src/main.ts
 
-FROM denoland/deno:latest
+FROM denoland/deno:2.4.0
 WORKDIR /app
 
 COPY --from=builder --chown=deno:deno /app .
