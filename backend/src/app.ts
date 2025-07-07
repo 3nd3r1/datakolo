@@ -1,4 +1,5 @@
 import { Application } from "oak";
+import { oakCors } from "cors";
 
 import homeRouter from "@/routes/home.ts";
 import authRouter from "@/routes/auth.ts";
@@ -18,6 +19,7 @@ app.use(async (context, next) => {
     await next();
 });
 app.use(errorHandler);
+app.use(oakCors());
 
 app.use(homeRouter.routes());
 app.use(authRouter.routes());
@@ -41,4 +43,5 @@ app.addEventListener("listen", ({ hostname, port, secure }) => {
     }
 });
 
-export default app;
+export { app };
+export default app.handle.bind(app);
