@@ -4,7 +4,7 @@ import { config } from "@/utils/config.ts";
 import { logger } from "@/utils/logger.ts";
 
 const connectDatabase = async () => {
-    if (config.environment === "test") return;
+    if (config.environment === "test" || !config.db.url) return;
 
     try {
         await mongoose.connect(config.db.url);

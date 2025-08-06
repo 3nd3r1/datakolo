@@ -118,7 +118,7 @@ Authorization: Bearer YOUR_API_KEY_HERE
 ## Local Dev Setup ⚙️
 
 1. Clone this bad boy
-2. `docker-compose up`
+2. `make dev`
 3. Backend on http://localhost:8000
 4. Frontend on http://localhost:3000
 5. Go crazy
