@@ -14,13 +14,13 @@ export default async function Layout({
 
     const projectResult = await getProject(projectId);
     if (!projectResult.success) {
-        return { children };
+        return <>{children}</>;
     }
     const project = projectResult.data;
 
     const userResult = await getUser();
     if (!userResult.success) {
-        return { children };
+        return <>{children}</>;
     }
     const user = userResult.data;
 
